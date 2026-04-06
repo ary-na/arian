@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to S3
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -32,5 +32,4 @@ jobs:
           aws-region: ap-southeast-2
 
       - name: Sync to S3
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+        run: aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
