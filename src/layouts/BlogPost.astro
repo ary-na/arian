@@ -12,9 +12,6 @@ const { title, description, pubDate, updatedDate, heroImage, category } = Astro.
 <SiteLayout {title} {description} image={heroImage}>
   <article class="space-y-10">
     <header class="space-y-4">
-      <a href="/blog" class="block font-mono text-xs text-(--text-secondary) transition-colors duration-200 hover:text-(--accent)">
-        > back to posts
-      </a>
       {
         description && (
           <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
@@ -23,7 +20,7 @@ const { title, description, pubDate, updatedDate, heroImage, category } = Astro.
         )
       }
 
-      <h1 class="text-4xl pb-2 border-b border-secondary">{title}</h1>
+      <h1 class="border-secondary border-b pb-2 text-4xl">{title}</h1>
 
       <div class="flex flex-wrap items-center gap-4 font-mono text-xs text-(--text-secondary)">
         <span class="flex items-center gap-2">
@@ -66,7 +63,7 @@ const { title, description, pubDate, updatedDate, heroImage, category } = Astro.
     </div>
 
     <footer
-      class="border-t border-(--text-secondary) pt-6 font-mono text-xs text-(--text-secondary)"
+      class="border-t border-secondary pt-6 font-mono text-xs text-(--text-secondary)"
     >
       <a href="/blog" class="transition-colors duration-200 hover:text-(--accent)">
         > back to posts
@@ -74,3 +71,4 @@ const { title, description, pubDate, updatedDate, heroImage, category } = Astro.
     </footer>
   </article>
 </SiteLayout>
+

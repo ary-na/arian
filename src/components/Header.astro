@@ -1,17 +1,15 @@
 ---
-import { getCollection } from "astro:content";
-import { categoryHref, SITE_TITLE } from "../consts";
-import HeaderLink from "./HeaderLink.astro";
+import { getCollection } from 'astro:content';
+import { categoryHref, SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro';
 
-const posts = await getCollection("blog");
-const categories = [
-  ...new Set(posts.flatMap((post) => post.data.category ?? [])),
-];
+const posts = await getCollection('blog');
+const categories = [...new Set(posts.flatMap((post) => post.data.category ?? []))];
 ---
 
 <header>
   <!-- Mobile (<md): fullscreen overlay -->
-  <div class="md:hidden fixed top-0 right-0 z-50 p-6">
+  <div class="fixed top-0 right-0 z-50 p-6 md:hidden">
     <button
       id="mobile-toggle"
       aria-label="Toggle menu"
@@ -34,27 +32,32 @@ const categories = [
   <!-- Mobile fullscreen menu -->
   <div
     id="mobile-menu"
-    class="md:hidden fixed inset-0 z-40 flex flex-col items-start justify-center gap-8 bg-secondary ps-10"
+    class="bg-secondary fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 ps-10 md:hidden"
   >
-    <h2 class="text-2xl font-bold tracking-wider border-b border-primary pb-2 w-full">
+    <span
+      class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
       <a href="/">{SITE_TITLE}</a>
-    </h2>
-    <HeaderLink href="/">Home</HeaderLink>
-    <HeaderLink href="/blog">Blog</HeaderLink>
-    <HeaderLink href="/about">About</HeaderLink>
-    <span class="font-display tracking-widest border-b border-primary w-full">
-      categories
     </span>
-    
-    {
-      categories.map((category) => (
-        <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
-      ))
-    }
+    <div class="flex w-100 flex-col gap-2">
+      <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/about">About</HeaderLink>
+    </div>
+    <div class="flex w-200 flex-col gap-1">
+      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <div class="text-sm italic">
+        {
+          categories.map((category) => (
+            <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
+          ))
+        }
+      </div>
+    </div>
   </div>
 
   <!-- Tablet (md to xl): right side panel -->
-  <div class="hidden md:block xl:hidden fixed top-0 right-0 z-50 p-6">
+  <div class="fixed top-0 right-0 z-50 hidden p-6 md:block xl:hidden">
     <button
       id="tablet-toggle"
       aria-label="Toggle menu"
@@ -77,41 +80,47 @@ const categories = [
   <!-- Tablet slide-in panel -->
   <div
     id="tablet-menu"
-    class="hidden md:flex xl:hidden fixed top-0 right-0 h-full z-40 flex-col items-start justify-center gap-6 px-8 w-70 bg-secondary"
+    class="bg-secondary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-6 px-8 md:flex xl:hidden"
   >
-    <h2 class="text-lg font-bold tracking-wider border-b border-primary pb-2 w-full">
-      <a href="/">{SITE_TITLE}</a>
-    </h2>
-    <HeaderLink href="/">Home</HeaderLink>
-    <HeaderLink href="/blog">Blog</HeaderLink>
-    <HeaderLink href="/about">About</HeaderLink>
-    <span class="text-xs font-semibold uppercase tracking-widest">
-      Categories
-    </span>
-    {
-      categories.map((category) => (
-        <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
-      ))
-    }
-  </div>
-
-  <!-- Desktop (xl+): right sidebar unchanged -->
-  <nav
-    class="hidden xl:fixed xl:right-0 xl:top-0 xl:h-full xl:flex xl:flex-col xl:gap-6 xl:items-start xl:justify-center xl:w-68"
-  >
-    <span class="text-3xl w-100 font-display font-bold tracking-tight pb-2 border-b border-secondary">
+    <span
+      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
       <a href="/">{SITE_TITLE}</a>
     </span>
-    <div class="flex flex-col gap-2 w-100">
+    <div class="flex w-100 flex-col gap-2">
       <HeaderLink href="/">Home</HeaderLink>
       <HeaderLink href="/blog">Blog</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
     </div>
-    <div class="flex flex-col gap-1 w-100">
-      <span class="font-display border-b border-secondary mb-2">
-        categories
-      </span>
-      <div class="italic text-sm">
+    <div class="flex w-100 flex-col gap-1">
+      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <div class="text-sm italic">
+        {
+          categories.map((category) => (
+            <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop (xl+): right sidebar unchanged -->
+  <nav
+    class="hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-6"
+  >
+    <span
+      class="font-display border-secondary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
+      <a href="/">{SITE_TITLE}</a>
+    </span>
+    <div class="flex w-100 flex-col gap-2">
+      <HeaderLink href="/">Home</HeaderLink>
+      <HeaderLink href="/blog">Blog</HeaderLink>
+      <HeaderLink href="/about">About</HeaderLink>
+    </div>
+    <div class="flex w-100 flex-col gap-1">
+      <span class="font-display border-secondary mb-2 border-b"> categories </span>
+      <div class="text-sm italic">
         {
           categories.map((category) => (
             <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
@@ -206,40 +215,36 @@ const categories = [
 
 <script>
   // Mobile
-  const mobileToggle = document.getElementById(
-    "mobile-toggle",
-  ) as HTMLButtonElement;
-  const mobileMenu = document.getElementById("mobile-menu") as HTMLElement;
-  mobileToggle?.addEventListener("click", () => {
-    const isOpen = mobileMenu.classList.contains("is-open");
+  const mobileToggle = document.getElementById('mobile-toggle') as HTMLButtonElement;
+  const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
+  mobileToggle?.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('is-open');
 
     if (isOpen) {
-      mobileMenu.classList.remove("is-open");
-      mobileToggle.classList.remove("is-open");
-      mobileToggle.setAttribute("aria-expanded", "false");
+      mobileMenu.classList.remove('is-open');
+      mobileToggle.classList.remove('is-open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
     } else {
-      mobileMenu.classList.add("is-open");
-      mobileToggle.classList.add("is-open");
-      mobileToggle.setAttribute("aria-expanded", "true");
+      mobileMenu.classList.add('is-open');
+      mobileToggle.classList.add('is-open');
+      mobileToggle.setAttribute('aria-expanded', 'true');
     }
   });
 
   // Tablet
-  const tabletToggle = document.getElementById(
-    "tablet-toggle",
-  ) as HTMLButtonElement;
-  const tabletMenu = document.getElementById("tablet-menu") as HTMLElement;
-  tabletToggle?.addEventListener("click", () => {
-    const isOpen = tabletMenu.classList.contains("is-open");
+  const tabletToggle = document.getElementById('tablet-toggle') as HTMLButtonElement;
+  const tabletMenu = document.getElementById('tablet-menu') as HTMLElement;
+  tabletToggle?.addEventListener('click', () => {
+    const isOpen = tabletMenu.classList.contains('is-open');
 
     if (isOpen) {
-      tabletMenu.classList.remove("is-open");
-      tabletToggle.classList.remove("is-open");
-      tabletToggle.setAttribute("aria-expanded", "false");
+      tabletMenu.classList.remove('is-open');
+      tabletToggle.classList.remove('is-open');
+      tabletToggle.setAttribute('aria-expanded', 'false');
     } else {
-      tabletMenu.classList.add("is-open");
-      tabletToggle.classList.add("is-open");
-      tabletToggle.setAttribute("aria-expanded", "true");
+      tabletMenu.classList.add('is-open');
+      tabletToggle.classList.add('is-open');
+      tabletToggle.setAttribute('aria-expanded', 'true');
     }
   });
 </script>
