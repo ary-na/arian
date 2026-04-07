@@ -10,11 +10,11 @@ const { title, description, pubDate, updatedDate, heroImage, category } = Astro.
 ---
 
 <SiteLayout {title} {description} image={heroImage}>
-  <article class="space-y-10">
+  <article class="space-y-10 pt-15">
     <header class="space-y-4">
       {
         description && (
-          <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+          <span class="block font-mono text-xs leading-normal text-secondary">
             {description}
           </span>
         )
