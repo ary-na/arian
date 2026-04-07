@@ -1,38 +1,99 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-type Props = HTMLAttributes<"a">;
-const { href, class: className, ...props } = Astro.props;
-const pathname = "/" + Astro.url.pathname.replace(import.meta.env.BASE_URL, "").replace(/^\//, "");
-const hrefStr = href?.toString() ?? "";
-const isActive = hrefStr === pathname || (hrefStr !== "/" && pathname.startsWith(hrefStr));
+import type { HTMLAttributes } from 'astro/types';
+type Props = HTMLAttributes<'a'> & {
+  description?: string;
+};
+const { href, class: className, description, ...props } = Astro.props;
+const pathname = '/' + Astro.url.pathname.replace(import.meta.env.BASE_URL, '').replace(/^\//, '');
+const hrefStr = href?.toString() ?? '';
+const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith(hrefStr));
 ---
-<a
 
-  href={href}
-  class:list={[
-    "block lowercase px-4 py-1 no-underline transition-all duration-200 font-display tracking-widest before:-mr-2",
-    { "before:content-['>'] text-(--text-primary) opacity-100": isActive },
-    { "before:content-['_'] text-(--text-secondary) opacity-40 hover:opacity-100 hover:before:content-['>']": !isActive },
-    className,
-  ]}
-  {...props}
->
-  <slot />
-</a>
+<div class="group/nav flex flex-col gap-0">
+<a
+    {href}
+    class:list={[
+      'font-display block px-4 py-1 tracking-widest lowercase no-underline transition-all duration-200 before:-mr-2',
+      { "text-text-primary opacity-100 before:content-['>']": isActive },
+      {
+        "text-text-secondary/80 opacity-60 before:content-['_'] hover:text-text-primary hover:opacity-100 hover:before:content-['>']":
+          !isActive,
+      },
+      className,
+    ]}
+    {...props}
+  >
+    <slot />
+  </a>
+  {description && (
+    <p
+      class:list={[
+        'font-mono px-5 -mt-1 text-[0.6rem] tracking-widest leading-none lowercase transition-colors duration-200',
+        isActive ? 'text-text-secondary' : 'text-text-secondary/30 group-hover/nav:text-text-secondary/60',
+      ]}
+    >
+      <span
+        class="typewriter-text"
+        data-description={description}
+        style="visibility: hidden;"
+      >{description}</span>
+    </p>
+  )}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.group\\/nav').forEach((nav) => {
+    const link = nav.querySelector('a');
+    const typewriterEl = nav.querySelector<HTMLSpanElement>('.typewriter-text');
+    if (!link || !typewriterEl) return;
+
+    const description = typewriterEl.dataset.description ?? '';
+    const isActive = link.classList.contains('text-text-primary');
+    let timeout: ReturnType<typeof setTimeout>;
+    let index = 0;
+
+    if (isActive) {
+      typewriterEl.style.visibility = 'visible';
+      return;
+    }
+
+    link.addEventListener('mouseenter', () => {
+      typewriterEl.textContent = '';
+      typewriterEl.style.visibility = 'visible';
+      index = 0;
+
+      const type = () => {
+        if (index < description.length) {
+          typewriterEl.textContent += description[index];
+          index++;
+          timeout = setTimeout(type, 55);
+        }
+      };
+      type();
+    });
+
+    link.addEventListener('mouseleave', () => {
+      clearTimeout(timeout);
+      typewriterEl.style.visibility = 'hidden';
+      typewriterEl.textContent = description;
+      index = 0;
+    });
+  });
+</script>
 
 <style>
   a::after {
-    content: "";
+    content: '';
     display: inline-block;
   }
-
   a:hover::after,
   a.active::after {
-    content: "_";
+    content: '_';
     animation: blink 1s step-end infinite;
   }
-
   @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+      opacity: 0;
+    }
   }
 </style>

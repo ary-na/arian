@@ -1,20 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
-import { categoryHref, SITE_TITLE } from '../consts';
+import { categoryHref, SITE_TITLE, PRIMARY_NAV } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 
 const posts = await getCollection('blog');
 const categories = [...new Set(posts.flatMap((post) => post.data.category ?? []))];
 ---
 
-<header>
+<header class="text-text-primary">
   <!-- Mobile (<md): fullscreen overlay -->
   <div class="fixed top-0 right-0 z-50 p-6 md:hidden">
     <button
       id="mobile-toggle"
       aria-label="Toggle menu"
       aria-expanded="false"
-      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] bg-white/72 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-md transition hover:bg-white dark:border-[rgba(255,255,255,0.12)] dark:bg-[rgba(255,255,255,0.08)] dark:hover:bg-[rgba(255,255,255,0.12)]"
+      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-text-secondary/20 bg-surface-primary/85 text-text-primary shadow-(--box-shadow) backdrop-blur-md transition hover:bg-surface-primary"
     >
       <span class="sr-only">Toggle navigation menu</span>
       <span
@@ -32,21 +32,23 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
   <!-- Mobile fullscreen menu -->
   <div
     id="mobile-menu"
-    class="bg-secondary fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 ps-10 md:hidden"
+    class="bg-surface-primary fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 ps-10 text-text-primary md:hidden"
   >
-    <span
-      class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight"
-    >
+    <span class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight">
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+      {
+        PRIMARY_NAV.map((item) => (
+          <HeaderLink href={item.href} description={item.description}>
+            {item.label}
+          </HeaderLink>
+        ))
+      }
     </div>
     <div class="flex w-200 flex-col gap-1">
       <span class="font-display border-primary mb-2 border-b"> categories </span>
-      <div class="text-sm italic">
+      <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
             <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
@@ -62,7 +64,7 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
       id="tablet-toggle"
       aria-label="Toggle menu"
       aria-expanded="false"
-      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(0,0,0,0.08)] bg-white/72 shadow-[0_10px_24px_rgba(15,23,42,0.08)] backdrop-blur-md transition hover:bg-white dark:border-[rgba(255,255,255,0.12)] dark:bg-[rgba(255,255,255,0.08)] dark:hover:bg-[rgba(255,255,255,0.12)]"
+      class="group relative flex h-11 w-11 items-center justify-center rounded-full border border-text-secondary/20 bg-surface-primary/85 text-text-primary shadow-(--box-shadow) backdrop-blur-md transition hover:bg-surface-primary"
     >
       <span class="sr-only">Toggle navigation menu</span>
       <span
@@ -80,21 +82,23 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
   <!-- Tablet slide-in panel -->
   <div
     id="tablet-menu"
-    class="bg-secondary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-6 px-8 md:flex xl:hidden"
+    class="bg-surface-primary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-6 border-l border-text-secondary/15 px-8 text-text-primary shadow-(--box-shadow) md:flex xl:hidden"
   >
-    <span
-      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
-    >
+    <span class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight">
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+      {
+        PRIMARY_NAV.map((item) => (
+          <HeaderLink href={item.href} description={item.description}>
+            {item.label}
+          </HeaderLink>
+        ))
+      }
     </div>
     <div class="flex w-100 flex-col gap-1">
       <span class="font-display border-primary mb-2 border-b"> categories </span>
-      <div class="text-sm italic">
+      <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
             <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
@@ -106,21 +110,25 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
 
   <!-- Desktop (xl+): right sidebar unchanged -->
   <nav
-    class="hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-6"
+    class="hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-6 xl:bg-surface-primary/35 xl:px-8 xl:backdrop-blur-sm"
   >
     <span
-      class="font-display border-secondary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
+      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
     >
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
-      <HeaderLink href="/">Home</HeaderLink>
-      <HeaderLink href="/blog">Blog</HeaderLink>
-      <HeaderLink href="/about">About</HeaderLink>
+      {
+        PRIMARY_NAV.map((item) => (
+          <HeaderLink href={item.href} description={item.description}>
+            {item.label}
+          </HeaderLink>
+        ))
+      }
     </div>
     <div class="flex w-100 flex-col gap-1">
-      <span class="font-display border-secondary mb-2 border-b"> categories </span>
-      <div class="text-sm italic">
+      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
             <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
