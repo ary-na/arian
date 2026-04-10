@@ -1,0 +1,48 @@
+---
+const { demo, github, githubBackend, demoCrossed } = Astro.props;
+---
+
+<div class="my-4 flex gap-4 font-mono text-sm">
+  {
+    demo && (
+      <a
+        href={demo}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
+      >
+        <span class="text-accent">[</span>
+        <span class:list={[{ 'line-through': demoCrossed }]}>live demo</span>
+        <span class="text-accent">]</span>
+      </a>
+    )
+  }
+  {
+    github && (
+      <a
+        href={github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
+      >
+        <span class="text-accent">[</span>
+        <span>github frontend</span>
+        <span class="text-accent">]</span>
+      </a>
+    )
+  }
+  {
+    githubBackend && (
+      <a
+        href={githubBackend}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
+      >
+        <span class="text-accent">[</span>
+        <span>github backend</span>
+        <span class="text-accent">]</span>
+      </a>
+    )
+  }
+</div>
