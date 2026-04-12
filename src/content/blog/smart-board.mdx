@@ -1,17 +1,75 @@
 ---
 title: 'smart board'
-description: 'A kanban '
-pubDate: 'Apr 08 2026'
-updatedDate: 'Apr 09 2026'
-heroImage: ''
+description: 'a desktop-based Kanban-style application for managing personal work with task management, drag-and-drop functionality, and SQLite persistence'
+pubDate: 'Apr 02 2022'
+updatedDate: 'Jun 05 2023'
+heroImage: '@assets/blog/smart-board.webp'
+heroImageAlt: 'smart board workspace with tasks organized in kanban columns'
 category: 'project'
 tags:
-- school
-- javafx
+  - java
+  - javafx
+  - kanban
+  - desktop-application
+  - sqlite
+  - task-management
+  - gui
 ---
 
-## JavaFx
-The new project
+import ProjectLinks from '@components/ProjectLink.astro';
 
-## School
+A desktop-based task management application built with JavaFX. Users can organise personal work on a Kanban-style board with drag-and-drop task handling, user authentication, and persistent storage via SQLite.
 
+<ProjectLinks github="https://github.com/ary-na/Smart-Board" githubLabel="github" />
+
+## key features
+
+- User authentication with login and signup
+- Kanban-style task board with columns
+- Drag-and-drop task movement
+- Task creation and deletion
+- SQLite database persistence
+- FXML-based UI with JavaFX
+- CSS styling for customizable themes
+- User profile management
+
+## tech stack
+
+```bash
+# core
+java 17.0.2 | javafx | maven 3.8.1
+```
+
+```bash
+# database
+sqlite | sqlite-jdbc
+```
+
+```bash
+# ui
+fxml | css | javafx controls
+```
+
+## highlights
+
+login and workspace views showcasing the user interface and kanban board layout.
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img class="rounded-md" src="/blog/smart-board/login.webp" alt="login screen" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">login screen</figcaption>
+  </figure>
+  <figure>
+    <img class="rounded-md" src="/blog/smart-board/sign-up.webp" alt="sign up screen" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">sign up screen</figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img class="rounded-md" src="/blog/smart-board/workspace.webp" alt="kanban board" />
+  <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">kanban board</figcaption>
+</figure>
+
+Building smart board pushed drag-and-drop to be the central challenge. Managing event listeners and updating the UI in real-time while keeping the database synchronized required careful state management.
+
+Learning FXML and CSS styling also revealed how flexible JavaFX can be. Separating UI logic from business logic using the MVC pattern kept the codebase clean and maintainable, even with the complexity of managing multiple views and controllers.

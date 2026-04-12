@@ -5,10 +5,25 @@
 >
   <button
     id="lightbox-close"
-    class="absolute cursor-pointer top-4 right-4 font-mono text-xs text-white/60 transition-colors hover:text-white"
+    class="absolute top-4 right-4 cursor-pointer font-mono text-xs text-white/60 transition-colors hover:text-white"
   >
     [close]
   </button>
+
+  <button
+    id="lightbox-prev"
+    class="absolute left-4 cursor-pointer font-mono text-xs text-white/60 transition-colors hover:text-white"
+  >
+    [←]
+  </button>
+
+  <button
+    id="lightbox-next"
+    class="absolute right-4 cursor-pointer font-mono text-xs text-white/60 transition-colors hover:text-white"
+  >
+    [→]
+  </button>
+
   <div class="flex flex-col items-center gap-3">
     <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-[90vw] rounded-md" />
     <figcaption id="lightbox-caption" class="font-mono text-xs text-white/50"></figcaption>
@@ -20,11 +35,24 @@
   const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
   const lightboxCaption = document.getElementById('lightbox-caption') as HTMLElement;
   const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement;
+  const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement;
+  const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement;
 
-  const open = (src: string, alt: string, caption: string): void => {
+  let images: { src: string; alt: string; caption: string }[] = [];
+  let currentIndex = 0;
+
+  const show = (index: number): void => {
+    currentIndex = (index + images.length) % images.length;
+    const { src, alt, caption } = images[currentIndex];
     lightboxImg.src = src;
     lightboxImg.alt = alt;
     lightboxCaption.textContent = caption;
+    prevBtn.style.display = images.length <= 1 ? 'none' : '';
+    nextBtn.style.display = images.length <= 1 ? 'none' : '';
+  };
+
+  const open = (index: number): void => {
+    show(index);
     lightbox.classList.remove('hidden');
     lightbox.classList.add('flex');
   };
@@ -34,15 +62,16 @@
     lightbox.classList.remove('flex');
   };
 
-  document.querySelectorAll<HTMLImageElement>('figure img').forEach((img) => {
+  document.querySelectorAll<HTMLImageElement>('figure img').forEach((img, i) => {
+    const caption = img.closest('figure')?.querySelector('figcaption')?.textContent ?? img.alt;
+    images.push({ src: img.src, alt: img.alt, caption });
     img.classList.add('cursor-zoom-in');
-    img.addEventListener('click', () => {
-      const caption = img.closest('figure')?.querySelector('figcaption')?.textContent ?? img.alt;
-      open(img.src, img.alt, caption);
-    });
+    img.addEventListener('click', () => open(i));
   });
 
   closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', () => show(currentIndex - 1));
+  nextBtn.addEventListener('click', () => show(currentIndex + 1));
 
   lightbox.addEventListener('click', (e: MouseEvent) => {
     if (e.target === lightbox) close();
@@ -50,5 +79,7 @@
 
   document.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(currentIndex - 1);
+    if (e.key === 'ArrowRight') show(currentIndex + 1);
   });
 </script>
