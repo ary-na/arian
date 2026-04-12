@@ -1,8 +1,16 @@
 ---
-const { demo, github, githubBackend, demoCrossed } = Astro.props;
+const {
+  demo,
+  github,
+  githubBackend,
+  demoCrossed,
+  demoLabel = 'live demo',
+  githubLabel = 'github frontend',
+  githubBackendLabel = 'github backend',
+} = Astro.props;
 ---
 
-<div class="my-4 flex gap-4 font-mono text-sm">
+<div class="my-4 flex flex-wrap gap-2 font-mono text-sm sm:gap-4">
   {
     demo && (
       <a
@@ -12,7 +20,7 @@ const { demo, github, githubBackend, demoCrossed } = Astro.props;
         class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
       >
         <span class="text-accent">[</span>
-        <span class:list={[{ 'line-through': demoCrossed }]}>live demo</span>
+        <span class:list={[{ 'line-through': demoCrossed }]}>{demoLabel}</span>
         <span class="text-accent">]</span>
       </a>
     )
@@ -26,7 +34,7 @@ const { demo, github, githubBackend, demoCrossed } = Astro.props;
         class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
       >
         <span class="text-accent">[</span>
-        <span>github frontend</span>
+        <span>{githubLabel}</span>
         <span class="text-accent">]</span>
       </a>
     )
@@ -40,7 +48,7 @@ const { demo, github, githubBackend, demoCrossed } = Astro.props;
         class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
       >
         <span class="text-accent">[</span>
-        <span>github backend</span>
+        <span>{githubBackendLabel}</span>
         <span class="text-accent">]</span>
       </a>
     )

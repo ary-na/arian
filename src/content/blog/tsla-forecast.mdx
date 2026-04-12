@@ -1,0 +1,104 @@
+---
+title: 'tsla forecast'
+description: 'a live Telegram bot for forecasting TSLA stock using a Bidirectional LSTM, sentiment analysis, and 17 engineered features, deployed on AWS EC2'
+pubDate: 'Apr 12 2026'
+heroImage: '@assets/blog/tsla-forecast.webp'
+heroImageAlt: 'TSLA stock forecast predictions for the next seven days displayed in the Telegram bot interface'
+category: 'project'
+tags:
+  - telegram
+  - machine-learning
+  - python
+  - bidirectional-lstm
+  - time-series
+  - sentiment-analysis
+  - aws-ec2
+---
+
+import ProjectLinks from '@components/ProjectLink.astro';
+
+A real-time TSLA stock forecasting system built on a Bidirectional LSTM. The model ingests 17 engineered features including macro indicators and VADER sentiment analysis. Forecasts are surfaced through a Telegram bot deployed on AWS EC2.
+
+> **disclaimer:** this project is for educational purposes only and does not
+> constitute financial advice. do not use forecast outputs to make investment decisions.
+
+<ProjectLinks
+  demo='https://t.me/tsla_forecast_bot'
+  demoLabel='telegram bot'
+  github='https://github.com/ary-na/tsla-forecast'
+  githubLabel='github'
+/>
+
+## Key Features
+
+- Bidirectional LSTM model trained on 15 years of TSLA historical data
+- 17 engineered features (OHLCV, technical indicators, macro data, sentiment, earnings calendar)
+- Live news sentiment via NewsAPI + VADER sentiment analysis
+- Earnings awareness (days until next TSLA earnings)
+- Macro context (NASDAQ, Dollar Index, 10Y Treasury, Oil prices)
+- Seven-day price forecast predictions
+- Rate-limited Telegram bot (1 request per 10 minutes per user)
+- AWS EC2 deployment with persistent runtime
+
+## tech stack
+
+```bash
+# model
+python 3.11 | tensorflow 2.16 | scikit-learn | pandas | numpy
+```
+
+```bash
+# sentiment
+vadersentiment | newsapi
+```
+
+```bash
+# infrastructure
+aws ec2 | telegram bot api | yfinance
+```
+
+## feature engineering
+
+the model is trained on 17 features across four groups.
+
+```bash
+# Price & Volume (OHLCV)
+open | high | low | close | volume
+
+# Technical Indicators
+rsi | macd | bollinger bands | moving averages | volatility
+
+# Macro Indicators
+nasdaq (^ixic) | dxy (dx=f) | tnx | oil (cl=f)
+
+# Sentiment
+vader compound score (daily news headlines)
+
+# Calendar
+days until next TSLA earnings
+```
+
+## highlights
+
+a few screenshots from the bot, showcasing the forecast output and interface.
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img class="rounded-md" src="/blog/tsla-forecast/start.webp" alt="start screen" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">start page</figcaption>
+  </figure>
+  <figure>
+    <img class="rounded-md" src="/blog/tsla-forecast/forecast.webp" alt="forecast screen" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">forecast page</figcaption>
+  </figure>
+</div>
+
+building the tsla forecast bot pushed the data pipeline to be just as critical as
+the model itself. yfinance can be inconsistent, macro tickers have gaps, and
+NewsAPI has a daily request limit, so defensive data handling became as important
+as the architecture.
+
+deploying on EC2 also meant thinking beyond notebooks. managing a persistent
+process, handling crashes gracefully, and retraining the model directly on the
+instance to resolve TensorFlow version mismatches were all challenges that shaped
+the final design.

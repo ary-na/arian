@@ -19,7 +19,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
             cat:
             <a
               href={`/blog/category/${category}`}
-              class="no-underline transition-colors duration-200 hover:text-(--accent)"
+              class="underline transition-colors duration-200 hover:text-(--accent)"
             >
               {category}
             </a>
@@ -34,7 +34,9 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
           </span>
         )
       }
-      <div class="flex flex-col gap-1 border-t border-secondary pt-6 font-mono text-xs text-(--text-secondary)">
+      <div
+        class="border-secondary flex flex-col gap-1 border-t pt-6 font-mono text-xs text-(--text-secondary)"
+      >
         <FormattedDate date={pubDate} />
         {
           updatedDate && (
@@ -80,7 +82,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
       }
       <div class="border-secondary border-t pt-6">
         <a href="/blog" class="transition-colors duration-200 hover:text-(--accent)">
-          > back to posts
+          &lt; back to posts
         </a>
       </div>
     </footer>
