@@ -3,36 +3,53 @@ import Layout from '@layouts/BlogPost.astro';
 ---
 
 <Layout title="about me" description="Read more about me" pubDate={new Date('April 04 2026')}>
+  <img
+    src="blog/about/arian.webp"
+    alt="Arian Najafi Yamchelo"
+    class="rounded-md object-cover"
+  />
+  <h2>who i am</h2>
   <p>
-    My name is Arian, I'm based in Melbourne, Australia, and I build things with code. I have a
-    Master&apos;s degree in Computer Science with a focus on artificial intelligence. My journey
-    into technology started with curiosity about how software works and gradually grew into a deeper
-    interest in programming, problem-solving, and building systems.
+    My name is Arian. I'm based in Melbourne, Australia, and I build things with code. I started
+    with curiosity about how software works and gradually developed a deeper interest in
+    programming, problem-solving, and building systems that are actually useful.
+  </p>
+  <p>
+    I have a habit of over-engineering things — getting too deep into details until a project
+    becomes too complicated to finish. Lately I've been working against that, focusing on shipping
+    simple, imperfect things rather than waiting for the perfect version that never ships.
+  </p>
+  <p>This site is where I write about what I'm learning, building, and thinking about.</p>
+
+  <h2>what i do</h2>
+  <p>
+    I work across software development and AI/ML — building full-stack web applications, training
+    and deploying machine learning models, and exploring how the two intersect. My current focus is
+    on getting into a graduate role where I can keep developing both sides of that skill set.
   </p>
 
-  <p>
-    Before my master&apos;s degree, I completed a Bachelor&apos;s degree in Information Technology
-    at RMIT University in Australia. During that time I started exploring programming more seriously
-    and became interested in how software systems are designed and how complex problems can be
-    solved through code.
-  </p>
+  <h2>education</h2>
+    <h3>monash university</h3>
+    <div class="border-secondary rounded-md border p-6 font-mono text-sm">
+      <p><span class="text-accent">degree</span> &nbsp; Master of Computer Science</p>
+      <p><span class="text-accent">period</span> &nbsp; Mar 2024 – May 2026</p>
+      <p>
+        <span class="text-accent">focus &nbsp;</span> &nbsp;Artificial Intelligence · WAM: 82.667
+      </p>
+    </div>
+    <h3>rmit university</h3>
+    <div class="border-secondary rounded-md border p-6 font-mono text-sm">
+      <p>
+        <span class="text-accent">degree</span> &nbsp; Bachelor of Information Technology with Distinction
+      </p>
+      <p><span class="text-accent">period</span> &nbsp; Mar 2021 – Jan 2024</p>
+      <p>
+        <span class="text-accent">focus &nbsp;</span> &nbsp;Digital Design (Curtin University) · GPA:
+        3.7
+      </p>
+    </div>
 
   <p>
-    I later continued my studies at Monash University, where I completed my Master&apos;s in
-    Computer Science. My focus during this time was artificial intelligence and modern software
-    development. AI interested me because it combines logic, mathematics, and data to build systems
-    that can learn and make decisions.
-  </p>
-
-  <p>
-    I have a habit of getting into too much details when coding and I end up over complicating the
-    process or a project that I'm working on which makes me end up getting discouraged and
-    abandoning what I was planning to do. lately I have started to stop this habit and just build
-    simple imperfect projects that are useful.
-  </p>
-
-  <p>
-    This blog is where I will be writing about the things that I have learned, learning or doing and
-    try to share whatever knowledge I have gained throughout my studies and
+    If you want to get in touch, feel free to reach out via the <a href="/contact" class="no-underline">contact</a> me.
   </p>
 </Layout>
