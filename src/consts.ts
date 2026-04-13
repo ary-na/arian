@@ -2,7 +2,8 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'arii';
-export const SITE_DESCRIPTION = "// a developer's log. code, AI, and things worth writing down.";
+export const SITE_AUTHOR = 'Arian Najafi Yamchelo';
+export const SITE_DESCRIPTION = "A developer's log. code, AI, and things worth writing down.";
 
 export type NavItem = {
   href: string;
