@@ -4,18 +4,27 @@ import { getCollection } from 'astro:content';
 import FormattedDate from '@components/FormattedDate.astro';
 import PaginationNav from '@components/PaginationNav.astro';
 import SiteLayout from '@layouts/SiteLayout.astro';
-import { BLOG_PAGE_SIZE, SITE_DESCRIPTION, SITE_TITLE, blogPageHref } from '@/consts';
+import { BLOG_PAGE_SIZE, blogPageHref, SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
 
-const allPosts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const posts = allPosts.slice(0, BLOG_PAGE_SIZE);
-const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return paginate(posts, { pageSize: BLOG_PAGE_SIZE });
+}
+
+const { page } = Astro.props;
+const canonicalPath = blogPageHref(page.currentPage);
 ---
 
-<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<SiteLayout
+  title={`${SITE_TITLE} | Blog | Page ${page.currentPage}`}
+  description={SITE_DESCRIPTION}
+  canonicalPath={canonicalPath}
+>
   <section class="max-w-full">
     <ul class="m-0 flex list-none flex-wrap gap-8 p-0 max-[720px]:gap-2">
       {
-        posts.map((post) => (
+        page.data.map((post) => (
           <li class="w-[calc(50%-1rem)] text-left first:mb-4 first:w-full first:text-center max-[720px]:w-full max-[720px]:text-center max-[720px]:first:mb-0">
             <a class="block no-underline **:transition" href={`/blog/${post.id}/`}>
               {post.data.heroImage && <Image width={720} height={360} src={post.data.heroImage} alt="" />}
@@ -31,6 +40,6 @@ const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
       }
     </ul>
 
-    <PaginationNav currentPage={1} totalPages={totalPages} hrefForPage={blogPageHref} />
+    <PaginationNav currentPage={page.currentPage} totalPages={page.lastPage} hrefForPage={blogPageHref} />
   </section>
 </SiteLayout>

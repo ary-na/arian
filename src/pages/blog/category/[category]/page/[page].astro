@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BlogArchive from '@components/BlogArchive.astro';
+import { BLOG_PAGE_SIZE, categoryHref, categoryPageHref } from '@/consts';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getCollection('blog');
+  const categories = [...new Set(posts.flatMap((post) => post.data.category ?? []))];
+
+  return categories.flatMap((category) => {
+    const categoryPosts = posts
+      .filter((post) => post.data.category?.includes(category))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return paginate(categoryPosts, {
+      pageSize: BLOG_PAGE_SIZE,
+      params: { category },
+      props: { category },
+    });
+  });
+}
+
+const { category, page } = Astro.props;
+const description = `Posts filed under ${category}.`;
+const countLabel = `${page.total} ${page.total === 1 ? 'post' : 'posts'} in this category.`;
+const canonicalPath = categoryPageHref(category, page.currentPage);
+---
+
+<BlogArchive
+  archiveLabel="Category archive"
+  archiveTitle={category}
+  canonicalPath={canonicalPath}
+  countLabel={countLabel}
+  currentPage={page.currentPage}
+  description={description}
+  hrefForPage={(page) => categoryPageHref(category, page)}
+  posts={page.data}
+  shareHref={categoryHref(category)}
+  shareLabel="Share this category link"
+  title={`${category} | Categories | Page ${page.currentPage}`}
+  totalPages={page.lastPage}
+/>

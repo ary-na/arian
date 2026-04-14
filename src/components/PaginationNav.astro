@@ -1,0 +1,56 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  hrefForPage: (page: number) => string;
+}
+
+const { currentPage, totalPages, hrefForPage } = Astro.props;
+
+if (totalPages <= 1) {
+  return null;
+}
+
+const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+---
+
+<nav class="mt-10 flex flex-wrap items-center gap-3 text-sm" aria-label="Pagination">
+  {
+    currentPage > 1 ? (
+      <a class="no-underline transition-colors duration-200 hover:text-primary" href={hrefForPage(currentPage - 1)}>
+        ← newer
+      </a>
+    ) : (
+      <span class="opacity-40">← newer</span>
+    )
+  }
+
+  <div class="flex flex-wrap items-center gap-2">
+    {
+      pages.map((page) => {
+        const isCurrent = page === currentPage;
+
+        return isCurrent ? (
+          <span class="border-primary text-text-primary rounded-full border px-3 py-1">{page}</span>
+        ) : (
+          <a
+            class="text-text-secondary hover:text-text-primary rounded-full border border-transparent px-3 py-1 no-underline transition-colors duration-200"
+            href={hrefForPage(page)}
+          >
+            {page}
+          </a>
+        );
+      })
+    }
+  </div>
+
+  {
+    currentPage < totalPages ? (
+      <a class="no-underline transition-colors duration-200 hover:text-primary" href={hrefForPage(currentPage + 1)}>
+        older →
+      </a>
+    ) : (
+      <span class="opacity-40">older →</span>
+    )
+  }
+</nav>

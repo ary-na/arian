@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '@components/FormattedDate.astro';
 import SiteLayout from './SiteLayout.astro';
 import ImageLightbox from '@components/ImageLightbox.astro';
+import { categoryHref, tagHref } from '@/consts';
 type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, category, tags } =
   Astro.props;
@@ -18,7 +19,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
           <div class="font-mono text-xs text-(--text-secondary)">
             cat:
             <a
-              href={`/blog/category/${category}`}
+              href={categoryHref(category)}
               class="underline transition-colors duration-200 hover:text-(--accent)"
             >
               {category}
@@ -71,7 +72,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
           <div class="flex flex-wrap gap-4">
             {tags.map((tag) => (
               <a
-                href={`/blog/tag/${tag}`}
+                href={tagHref(tag)}
                 class="text-text-secondary/50 no-underline transition-colors duration-200 hover:text-(--accent)"
               >
                 #{tag}

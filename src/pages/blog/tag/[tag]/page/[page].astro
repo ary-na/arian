@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BlogArchive from '@components/BlogArchive.astro';
+import { BLOG_PAGE_SIZE, tagHref, tagPageHref } from '@/consts';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getCollection('blog');
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags ?? []))];
+
+  return tags.flatMap((tag) => {
+    const tagPosts = posts
+      .filter((post) => post.data.tags?.includes(tag))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return paginate(tagPosts, {
+      pageSize: BLOG_PAGE_SIZE,
+      params: { tag },
+      props: { tag },
+    });
+  });
+}
+
+const { page, tag } = Astro.props;
+const description = `Posts filed under ${tag}.`;
+const countLabel = `${page.total} ${page.total === 1 ? 'post' : 'posts'} with this tag.`;
+const canonicalPath = tagPageHref(tag, page.currentPage);
+---
+
+<BlogArchive
+  archiveLabel="Tag archive"
+  archiveTitle={`#${tag}`}
+  canonicalPath={canonicalPath}
+  countLabel={countLabel}
+  currentPage={page.currentPage}
+  description={description}
+  hrefForPage={(page) => tagPageHref(tag, page)}
+  posts={page.data}
+  shareHref={tagHref(tag)}
+  shareLabel="Share this tag link"
+  title={`${tag} | Tags | Page ${page.currentPage}`}
+  totalPages={page.lastPage}
+/>

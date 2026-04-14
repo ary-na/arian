@@ -1,0 +1,66 @@
+---
+import SiteLayout from '@layouts/SiteLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import PaginationNav from './PaginationNav.astro';
+
+type Post = CollectionEntry<'blog'>;
+
+interface Props {
+  archiveLabel: string;
+  archiveTitle: string;
+  countLabel: string;
+  description: string;
+  canonicalPath?: string;
+  currentPage?: number;
+  hrefForPage?: (page: number) => string;
+  shareHref: string;
+  shareLabel: string;
+  title: string;
+  totalPages?: number;
+  posts: Post[];
+}
+
+const {
+  archiveLabel,
+  archiveTitle,
+  canonicalPath,
+  countLabel,
+  currentPage = 1,
+  description,
+  hrefForPage,
+  shareHref,
+  shareLabel,
+  title,
+  totalPages = 1,
+  posts,
+} = Astro.props;
+---
+
+<SiteLayout {title} {description} {canonicalPath}>
+  <section class="max-w-4xl">
+    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-[rgb(var(--gray))]">
+      {archiveLabel}
+    </p>
+    <h1 class="mb-4">{archiveTitle}</h1>
+    <p class="mb-8 text-[rgb(var(--gray))]">{countLabel}</p>
+
+    <ul class="m-0 grid list-none gap-4 p-0">
+      {
+        posts.map((post) => (
+          <li class="rounded-3xl border border-[rgba(var(--gray),0.14)] bg-white/80 p-5 shadow-[0_12px_28px_rgba(34,41,57,0.06)]">
+            <a class="no-underline" href={`/blog/${post.id}/`}>
+              <h2 class="mb-2 text-2xl text-[rgb(var(--black))]">{post.data.title}</h2>
+              <p class="m-0 text-[rgb(var(--gray))]">{post.data.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-8">
+      <a href={shareHref}>{shareLabel}</a>
+    </p>
+
+    {hrefForPage && <PaginationNav currentPage={currentPage} totalPages={totalPages} hrefForPage={hrefForPage} />}
+  </section>
+</SiteLayout>

@@ -7,16 +7,17 @@ interface Props {
   title: string;
   description: string;
   image?: import('astro').ImageMetadata;
+  canonicalPath?: string;
   contentClass?: string;
 }
 
-const { title, description, image, contentClass } = Astro.props;
+const { title, description, image, canonicalPath, contentClass } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead {title} {description} {image} />
+    <BaseHead {title} {description} {image} {canonicalPath} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />
