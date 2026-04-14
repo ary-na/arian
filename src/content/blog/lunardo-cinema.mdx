@@ -1,0 +1,72 @@
+---
+title: 'lunardo cinema'
+description: 'a responsive cinema booking website built with php, html/css, and javascript featuring movie listings, dynamic pricing, and seat management'
+pubDate: 'Nov 30 2021'
+updatedDate: 'Aug 27 2022'
+heroImage: '@assets/blog/lunardo-cinema.webp'
+heroImageAlt: 'Lunardo Cinema website homepage with movie listings and booking interface'
+category: 'project'
+tags:
+  - php
+  - html-css
+  - javascript
+  - responsive-design
+  - cinema-booking
+  - web-development
+  - form-handling
+---
+
+import ProjectLinks from '@components/ProjectLink.astro';
+
+A responsive cinema booking website for Lunardo Cinema. Visitors can browse current movie listings, view show times, and book tickets through a dynamic pricing system with seat type selection and weekday discounts.
+
+<ProjectLinks github="https://github.com/ary-na/Lunardo-Cinema" githubLabel="github" />
+
+## key features
+
+- Responsive design (mobile, tablet, desktop)
+- Movie listings with show times and descriptions
+- Interactive movie cards with hover and tap interactions
+- Dual seat types (standard and first-class recliners)
+- Dynamic pricing with weekday and Monday discounts
+- Age-based pricing (adult, concession, child)
+- Booking form with movie selection
+- PHP-modularised components (header, footer, price table)
+
+## tech stack
+
+```bash
+# frontend
+php | html5 | css3 | javascript
+```
+
+```bash
+# styling
+responsive css (mobile, tablet, desktop) | font awesome icons
+```
+
+## highlights
+
+Homepage with movie showcase, booking form, and cinema details.
+
+<figure>
+  <img class="rounded-md" src="/blog/lunardo-cinema/home.webp" alt="Home page" />
+  <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">home page</figcaption>
+</figure>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img class="rounded-md" src="/blog/lunardo-cinema/now-showing.webp" alt="Now showing page" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">now showing page</figcaption>
+  </figure>
+  <figure>
+    <img class="rounded-md" src="/blog/lunardo-cinema/booking-form.webp" alt="Booking form page" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      booking form page
+    </figcaption>
+  </figure>
+</div>
+
+Building Lunardo Cinema was my first time doing responsive design properly. Writing three separate stylesheets for mobile, tablet, and desktop forced a methodical approach, mobile first, then layering complexity up. It made the relationship between breakpoints click in a way that reading about it never did.
+
+Using PHP to modularise the site into reusable components was an early introduction to the idea of keeping things DRY. Helper functions like `priceTableModule()` and `movieModule()` kept the codebase manageable and gave me a feel for template-driven development before I'd ever touched a proper framework.
