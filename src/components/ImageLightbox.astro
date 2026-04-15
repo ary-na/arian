@@ -1,7 +1,9 @@
 <!-- src/components/ImageViewer.astro -->
+
 <div
   id="lightbox"
   class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm"
+  style="opacity: 0; pointer-events: none;"
 >
   <!-- Close button -->
   <button
@@ -9,11 +11,11 @@
     aria-label="Close lightbox"
     class="bg-surface-primary/85 border-text-secondary/20 text-text-primary hover:bg-surface-primary absolute top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border shadow-(--box-shadow) backdrop-blur-md transition"
   >
-    <span class="lightbox-line lightbox-line--top absolute block h-0.5 w-5 rounded-full bg-current" style="transform: rotate(45deg)"></span>
-    <span class="lightbox-line lightbox-line--bottom absolute block h-0.5 w-5 rounded-full bg-current" style="transform: rotate(-45deg)"></span>
+    <span class="lightbox-line absolute block h-0.5 w-5 rounded-full bg-current" style="transform: rotate(45deg)"></span>
+    <span class="lightbox-line absolute block h-0.5 w-5 rounded-full bg-current" style="transform: rotate(-45deg)"></span>
   </button>
 
-  <!-- Prev button -->
+  <!-- Prev -->
   <button
     id="lightbox-prev"
     aria-label="Previous image"
@@ -22,7 +24,7 @@
     <span class="font-mono text-sm">&lt;</span>
   </button>
 
-  <!-- Next button -->
+  <!-- Next -->
   <button
     id="lightbox-next"
     aria-label="Next image"
@@ -43,43 +45,72 @@
     top: 50%;
     translate: -50% -50%;
   }
+
+  #lightbox {
+    touch-action: manipulation;
+  }
 </style>
 
 <script>
-  const lightbox = document.getElementById('lightbox') as HTMLDivElement;
-  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-  const lightboxCaption = document.getElementById('lightbox-caption') as HTMLElement;
-  const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement;
-  const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement;
-  const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement;
+document.addEventListener('DOMContentLoaded', () => {
+  const lightbox = document.getElementById('lightbox') as HTMLDivElement | null;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const lightboxCaption = document.getElementById('lightbox-caption') as HTMLElement | null;
+  const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement | null;
+  const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement | null;
+  const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement | null;
+
+  if (!lightbox || !lightboxImg || !lightboxCaption || !closeBtn || !prevBtn || !nextBtn) {
+    console.error('Lightbox elements missing');
+    return;
+  }
 
   let images: { src: string; alt: string; caption: string }[] = [];
   let currentIndex = 0;
 
-  const show = (index: number): void => {
+  const show = (index: number) => {
     currentIndex = (index + images.length) % images.length;
     const { src, alt, caption } = images[currentIndex];
+
     lightboxImg.src = src;
     lightboxImg.alt = alt;
     lightboxCaption.textContent = caption;
+
     prevBtn.style.display = images.length <= 1 ? 'none' : '';
     nextBtn.style.display = images.length <= 1 ? 'none' : '';
   };
 
-  const open = (index: number): void => {
+  const open = (index: number) => {
     show(index);
+
     lightbox.classList.remove('hidden');
     lightbox.classList.add('flex');
+
+    lightbox.style.opacity = '1';
+    lightbox.style.pointerEvents = 'auto';
   };
 
-  const close = (): void => {
+  const close = () => {
     lightbox.classList.add('hidden');
     lightbox.classList.remove('flex');
+
+    lightbox.style.opacity = '0';
+    lightbox.style.pointerEvents = 'none';
   };
 
-  document.querySelectorAll<HTMLImageElement>('figure img').forEach((img, i) => {
-    const caption = img.closest('figure')?.querySelector('figcaption')?.textContent ?? img.alt;
-    images.push({ src: img.src, alt: img.alt, caption });
+  const imgs = document.querySelectorAll<HTMLImageElement>('figure img');
+
+  imgs.forEach((img, i) => {
+    const figure = img.closest('figure');
+    const caption =
+      figure?.querySelector('figcaption')?.textContent ?? img.alt;
+
+    images.push({
+      src: img.src,
+      alt: img.alt,
+      caption
+    });
+
     img.classList.add('cursor-zoom-in');
     img.addEventListener('click', () => open(i));
   });
@@ -97,4 +128,5 @@
     if (e.key === 'ArrowLeft') show(currentIndex - 1);
     if (e.key === 'ArrowRight') show(currentIndex + 1);
   });
+});
 </script>
