@@ -102,6 +102,7 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
   a.active::after {
     content: '_';
     animation: blink 1s step-end infinite;
+    will-change: opacity;
   }
   @keyframes blink {
     50% {
