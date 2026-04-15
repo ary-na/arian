@@ -34,8 +34,16 @@
   </button>
 
   <div class="flex flex-col items-center gap-3">
-    <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-[90vw] rounded-md" />
-    <figcaption id="lightbox-caption" class="font-mono text-xs text-white/50"></figcaption>
+    <img
+      id="lightbox-img"
+      src=""
+      alt=""
+      class="max-h-[85vh] max-w-[90vw] rounded-md"
+    />
+    <figcaption
+      id="lightbox-caption"
+      class="font-mono text-xs text-white/50"
+    ></figcaption>
   </div>
 </div>
 
@@ -51,36 +59,50 @@
   }
 </style>
 
-<script>
-document.addEventListener('astro:page-load', () => {
-  const lightbox = document.getElementById('lightbox') as HTMLDivElement | null;
-  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
-  const lightboxCaption = document.getElementById('lightbox-caption') as HTMLElement | null;
-  const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement | null;
-  const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement | null;
-  const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement | null;
+<script is:inline>
+let tries = 0;
+
+function initLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
 
   if (!lightbox || !lightboxImg || !lightboxCaption || !closeBtn || !prevBtn || !nextBtn) {
-    console.error('Lightbox elements missing');
     return;
   }
 
-  let images: { src: string; alt: string; caption: string }[] = [];
+  const imgs = document.querySelectorAll('article figure img');
+
+  // retry safely (max 10 attempts)
+  if (imgs.length === 0) {
+    if (tries < 10) {
+      tries++;
+      setTimeout(initLightbox, 100);
+    }
+    return;
+  }
+
+  const images = [];
   let currentIndex = 0;
 
-  const show = (index: number) => {
-    currentIndex = (index + images.length) % images.length;
-    const { src, alt, caption } = images[currentIndex];
+  const show = (index) => {
+    if (!images.length) return;
 
-    lightboxImg.src = src;
-    lightboxImg.alt = alt;
-    lightboxCaption.textContent = caption;
+    currentIndex = (index + images.length) % images.length;
+    const img = images[currentIndex];
+
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightboxCaption.textContent = img.caption;
 
     prevBtn.style.display = images.length <= 1 ? 'none' : '';
     nextBtn.style.display = images.length <= 1 ? 'none' : '';
   };
 
-  const open = (index: number) => {
+  const open = (index) => {
     show(index);
 
     lightbox.classList.remove('hidden');
@@ -88,6 +110,8 @@ document.addEventListener('astro:page-load', () => {
 
     lightbox.style.opacity = '1';
     lightbox.style.pointerEvents = 'auto';
+
+    document.body.style.overflow = 'hidden';
   };
 
   const close = () => {
@@ -96,37 +120,56 @@ document.addEventListener('astro:page-load', () => {
 
     lightbox.style.opacity = '0';
     lightbox.style.pointerEvents = 'none';
+
+    document.body.style.overflow = '';
   };
 
-  const imgs = document.querySelectorAll<HTMLImageElement>('figure img');
-
   imgs.forEach((img, i) => {
+    if (img.dataset.lightboxBound === 'true') return;
+    img.dataset.lightboxBound = 'true';
+
     const figure = img.closest('figure');
     const caption =
-      figure?.querySelector('figcaption')?.textContent ?? img.alt;
+      figure?.querySelector('figcaption')?.textContent ?? img.alt ?? '';
 
     images.push({
-      src: img.src,
-      alt: img.alt,
-      caption
+      src: img.getAttribute('src') ?? '',
+      alt: img.alt ?? '',
+      caption,
     });
 
     img.classList.add('cursor-zoom-in');
-    img.addEventListener('click', () => open(i));
+    img.onclick = () => open(i);
   });
 
-  closeBtn.addEventListener('click', close);
-  prevBtn.addEventListener('click', () => show(currentIndex - 1));
-  nextBtn.addEventListener('click', () => show(currentIndex + 1));
+  closeBtn.onclick = close;
+  prevBtn.onclick = () => show(currentIndex - 1);
+  nextBtn.onclick = () => show(currentIndex + 1);
 
-  lightbox.addEventListener('click', (e: MouseEvent) => {
-    if (e.target === lightbox) close();
-  });
+  // prevent duplicate lightbox click binding
+  if (!lightbox.dataset.bound) {
+    lightbox.dataset.bound = 'true';
 
-  document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') show(currentIndex - 1);
-    if (e.key === 'ArrowRight') show(currentIndex + 1);
-  });
-});
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+  }
+
+  // prevent duplicate keyboard binding
+  if (!window.__lightboxKeyBound) {
+    window.__lightboxKeyBound = true;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(currentIndex - 1);
+      if (e.key === 'ArrowRight') show(currentIndex + 1);
+    });
+  }
+}
+
+// Astro navigation-safe init
+document.addEventListener('astro:page-load', initLightbox);
+
+// initial load
+initLightbox();
 </script>
