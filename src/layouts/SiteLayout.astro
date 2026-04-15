@@ -33,12 +33,5 @@ const { title, description, image, canonicalPath, contentClass } = Astro.props;
       <slot />
     </main>
     <Footer />
-    <script>
-      document.addEventListener('astro:after-swap', () => {
-        if ('scrollRestoration' in history) {
-          history.scrollRestoration = 'manual';
-        }
-      });
-    </script>
   </body>
 </html>
