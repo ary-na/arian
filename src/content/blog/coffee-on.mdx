@@ -3,7 +3,7 @@ title: 'coffee on'
 description: 'a full-stack web app for ordering coffee drinks with user authentication, shopping cart, and barista management'
 pubDate: 'Jan 10 2024'
 updatedDate: 'Apr 11 2026'
-heroImage: '@assets/blog/coffee-on/hero.webp'
+heroImage: '@assets/blog/coffee-on.webp'
 heroImageAlt: 'coffee on landing page with dark blurred background and logo'
 category: 'project'
 tags:
@@ -15,20 +15,6 @@ tags:
   - rest-api
   - web-application
 ---
-
-import { Image } from 'astro:assets';
-
-import baristas from '@assets/blog/coffee-on/baristas.webp';
-import cart from '@assets/blog/coffee-on/cart.webp';
-import drinks from '@assets/blog/coffee-on/drinks.webp';
-import editProfile from '@assets/blog/coffee-on/edit-profile.webp';
-import favBaristas from '@assets/blog/coffee-on/fav-baristas.webp';
-import favDrinks from '@assets/blog/coffee-on/fav-drinks.webp';
-import home from '@assets/blog/coffee-on/home.webp';
-import login from '@assets/blog/coffee-on/login.webp';
-import profile from '@assets/blog/coffee-on/profile.webp';
-import register from '@assets/blog/coffee-on/register.webp';
-import welcome from '@assets/blog/coffee-on/welcome.webp';
 
 import ProjectLinks from '@components/ProjectLink.astro';
 
@@ -83,56 +69,52 @@ the backend exposes 40+ rest endpoints across five route groups.
 a few screens from the app, showcasing the user interface and functionality for both customers and baristas.
 
 <figure>
-  <Image class="rounded-md" src={welcome} alt="Welcome page" />
+  <img class="rounded-md" src='/blog/coffee-on/welcome.webp' alt="Welcome page" />
   <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">welcome page</figcaption>
 </figure>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <figure>
-    <Image class="rounded-md" src={login} alt="login screen" />
+    <img class="rounded-md" src='/blog/coffee-on/login.webp' alt="login screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">login page</figcaption>
   </figure>
   <figure>
-    <Image class="rounded-md" src={register} alt="register screen" />
+    <img class="rounded-md" src='/blog/coffee-on/register.webp' alt="register screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">register page</figcaption>
   </figure>
 </div>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <figure>
-    <Image class="rounded-md" src={home} alt="home screen" />
+    <img class="rounded-md" src='/blog/coffee-on/home.webp' alt="home screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">home page</figcaption>
   </figure>
   <figure>
-    <Image class="rounded-md" src={cart} alt="cart screen" />
+    <img class="rounded-md" src='/blog/coffee-on/cart.webp' alt="cart screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">cart page</figcaption>
   </figure>
 </div>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <figure>
-    <Image class="rounded-md" src={baristas} alt="barista screen" />
-    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">barista page</figcaption>
+    <img class="rounded-md" src='/blog/coffee-on/baristas.webp' alt="baristas screen" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">baristas page</figcaption>
   </figure>
   <figure>
-    <Image class="rounded-md" src={drinks} alt="drinks screen" />
+    <img class="rounded-md" src='/blog/coffee-on/drinks.webp' alt="drinks screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">drinks page</figcaption>
   </figure>
 </div>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <figure>
-    <Image
-      class="rounded-md"
-      src={favBaristas}
-      alt="favorite baristas screen"
-    />
+    <img class="rounded-md" src='/blog/coffee-on/fav-baristas.webp' alt="favorite baristas screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
       favorite baristas page
     </figcaption>
   </figure>
   <figure>
-    <Image class="rounded-md" src={favDrinks} alt="favorite drinks screen" />
+    <img class="rounded-md" src='/blog/coffee-on/fav-drinks.webp' alt="favorite drinks screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
       favorite drinks page
     </figcaption>
@@ -141,11 +123,11 @@ a few screens from the app, showcasing the user interface and functionality for 
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <figure>
-    <Image class="rounded-md" src={profile} alt="profile screen" />
+    <img class="rounded-md" src='/blog/coffee-on/profile.webp' alt="profile screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">profile page</figcaption>
   </figure>
   <figure>
-    <Image class="rounded-md" src={editProfile} alt="edit profile screen" />
+    <img class="rounded-md" src='/blog/coffee-on/edit-profile.webp' alt="edit profile screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
       edit profile page
     </figcaption>
