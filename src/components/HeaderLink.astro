@@ -1,20 +1,31 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+
 type Props = HTMLAttributes<'a'> & {
   description?: string;
 };
+
 const { href, class: className, description, ...props } = Astro.props;
-const pathname = '/' + Astro.url.pathname.replace(import.meta.env.BASE_URL, '').replace(/^\//, '');
+
+const pathname = Astro.url.pathname;
+
+// Safely handle href (string | URL | undefined)
 const hrefStr = href?.toString() ?? '';
-const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith(hrefStr));
+
+// Safer active route matching
+const isActive =
+  hrefStr === pathname ||
+  (hrefStr !== '/' && pathname.startsWith(hrefStr + '/'));
 ---
 
 <div class="group/nav flex flex-col gap-0">
   <a
-    {href}
+    href={href}
     class:list={[
       'font-display block px-4 py-1 tracking-widest lowercase no-underline transition-all duration-200 before:-mr-2',
-      { "text-text-primary opacity-100 before:content-['>']": isActive },
+      {
+        "text-text-primary opacity-100 before:content-['>']": isActive,
+      },
       {
         "text-text-secondary/80 hover:text-text-primary opacity-60 before:content-['_'] hover:opacity-100 hover:before:content-['>']":
           !isActive,
@@ -25,6 +36,7 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
   >
     <slot />
   </a>
+
   {
     description && (
       <p
@@ -35,7 +47,11 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
             : 'text-text-secondary/30 group-hover/nav:text-text-secondary/60',
         ]}
       >
-        <span class="typewriter-text" data-description={description} style="visibility: hidden;">
+        <span
+          class="typewriter-text"
+          data-description={description}
+          style="visibility: hidden;"
+        >
           {description}
         </span>
       </p>
@@ -48,15 +64,18 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
     document.querySelectorAll<HTMLElement>('.group\\/nav').forEach((nav) => {
       const link = nav.querySelector('a');
       const typewriterEl = nav.querySelector<HTMLSpanElement>('.typewriter-text');
+
       if (!link || !typewriterEl || link.dataset.typewriterBound === 'true') return;
 
       link.dataset.typewriterBound = 'true';
 
       const description = typewriterEl.dataset.description ?? '';
       const isActive = link.classList.contains('text-text-primary');
+
       let timeout: ReturnType<typeof setTimeout> | undefined;
       let index = 0;
 
+      // If active link → show text immediately
       if (isActive) {
         typewriterEl.style.visibility = 'visible';
         typewriterEl.textContent = description;
@@ -65,6 +84,7 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
 
       link.addEventListener('mouseenter', () => {
         if (timeout) clearTimeout(timeout);
+
         typewriterEl.textContent = '';
         typewriterEl.style.visibility = 'visible';
         index = 0;
@@ -82,6 +102,7 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
 
       link.addEventListener('mouseleave', () => {
         if (timeout) clearTimeout(timeout);
+
         typewriterEl.style.visibility = 'hidden';
         typewriterEl.textContent = description;
         index = 0;
@@ -98,12 +119,14 @@ const isActive = hrefStr === pathname || (hrefStr !== '/' && pathname.startsWith
     content: '';
     display: inline-block;
   }
+
   a:hover::after,
   a.active::after {
     content: '_';
     animation: blink 1s step-end infinite;
     will-change: opacity;
   }
+
   @keyframes blink {
     50% {
       opacity: 0;
