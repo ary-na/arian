@@ -92,16 +92,30 @@ const lastUpdated = new Date().toLocaleDateString("en-AU", {
 
 <script>
   const text = "hi, i'm arian.";
-  const el = document.getElementById("typewriter") as HTMLElement;
-  let i = 0;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
 
-  function type() {
-    if (i < text.length) {
-      el.textContent += text[i];
-      i++;
-      setTimeout(type, 80);
+  const initTypewriter = () => {
+    const el = document.getElementById('typewriter') as HTMLElement | null;
+    if (!el) return;
+
+    if (timeout) {
+      clearTimeout(timeout);
     }
-  }
 
-  type();
+    el.textContent = '';
+    let index = 0;
+
+    const type = () => {
+      if (index >= text.length) return;
+
+      el.textContent += text[index];
+      index += 1;
+      timeout = setTimeout(type, 80);
+    };
+
+    type();
+  };
+
+  document.addEventListener('astro:page-load', initTypewriter);
+  initTypewriter();
 </script>
