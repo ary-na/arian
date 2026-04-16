@@ -15,7 +15,7 @@ const posts = allPosts.slice(0, BLOG_PAGE_SIZE);
 const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
 ---
 
-<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} contentClass='page-container'>
   <section class="mb-16 space-y-4">
     <h2 class="font-display text-2xl tracking-wide">
       all posts [{allPosts.length}]

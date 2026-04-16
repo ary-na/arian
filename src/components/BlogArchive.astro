@@ -34,14 +34,13 @@ const {
 } = Astro.props;
 ---
 
-<SiteLayout {title} {description} {canonicalPath}>
+<SiteLayout {title} {description} {canonicalPath} contentClass="page-container">
   <section class="mb-16 space-y-4">
     <p class="font-display text-2xl tracking-wide">
       {archiveLabel}
     </p>
     <h1 class="text-4xl">{archiveTitle}</h1>
-    <p class="text-(--text-secondary) text-sm">{countLabel}</p>
-
+    <p class="text-sm text-(--text-secondary)">{countLabel}</p>
     <ul class="flex flex-col">
       {
         posts.map((post) => (
@@ -80,7 +79,14 @@ const {
         ))
       }
     </ul>
-
-    {hrefForPage && <PaginationNav currentPage={currentPage} totalPages={totalPages} hrefForPage={hrefForPage} />}
+    {
+      hrefForPage && (
+        <PaginationNav
+          currentPage={currentPage}
+          totalPages={totalPages}
+          hrefForPage={hrefForPage}
+        />
+      )
+    }
   </section>
 </SiteLayout>

@@ -1,115 +1,144 @@
 ---
-import SiteLayout from "@layouts/SiteLayout.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-import { getCollection } from "astro:content";
+import SiteLayout from '@layouts/SiteLayout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import { getCollection } from 'astro:content';
 
-const posts = await getCollection("blog");
+const posts = await getCollection('blog');
+
 const latest = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+  .slice(0, 9);
 ---
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <section class="page-container space-y-5 mt-20">
+    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+      developer . melbourne 🇦🇺 . ai systems
+    </span>
 
-<!-- Intro -->
-<section class="mb-16 space-y-4">
-  <span class="text-xs text-(--text-secondary) font-mono tracking-widest">developer / melbourne / ai</span>
-  <h1 class="text-4xl"><span id="typewriter"></span><span class="cursor">_</span></h1>
-  <p class="text-lg">I make things with code. Some of them even work.</p>
-  <p class="text-sm text-(--text-secondary) italic">This is where I write about what I'm learning, what I'm building, and the tools and systems I work with.</p>
-  <a href="/about" class="block font-mono text-sm hover:text-(--accent) transition-colors duration-200">
-    <span class="text-(--text-secondary)">></span> read more about me
-  </a>
-</section>
+    <h1 class="text-5xl font-bold">
+      <span data-typewriter="hi, i'm arian"></span>
+      <span class="animate-blink">_</span>
+    </h1>
 
-<!-- Latest Posts -->
-<section class="mb-16 space-y-4">
-    <h2 class="font-display tracking-wide text-2xl">
-      latest posts [{posts.length}]
+    <p class="text-lg">
+      I write about what I'm learning, what I'm building, and the systems I
+      work with.
+    </p>
+
+    <p class="text-sm italic text-(--text-secondary)">
+      Mostly AI/ML, Swift, and whatever rabbit hole I fell into this week.
+    </p>
+
+    <div class="flex flex-col gap-1 font-mono text-sm">
+      <a href="/about" class="transition-colors hover:text-(--accent)">
+        <span class="text-(--text-secondary)">></span> about me
+      </a>
+
+      <a href="/blog" class="transition-colors hover:text-(--accent)">
+        <span class="text-(--text-secondary)">></span> read the blog
+      </a>
+    </div>
+  </section>
+
+  <section class="page-container mb-20">
+    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+      things I'm building and figuring out
+    </span>
+
+    <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
+      latest posts
+      <span class="text-highlight">[{posts.length}]</span>
     </h2>
-     <ul class="flex flex-col text-sm">
-      {latest.map((post) => (
-        <li class="border-b border-(--border-secondary) last:border-b-0">
-          <a
-            href={`/blog/${post.id.replace(/\.mdx?$/, "")}`}
-            class="group flex items-start justify-between gap-4 py-4 no-underline"
-          >
-            <div class="flex flex-col gap-1 min-w-0">
-              <span class="font-mono lowercase text-(--text-secondary) group-hover:text-(--accent) transition-colors duration-200">
-                <span class="mr-1">> </span>
-                {post.data.title}
-              </span>
-              {post.data.description && (
-                <span class="text-xs text-(--text-secondary) opacity-60 truncate">
-                  {post.data.description}
+
+    <ul
+      class="divide-y divide-dashed divide-secondary border border-dashed border-secondary rounded"
+    >
+      {
+        latest.map((post) => (
+          <li>
+            <a
+              href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
+              class="group grid grid-cols-[14px_1fr_auto] items-stretch gap-3 px-4 py-3 no-underline transition-all duration-200 hover:bg-(--bg-secondary) hover:pl-5"
+            >
+              {/* Cursor */}
+              <div class="font-mono text-xs pt-1">
+                <span class="hidden animate-blink-slow text-highlight group-hover:inline">
+                  ▌
                 </span>
-              )}
-            </div>
-            <span class="text-xs font-mono text-(--text-secondary) shrink-0 pt-0.5">
-              {post.data.pubDate.toLocaleDateString("en-AU", { year: "numeric", month: "short", day: "numeric" })}
-            </span>
-          </a>
-        </li>
-      ))}
+
+                <span class="inline text-(--border-primary) group-hover:hidden">
+                  >
+                </span>
+              </div>
+
+              {/* Title + Description */}
+              <div class="flex min-w-0 flex-col">
+                <p class="truncate font-mono text-sm transition-colors group-hover:text-highlight">
+                  {post.data.title}
+                </p>
+
+                {post.data.description && (
+                  <p class="truncate font-mono text-xs text-(--text-tertiary)">
+                    {post.data.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Date */}
+              <div class="flex flex-col items-end text-right justify-start text-highlight">
+                <span class="font-mono text-[11px] text-(--text-tertiary)">
+                  {post.data.pubDate.toLocaleDateString('en-AU', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+            </a>
+          </li>
+        ))
+      }
     </ul>
-</section>
+  </section>
 
-<!-- Contact -->
-<section class="mb-8 md:mb-16 font-mono text-sm space-y-4">
-    <h2 class="font-display tracking-wide text-2xl">
-     find me
-    </h2>
-  <div class="space-y-1 border p-5 border-secondary rounded">
-    <a href="https://twitter.com/ariiparsa" class="group flex items-center gap-2 no-underline">
-      <span class="text-(--accent)">arii@dev:~$</span>
-      <span class="group-hover:text-(--accent) transition-colors duration-200">open x</span>
-    </a>
-    <a href="https://github.com/ary-na" class="group flex items-center gap-2 no-underline">
-      <span class="text-(--accent)">arii@dev:~$</span>
-      <span class="group-hover:text-(--accent) transition-colors duration-200">open github</span>
-    </a>
-    <p class="text-(--accent)">arii@dev:~$ <span class="cursor">_</span></p>
-  </div>
-</section>
+  <section class="bg-black text-secondary">
+    <div class="page-container">
+      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+        elsewhere on the web
+      </span>
 
+      <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        find me
+      </h2>
+
+      <div class="flex flex-col gap-1 text-xs font-mono">
+        <a
+          href="https://x.com/ariiparsa"
+          class="flex items-center gap-2 hover:text-primary"
+        >
+          <span class="text-primary">></span>
+          <span>https://x.com/ariiparsa</span>
+        </a>
+
+        <a
+          href="https://github.com/ary-na"
+          class="flex items-center gap-2 hover:text-primary"
+        >
+          <span class="text-primary">></span>
+          <span>https://github.com/ary-na</span>
+        </a>
+      </div>
+    </div>
+  </section>
 </SiteLayout>
 
-<style>
-  .cursor {
-    animation: blink 1s step-end infinite;
-  }
-
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-</style>
-
 <script>
-  const text = "hi, i'm arian.";
-  let timeout: ReturnType<typeof setTimeout> | undefined;
+  import { initTypewriter } from '@/scripts/typewriter';
 
-  const initTypewriter = () => {
-    const el = document.getElementById('typewriter') as HTMLElement | null;
-    if (!el) return;
+  document.addEventListener('astro:page-load', () => {
+    initTypewriter();
+  });
 
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
-    el.textContent = '';
-    let index = 0;
-
-    const type = () => {
-      if (index >= text.length) return;
-
-      el.textContent += text[index];
-      index += 1;
-      timeout = setTimeout(type, 80);
-    };
-
-    type();
-  };
-
-  document.addEventListener('astro:page-load', initTypewriter);
   initTypewriter();
 </script>

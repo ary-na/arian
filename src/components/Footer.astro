@@ -3,8 +3,8 @@ import { SITE_TITLE } from '@/consts';
 const today = new Date();
 ---
 
-<footer
-  class="font-display mx-auto mt-auto flex w-full max-w-3xl items-center justify-start px-6 py-8 text-sm md:px-4"
->
-  <p>&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</p>
+<footer class="font-display bg-black text-xs text-secondary">
+  <div class="page-container">
+    <p>&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</p>
+  </div>
 </footer>

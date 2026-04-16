@@ -10,7 +10,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
   Astro.props;
 ---
 
-<SiteLayout {title} {description} image={heroImage}>
+<SiteLayout contentClass='page-container' {title} {description} image={heroImage}>
   <ImageLightbox />
   <article class="space-y-10">
     <header class="space-y-6">
