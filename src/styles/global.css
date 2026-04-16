@@ -2,7 +2,7 @@
 
 /* Body styling */
 body {
-  font-family: "DMSans", sans-serif;
+  font-family: 'DMSans', sans-serif;
   margin: 0;
   padding: 0;
   text-align: left;
@@ -23,5 +23,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Bytesized", monospace;
+  font-family: 'Bytesized', monospace;
+}
+
+.page-container {
+  @apply max-w-3xl px-6 py-10 md:px-4 mx-auto w-full;
 }

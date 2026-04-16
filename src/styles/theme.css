@@ -10,8 +10,18 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
+  --color-highlight: var(--highlight);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  --animate-blink: blink 1s step-end infinite;
+  --animate-blink-slow: blink 1.1s step-end infinite;
 }
