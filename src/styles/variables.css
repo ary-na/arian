@@ -4,6 +4,7 @@
   --primary: #a259ff;
   --secondary: #c77dff;
   --accent: #ff2a9d;
+  --highlight: #0d9488;
 
   --bg-primary: #f5f4f8;
   --bg-secondary: #eae8f0;
@@ -14,4 +15,3 @@
 
   --box-shadow: 0 2px 8px rgba(26, 23, 38, 0.15);
 }
-
