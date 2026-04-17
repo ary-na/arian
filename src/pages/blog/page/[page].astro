@@ -1,42 +1,50 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import { Image } from 'astro:assets';
-import { type CollectionEntry, getCollection } from 'astro:content';
-import FormattedDate from '@components/FormattedDate.astro';
-import PaginationNav from '@components/PaginationNav.astro';
-import SiteLayout from '@layouts/SiteLayout.astro';
-import { BLOG_PAGE_SIZE, blogPageHref, SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import type { GetStaticPaths } from 'astro'
+import { Image } from 'astro:assets'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import FormattedDate from '@components/FormattedDate.astro'
+import PaginationNav from '@components/PaginationNav.astro'
+import SiteLayout from '@layouts/SiteLayout.astro'
+import {
+  BLOG_PAGE_SIZE,
+  blogPageHref,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+} from '@/consts'
 
-type BlogPostEntry = CollectionEntry<'blog'>;
+type BlogPostEntry = CollectionEntry<'blog'>
 
 interface PaginatedPage<T> {
-  currentPage: number;
-  data: T[];
-  lastPage: number;
-  total: number;
+  currentPage: number
+  data: T[]
+  lastPage: number
+  total: number
 }
 
 interface Props {
-  page: PaginatedPage<BlogPostEntry>;
+  page: PaginatedPage<BlogPostEntry>
 }
 
-type GetStaticPathsContext = Parameters<GetStaticPaths>[0];
+type GetStaticPathsContext = Parameters<GetStaticPaths>[0]
 
-export const getStaticPaths: GetStaticPaths = async ({ paginate }: GetStaticPathsContext) => {
+export const getStaticPaths: GetStaticPaths = async ({
+  paginate,
+}: GetStaticPathsContext) => {
   const posts = (await getCollection('blog')).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-  );
-  return paginate(posts, { pageSize: BLOG_PAGE_SIZE });
-};
+  )
+  return paginate(posts, { pageSize: BLOG_PAGE_SIZE })
+}
 
-const { page } = Astro.props as Props;
-const canonicalPath = blogPageHref(page.currentPage);
+const { page } = Astro.props as Props
+const canonicalPath = blogPageHref(page.currentPage)
 ---
 
 <SiteLayout
   title={`${SITE_TITLE} | Blog | Page ${page.currentPage}`}
   description={SITE_DESCRIPTION}
-  {canonicalPath} contentClass='page-container'
+  {canonicalPath}
+  contentClass="page-container"
 >
   <section class="mb-16 space-y-4">
     <h2 class="font-display text-2xl tracking-wide">
@@ -45,8 +53,11 @@ const canonicalPath = blogPageHref(page.currentPage);
     <ul class="flex flex-col">
       {
         page.data.map((post) => (
-          <li class="border-b border-(--border-secondary) last:border-b-0">
-            <a href={`/blog/${post.id}/`} class="group flex items-center gap-4 py-4 no-underline">
+          <li>
+            <a
+              href={`/blog/${post.id}/`}
+              class="group flex items-center gap-4 py-4 no-underline"
+            >
               {post.data.heroImage && (
                 <div class="shrink-0">
                   <Image

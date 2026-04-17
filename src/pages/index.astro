@@ -1,9 +1,9 @@
 ---
-import SiteLayout from '@layouts/SiteLayout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
-import { getCollection } from 'astro:content';
+import SiteLayout from "@layouts/SiteLayout.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { getCollection } from "astro:content";
 
-const posts = await getCollection('blog');
+const posts = await getCollection("blog");
 
 const latest = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -11,6 +11,8 @@ const latest = posts
 ---
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+
+  {/* Hero section */}
   <section class="page-container space-y-5 mt-20">
     <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
       developer . melbourne 🇦🇺 . ai systems
@@ -41,6 +43,7 @@ const latest = posts
     </div>
   </section>
 
+  {/* Latest posts section */}
   <section class="page-container mb-20">
     <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
       things I'm building and figuring out
@@ -58,7 +61,7 @@ const latest = posts
         latest.map((post) => (
           <li>
             <a
-              href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
+              href={`/blog/${post.id.replace(/\.mdx?$/, "")}`}
               class="group grid grid-cols-[14px_1fr_auto] items-stretch gap-3 px-4 py-3 no-underline transition-all duration-200 hover:bg-(--bg-secondary) hover:pl-5"
             >
               {/* Cursor */}
@@ -66,7 +69,6 @@ const latest = posts
                 <span class="hidden animate-blink-slow text-highlight group-hover:inline">
                   ▌
                 </span>
-
                 <span class="inline text-(--border-primary) group-hover:hidden">
                   >
                 </span>
@@ -77,7 +79,6 @@ const latest = posts
                 <p class="truncate font-mono text-sm transition-colors group-hover:text-highlight">
                   {post.data.title}
                 </p>
-
                 {post.data.description && (
                   <p class="truncate font-mono text-xs text-(--text-tertiary)">
                     {post.data.description}
@@ -88,10 +89,10 @@ const latest = posts
               {/* Date */}
               <div class="flex flex-col items-end text-right justify-start text-highlight">
                 <span class="font-mono text-[11px] text-(--text-tertiary)">
-                  {post.data.pubDate.toLocaleDateString('en-AU', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
+                  {post.data.pubDate.toLocaleDateString("en-AU", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
                   })}
                 </span>
               </div>
@@ -102,7 +103,8 @@ const latest = posts
     </ul>
   </section>
 
-  <section class="bg-black text-secondary">
+  {/* Find me section */}
+  <section class="bg-black text-secondary py-15">
     <div class="page-container">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
         elsewhere on the web
@@ -134,9 +136,9 @@ const latest = posts
 </SiteLayout>
 
 <script>
-  import { initTypewriter } from '@/scripts/typewriter';
+  import { initTypewriter } from "@/scripts/typewriter";
 
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     initTypewriter();
   });
 

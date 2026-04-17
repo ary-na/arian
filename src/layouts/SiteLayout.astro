@@ -1,17 +1,17 @@
 ---
-import BaseHead from '@components/BaseHead.astro';
-import Header from '@components/Header.astro';
-import Footer from '@components/Footer.astro';
+import BaseHead from '@components/BaseHead.astro'
+import Header from '@components/Header.astro'
+import Footer from '@components/Footer.astro'
 
 interface Props {
-  title: string;
-  description: string;
-  image?: import('astro').ImageMetadata;
-  canonicalPath?: string;
-  contentClass?: string;
+  title: string
+  description: string
+  image?: import('astro').ImageMetadata
+  canonicalPath?: string
+  contentClass?: string
 }
 
-const { title, description, image, canonicalPath, contentClass } = Astro.props;
+const { title, description, image, canonicalPath, contentClass } = Astro.props
 ---
 
 <!doctype html>
@@ -23,10 +23,7 @@ const { title, description, image, canonicalPath, contentClass } = Astro.props;
     <Header />
     <main
       id="main-content"
-      class:list={[
-        'flex flex-1 flex-col justify-center',
-        contentClass,
-      ]}
+      class:list={['flex flex-1 flex-col justify-center', contentClass]}
     >
       <slot />
     </main>

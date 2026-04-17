@@ -1,21 +1,30 @@
 ---
-import { Image } from 'astro:assets';
-import { type CollectionEntry, getCollection } from 'astro:content';
-import FormattedDate from '@components/FormattedDate.astro';
-import PaginationNav from '@components/PaginationNav.astro';
-import SiteLayout from '@layouts/SiteLayout.astro';
-import { BLOG_PAGE_SIZE, SITE_DESCRIPTION, SITE_TITLE, blogPageHref } from '@/consts';
+import { Image } from 'astro:assets'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import FormattedDate from '@components/FormattedDate.astro'
+import PaginationNav from '@components/PaginationNav.astro'
+import SiteLayout from '@layouts/SiteLayout.astro'
+import {
+  BLOG_PAGE_SIZE,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  blogPageHref,
+} from '@/consts'
 
-type BlogPostEntry = CollectionEntry<'blog'>;
+type BlogPostEntry = CollectionEntry<'blog'>
 
 const allPosts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-const posts = allPosts.slice(0, BLOG_PAGE_SIZE);
-const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
+)
+const posts = allPosts.slice(0, BLOG_PAGE_SIZE)
+const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE)
 ---
 
-<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} contentClass='page-container'>
+<SiteLayout
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  contentClass="page-container"
+>
   <section class="mb-16 space-y-4">
     <h2 class="font-display text-2xl tracking-wide">
       all posts [{allPosts.length}]
@@ -23,8 +32,11 @@ const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
     <ul class="flex flex-col">
       {
         posts.map((post: BlogPostEntry) => (
-          <li class="border-b border-(--border-secondary) last:border-b-0">
-            <a href={`/blog/${post.id}/`} class="group flex items-center gap-4 py-4 no-underline">
+          <li>
+            <a
+              href={`/blog/${post.id}/`}
+              class="group flex items-center gap-4 py-4 no-underline"
+            >
               {post.data.heroImage && (
                 <div class="shrink-0">
                   <Image
@@ -39,7 +51,7 @@ const totalPages = Math.ceil(allPosts.length / BLOG_PAGE_SIZE);
               )}
               <div class="flex min-w-0 flex-1 justify-between gap-4">
                 <div class="flex min-w-0 flex-col gap-1">
-                  <span class="truncate font-mono text-sm text-(--text-secondary) lowercase transition-colors duration-200 group-hover:text-(--accent)">
+                  <span class="truncate font-mono text-sm text-(--text-secondary) lowercase transition-colors duration-200 group-hover:text-(--highlight)">
                     <span class="mr-1">{'>'}</span>
                     {post.data.title}
                   </span>

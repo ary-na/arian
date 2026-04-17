@@ -1,5 +1,10 @@
 /* src/styles/globals.css */
 
+html {
+  scroll-behavior: smooth;
+  background-color: #000000;
+}
+
 /* Body styling */
 body {
   font-family: 'DMSans', sans-serif;
@@ -26,6 +31,8 @@ h6 {
   font-family: 'Bytesized', monospace;
 }
 
-.page-container {
-  @apply max-w-3xl px-6 py-10 md:px-4 mx-auto w-full;
+@layer components {
+  .page-container {
+    @apply max-w-3xl px-6 py-10 md:px-4 mx-auto w-full;
+  }
 }
