@@ -1,16 +1,29 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import FormattedDate from '@components/FormattedDate.astro';
-import SiteLayout from './SiteLayout.astro';
-import ImageLightbox from '@components/ImageLightbox.astro';
-import { categoryHref, tagHref } from '@/consts';
-type Props = CollectionEntry<'blog'>['data'];
-const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, category, tags } =
-  Astro.props;
+import { Image } from 'astro:assets'
+import type { CollectionEntry } from 'astro:content'
+import FormattedDate from '@components/FormattedDate.astro'
+import SiteLayout from './SiteLayout.astro'
+import ImageLightbox from '@components/ImageLightbox.astro'
+import { categoryHref, tagHref } from '@/consts'
+type Props = CollectionEntry<'blog'>['data']
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  heroImageAlt,
+  category,
+  tags,
+} = Astro.props
 ---
 
-<SiteLayout contentClass='page-container' {title} {description} image={heroImage}>
+<SiteLayout
+  contentClass="page-container"
+  {title}
+  {description}
+  image={heroImage}
+>
   <ImageLightbox />
   <article class="space-y-10">
     <header class="space-y-6">
@@ -82,7 +95,10 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, categ
         )
       }
       <div class="border-secondary border-t pt-6">
-        <a href="/blog" class="transition-colors duration-200 hover:text-(--accent)">
+        <a
+          href="/blog"
+          class="transition-colors duration-200 hover:text-(--accent)"
+        >
           &lt; back to posts
         </a>
       </div>
