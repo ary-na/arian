@@ -1,26 +1,27 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import '@styles/__root.css';
-import type { ImageMetadata } from 'astro';
-import FallbackImage from '@assets/og-image.jpg';
-import { SITE_TITLE, SITE_AUTHOR } from '@/consts';
+import '@styles/__root.css'
+import type { ImageMetadata } from 'astro'
+import FallbackImage from '@assets/og-image.jpg'
+import { SITE_TITLE, SITE_AUTHOR } from '@/consts'
 
 interface Props {
-  title: string;
-  description: string;
-  image?: ImageMetadata;
-  canonicalPath?: string;
+  title: string
+  description: string
+  image?: ImageMetadata
+  canonicalPath?: string
 }
 
-const { title, description, image = FallbackImage, canonicalPath } = Astro.props;
-const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
+const { title, description, image = FallbackImage, canonicalPath } = Astro.props
+const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site)
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#000000" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -33,7 +34,13 @@ const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/Bytesized-Regular.ttf" as="font" type="font/ttf" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/Bytesized-Regular.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin
+/>
 <link
   rel="preload"
   href="/fonts/DMSans-VariableFont_opsz,wght.ttf"
@@ -48,8 +55,20 @@ const canonicalURL = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
   type="font/ttf"
   crossorigin
 />
-<link rel="preload" href="/fonts/DMMono-Regular.ttf" as="font" type="font/ttf" crossorigin />
-<link rel="preload" href="/fonts/DMMono-Italic.ttf" as="font" type="font/ttf" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/DMMono-Regular.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin
+/>
+<link
+  rel="preload"
+  href="/fonts/DMMono-Italic.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
