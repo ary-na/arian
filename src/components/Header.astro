@@ -1,10 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
-import { categoryHref, SITE_TITLE, PRIMARY_NAV } from '@/consts';
-import HeaderLink from './HeaderLink.astro';
+import { getCollection } from 'astro:content'
+import { categoryHref, SITE_TITLE, PRIMARY_NAV } from '@/consts'
+import HeaderLink from './HeaderLink.astro'
 
-const posts = await getCollection('blog');
-const categories = [...new Set(posts.flatMap((post) => post.data.category ?? []))];
+const posts = await getCollection('blog')
+const categories = [
+  ...new Set(posts.flatMap((post) => post.data.category ?? [])),
+]
 ---
 
 <header class="text-text-primary">
@@ -34,7 +36,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
     id="mobile-menu"
     class="bg-surface-primary text-text-primary fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 ps-10 md:hidden"
   >
-    <span class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight">
+    <span
+      class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
@@ -47,7 +51,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
       }
     </div>
     <div class="flex w-200 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <span class="font-display border-primary mb-2 border-b">
+        categories
+      </span>
       <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
@@ -84,7 +90,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
     id="tablet-menu"
     class="bg-surface-primary border-text-secondary/15 text-text-primary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-6 border-l px-8 shadow-(--box-shadow) md:flex xl:hidden"
   >
-    <span class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight">
+    <span
+      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
@@ -97,7 +105,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
       }
     </div>
     <div class="flex w-100 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <span class="font-display border-primary mb-2 border-b">
+        categories
+      </span>
       <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
@@ -112,7 +122,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
   <nav
     class="xl:bg-surface-primary/35 hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-6 xl:px-8 xl:backdrop-blur-sm"
   >
-    <span class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight">
+    <span
+      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
+    >
       <a href="/">{SITE_TITLE}</a>
     </span>
     <div class="flex w-100 flex-col gap-2">
@@ -125,7 +137,9 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
       }
     </div>
     <div class="flex w-100 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b"> categories </span>
+      <span class="font-display border-primary mb-2 border-b">
+        categories
+      </span>
       <div class="text-text-secondary text-sm italic">
         {
           categories.map((category) => (
@@ -221,32 +235,32 @@ const categories = [...new Set(posts.flatMap((post) => post.data.category ?? [])
 
 <script>
   const bindMenuToggle = (toggleId: string, menuId: string) => {
-    const toggle = document.getElementById(toggleId) as HTMLButtonElement | null;
-    const menu = document.getElementById(menuId) as HTMLElement | null;
+    const toggle = document.getElementById(toggleId) as HTMLButtonElement | null
+    const menu = document.getElementById(menuId) as HTMLElement | null
 
-    if (!toggle || !menu || toggle.dataset.bound === 'true') return;
+    if (!toggle || !menu || toggle.dataset.bound === 'true') return
 
-    toggle.dataset.bound = 'true';
+    toggle.dataset.bound = 'true'
     toggle.addEventListener('click', () => {
-      const isOpen = menu.classList.contains('is-open');
+      const isOpen = menu.classList.contains('is-open')
 
       if (isOpen) {
-        menu.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('is-open')
+        toggle.classList.remove('is-open')
+        toggle.setAttribute('aria-expanded', 'false')
       } else {
-        menu.classList.add('is-open');
-        toggle.classList.add('is-open');
-        toggle.setAttribute('aria-expanded', 'true');
+        menu.classList.add('is-open')
+        toggle.classList.add('is-open')
+        toggle.setAttribute('aria-expanded', 'true')
       }
-    });
-  };
+    })
+  }
 
   const initHeaderMenus = () => {
-    bindMenuToggle('mobile-toggle', 'mobile-menu');
-    bindMenuToggle('tablet-toggle', 'tablet-menu');
-  };
+    bindMenuToggle('mobile-toggle', 'mobile-menu')
+    bindMenuToggle('tablet-toggle', 'tablet-menu')
+  }
 
-  document.addEventListener('astro:page-load', initHeaderMenus);
-  initHeaderMenus();
+  document.addEventListener('astro:page-load', initHeaderMenus)
+  initHeaderMenus()
 </script>
