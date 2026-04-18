@@ -1,0 +1,115 @@
+---
+title: 'paper plane'
+description: 'an educational aviation website built with html, css, and javascript featuring interactive aircraft diagrams, animations, a dark mode toggle, and an image gallery'
+pubDate: 'Jul 21 2023'
+updatedDate: 'Aug 21 2023'
+heroImage: '@assets/blog/paper-plane.webp'
+heroImageAlt: 'Paper Plane educational website home page with light and dark theme preview'
+category: 'project'
+tags:
+  - javascript
+  - html-css
+  - interactive-ui
+  - gsap
+  - animejs
+  - shoelace
+  - splide
+  - netlify
+  - responsive-design
+---
+
+import ProjectLinks from '@components/ProjectLink.astro'
+
+An educational website about modern aeroplanes and flight fundamentals, built as a university project. Visitors explore interactive aircraft diagrams, scroll-triggered animations, and an aerodynamics module, all in a clean static site with a light/dark theme toggle.
+
+<ProjectLinks
+  demo="https://stately-dasik-d4a58a.netlify.app"
+  demoLabel="live website"
+  github="https://github.com/ary-na/paper-plane"
+  githubLabel="github"
+/>
+
+## key features
+
+- Fully static site deployed on Netlify (no framework)
+- Fullscreen overlay navigation for mobile and desktop
+- Light/dark mode toggle using Shoelace themes
+- Interactive aircraft diagram with hover/click highlighting (cockpit, wings, fuselage, engines, stabilisers)
+- Tabbed "Parts & Function" learning module using Shoelace `<sl-tab-group>`
+- Contextual tooltips explaining lift, weight, thrust, and drag
+- Aerodynamics chart with animated polygons and interactive labels
+- Motion-path paper plane animation (Anime.js) following an SVG route
+- Scroll-driven animations using GSAP and ScrollTrigger
+- Image gallery carousel powered by Splide with progress bar
+
+## tech stack
+
+```bash
+# core
+html5 | css3 | vanilla javascript
+```
+
+```bash
+# ui components
+shoelace (web components)
+```
+
+```bash
+# animation
+anime.js | gsap | scrolltrigger
+```
+
+```bash
+# carousel & deployment
+splide | netlify
+```
+
+## highlights
+
+Home page, aircraft diagram, aerodynamics module, and gallery carousel.
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img class="rounded-md" src="/blog/paper-plane/home.webp" alt="Home page" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      home page
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/paper-plane/aircraft-diagram.webp"
+      alt="Interactive aircraft diagram with hover highlighting"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      interactive aircraft diagram with hover highlighting
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/paper-plane/aerodynamics.webp"
+      alt="Aerodynamics chart with animated polygons"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      aerodynamics chart with animated polygons
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/paper-plane/gallery.webp"
+      alt="Image gallery carousel with progress bar"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      image gallery carousel with progress bar
+    </figcaption>
+  </figure>
+</div>
+
+Building Paper Plane taught me how far vanilla HTML/CSS/JS can go when you pick the right libraries and keep the architecture clean. Treating SVG as a real interactive UI surface, querying parts by ID, layering highlight states, and wiring up shared event handlers for mouse and touch, was a different way of thinking about interactivity compared to DOM-heavy frameworks.
+
+It also made animation click for me as a UX tool rather than decoration. Anime.js handled the motion path and line drawing while GSAP with ScrollTrigger made the page feel alive as you scroll. Implementing dark mode with Shoelace showed me a practical no-framework approach to theming, just state, classes, and good component choices.
