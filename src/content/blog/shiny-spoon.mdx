@@ -1,0 +1,147 @@
+---
+title: 'shiny spoon'
+description: 'a cloud-backed social platform built with flask and fastapi, featuring posts with image uploads, oauth login, dynamodb storage, s3 media, and a lambda-powered welcome email system'
+pubDate: 'Oct 22 2022'
+updatedDate: 'Nov 21 2022'
+heroImage: '@assets/blog/shiny-spoon.webp'
+heroImageAlt: 'Shiny Spoon social feed showing user posts and profile content'
+category: 'project'
+tags:
+  - python
+  - flask
+  - fastapi
+  - aws
+  - dynamodb
+  - s3
+  - lambda
+  - oauth
+  - google-login
+  - facebook-login
+---
+
+import ProjectLinks from '@components/ProjectLink.astro'
+
+A full-stack social platform split across three repositories: a Flask frontend, a FastAPI backend, and an AWS Lambda function. Users can sign up or log in with Google and Facebook OAuth, create posts with image uploads, manage their profile, and browse the latest feed, with a Lambda-triggered welcome email on signup.
+
+<ProjectLinks
+  github="https://github.com/ary-na/shiny-spoon"
+  githubLabel="github (flask app)"
+  githubBackend="https://github.com/ary-na/shiny-spoon-api"
+  githubBackendLabel="github (fastapi api)"
+/>
+
+<ProjectLinks
+  github="https://github.com/ary-na/shiny-spoon-lambda-function"
+  githubLabel="github (lambda email function)"
+/>
+
+## key features
+
+- Social feed with latest posts and weather widget
+- User authentication with session-based login
+- Google and Facebook OAuth login
+- Create, update, and delete posts with optional image uploads
+- Profile image upload and account management
+- Account deletion that deactivates posts and removes login
+- S3 media pipeline with pre-signed URLs for secure image serving
+- DynamoDB storage with composite keys and GSI for active post queries
+- Lambda-triggered welcome email via Gmail API on signup
+
+## tech stack
+
+```bash
+# frontend
+python | flask | jinja2 | wtforms | flask-wtf | requests
+```
+
+```bash
+# backend
+python | fastapi | boto3
+```
+
+```bash
+# cloud
+aws dynamodb | aws s3 | aws lambda
+```
+
+```bash
+# auth & integrations
+google oauth | facebook oauth | visual crossing weather api | gmail api
+```
+
+## system architecture
+
+The app runs across a full AWS stack with three main compute layers communicating over HTTP.
+
+Requests from the internet hit Route 53 for DNS routing, then flow to Elastic Beanstalk which hosts the Flask frontend. Elastic Beanstalk handles SSL via Certificate Manager and manages Google and Facebook OAuth redirect flows. The Flask app communicates with the FastAPI backend through API Gateway, which routes requests to EC2. The FastAPI backend on EC2 runs as a Docker container pulled from Elastic Container Registry and owns all DynamoDB reads and writes, as well as S3 uploads and pre-signed URL generation for media. On signup, EC2 invokes a Lambda function which calls the Gmail API to send a welcome email.
+
+<figure>
+  <img
+    class="rounded-md"
+    src="/blog/shiny-spoon/system-architecture.webp"
+    alt="System architecture diagram showing interactions between Flask frontend, FastAPI backend, and AWS Lambda function"
+  />
+  <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+    system architecture diagram
+  </figcaption>
+</figure>
+
+## api architecture
+
+the FastAPI backend exposes endpoints across three groups.
+
+```bash
+/logins      # create, read, update, delete logins in DynamoDB
+/posts       # create, read, update, delete posts in DynamoDB
+/utilities   # s3 uploads and pre-signed url generation
+```
+
+## highlights
+
+login, signup, home feed, and profile screens from the Flask app.
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/shiny-spoon/login.webp"
+      alt="Login page"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      login page
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/shiny-spoon/sign-up.webp"
+      alt="Sign up page"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      sign up page
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img class="rounded-md" src="/blog/shiny-spoon/home.webp" alt="Home page" />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      home page
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/shiny-spoon/user-profile.webp"
+      alt="User profile page"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      user profile page
+    </figcaption>
+  </figure>
+</div>
+
+Building Shiny Spoon was my first time splitting a project into real separate services. Having a Flask app focused purely on UI and sessions, a FastAPI backend handling data and cloud operations, and a Lambda function for side effects made the separation of concerns concrete in a way that a monolith never does.
+
+The most valuable backend lesson was modeling data in DynamoDB with partition and sort keys, and designing queries around access patterns rather than table structure. Serving images via pre-signed S3 URLs instead of public buckets was also a good early lesson in treating media as a secure resource. Triggering Lambda from the API and sending welcome emails via the Gmail API was my first end-to-end experience with event-driven cloud architecture.
