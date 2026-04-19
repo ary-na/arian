@@ -1,0 +1,69 @@
+---
+title: 'qwirkle game'
+description: 'a c++ terminal implementation of qwirkle with save/load, command-driven gameplay, a test harness, and my milestone 3 upgrades: ai mode, multi-tile turns, and ux improvements (group project)'
+pubDate: 'Feb 03 2023'
+updatedDate: 'Feb 15 2023'
+heroImage: '@assets/blog/qwirkle-game.webp'
+heroImageAlt: 'Qwirkle terminal edition ASCII art logo'
+category: 'project'
+tags:
+  - cpp
+  - group-project
+  - cli
+  - game-dev
+  - ai
+  - testing
+  - oop
+---
+
+import ProjectLinks from '@components/ProjectLink.astro';
+
+A group project where we built Qwirkle as a fully terminal-based game in C++. This repository covers Milestone 3, the individual enhancements phase. My contributions focused on making the game feel complete as a CLI product: better command ergonomics, quality-of-life improvements, and two larger gameplay additions.
+
+<ProjectLinks
+  github="https://github.com/ary-na/apt-a2-m3"
+  githubLabel="github"
+/>
+
+## key features
+
+- Command-driven turn loop (place, replace, save, skip)
+- Board state, hand, and scores printed each turn
+- Save and load game from file
+- Scripted test harness with `.input` and `.output` fixture files
+- AI single-player mode with score-driven greedy move selection
+- Multi-tile placement mode with line-consistency enforcement
+- In-game `help` command and regex-based input validation
+- Terminal color coding and unicode/emoji tile symbols
+
+## tech stack
+
+```bash
+c++ | regex | unicode terminal output | cli
+```
+
+## my contributions
+
+The base game, including the board, scoring, save/load, and turn loop, was built collaboratively by the group in earlier milestones. Milestone 3 was the individual enhancements phase. Everything below was implemented by me on top of that foundation.
+
+**AI single-player mode** — run with `./qwirkle --ai`. I introduced a `Computer` player object and integrated it into the game loop. The AI searches for legal placements using the same legality checks as a human player, evaluates candidates by temporarily placing a tile and calling the real score calculator, then undoes the placement. If no legal move exists it replaces a random tile and retries. No separate rule set, no shortcuts.
+
+**Multi-tile placement** — allows placing multiple tiles before ending a turn using `place multiple` and `stop place multiple`. The hardest part was tracking state across multiple inputs in the same turn without breaking the original single-move structure. A `MultipleMoves` helper records the rows and columns used during the sequence and enforces that all placements stay in the same row or column.
+
+**Command UX** — added `help` as a real in-game command and improved invalid input feedback. Command recognition is handled through regex patterns so new commands can be added cleanly and error messages stay consistent across the whole game.
+
+**Terminal presentation** — tile color coding and unicode/emoji shape symbols. Cosmetic changes, but in a CLI game they make the board significantly easier to read as it grows.
+
+## testing
+
+The repo includes a scripted test suite and a runner:
+
+```bash
+./tests/run-tests.sh
+```
+
+Input files drive the game and output is compared against expected results. It treats terminal output as a contract, which is the right approach for a CLI app.
+
+The multi-tile mode was not hard algorithmically. The challenge was carrying state correctly across multiple prompts, knowing when to reset, and making sure the original turn logic still ended cleanly. Most feature work at this level is really state management.
+
+Forcing the AI through the same legality and scoring path as a human player was the right call. It kept the AI consistent with real gameplay and avoided a separate rule set that could drift. Building temporary move simulation in C++ also pushed me to think carefully about object lifetimes and cleanup, which is not something you have to think about the same way in higher-level languages.
