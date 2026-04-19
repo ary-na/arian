@@ -1,0 +1,55 @@
+---
+title: 'grid pathfinder'
+description: 'a c++ grid-based path planning solver using forward search, manhattan-distance heuristics, and path backtracking'
+pubDate: 'Dec 04 2022'
+updatedDate: 'Dec 02 2023'
+heroImage: '@assets/blog/grid-pathfinder.webp'
+heroImageAlt: 'Grid environment with a computed path marked by directional arrows'
+category: 'project'
+tags:
+  - cpp
+  - algorithms
+  - pathfinding
+  - ai-search
+  - heuristics
+  - data-structures
+---
+
+import ProjectLinks from '@components/ProjectLink.astro';
+
+A C++ grid-based path planning solver built as a university assignment. It reads a 2D environment from stdin, runs a forward search to explore reachable cells, then backtracks from the goal to reconstruct the final path, printing the updated grid with directional arrows showing the route.
+
+<ProjectLinks
+  github="https://github.com/ary-na/apt-a1"
+  githubLabel="github"
+/>
+
+## key features
+
+- Reads a grid environment from standard input (`ROWS x COLS`)
+- Represents positions as `Node` objects with row, col, and distance traveled
+- Heuristic estimate: `dist_traveled + manhattan_distance` to goal
+- Forward search with open and closed node lists
+- Backtracking path reconstruction from explored nodes
+- Outputs the final grid with movement symbols (`^`, `v`, `<`, `>`)
+- Includes `.env` and `.out` fixture files for verification
+
+## tech stack
+
+```bash
+c++ | manual memory management | custom data structures
+```
+
+## how it works
+
+The solver is built around four core pieces. The environment is a dynamically allocated `char**` grid with walls (`=`), empty cells (`.`), a start (`S`), and a goal (`G`). Each search node stores its position and how far it has traveled from the start. A `NodeList` container manages the frontier and explored sets. The `PathSolver` class runs the search and reconstructs the final path.
+
+**Forward search** repeatedly selects the node with the lowest estimated distance to the goal, expands its four neighbours skipping walls and duplicates, and stops once the goal is reached.
+
+**Path reconstruction** walks backwards from the goal through the explored list, finding neighbours whose `dist_traveled` is exactly one less at each step, until the start is reached.
+
+**Output** updates the grid with direction symbols along the path and prints to stdout.
+
+Implementing this in C++ without modern containers forced careful thinking about data structure design. Building `Node` and `NodeList` from scratch to support the algorithm cleanly, and getting the heuristic-driven selection right, made the mechanics of forward search much more concrete than studying it from a textbook.
+
+The memory management side was its own lesson. Small decisions like correctly pairing `new[]` with `delete[]` and avoiding pointers to stack-allocated data came up constantly. It made clear how quickly things break at this level when you don't have safety rails, and why those decisions matter even in a small codebase.
