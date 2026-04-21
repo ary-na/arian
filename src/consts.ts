@@ -21,7 +21,7 @@ export const BLOG_PAGE_SIZE = 8;
 
 export const categoryHref = (category: string) => `/blog/category/${encodeURIComponent(category)}`;
 export const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag)}`;
-export const blogPageHref = (page: number) => (page <= 1 ? '/blog' : `/blog/page/${page}`);
+export const blogPageHref = (page: number) => (page <= 1 ? '/blog/page/1' : `/blog/page/${page}`);
 export const categoryPageHref = (category: string, page: number) =>
   page <= 1 ? categoryHref(category) : `${categoryHref(category)}/page/${page}`;
 export const tagPageHref = (tag: string, page: number) =>
