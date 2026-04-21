@@ -1,3 +1,33 @@
 ---
-return Astro.redirect('/blog/page/1')
+import { type CollectionEntry, getCollection } from 'astro:content'
+import BlogArchive from '@components/BlogArchive.astro'
+import {
+  BLOG_PAGE_SIZE,
+  blogPageHref,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+} from '@/consts'
+
+type BlogPostEntry = CollectionEntry<'blog'>
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+)
+const paginatedPosts = posts.slice(0, BLOG_PAGE_SIZE)
+const totalPages = Math.ceil(posts.length / BLOG_PAGE_SIZE)
+const countLabel = 'all posts'
 ---
+
+<BlogArchive
+  archiveLabel="all posts"
+  archiveTitle=""
+  countLabel={countLabel}
+  countNumber={posts.length}
+  currentPage={1}
+  description={SITE_DESCRIPTION}
+  canonicalPath="/blog"
+  hrefForPage={blogPageHref}
+  posts={paginatedPosts as BlogPostEntry[]}
+  title={`${SITE_TITLE} | Blog`}
+  totalPages={totalPages}
+/>
