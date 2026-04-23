@@ -1,0 +1,98 @@
+---
+title: 'spacewatch'
+description: 'a lightweight swiftui menu bar app that shows your current space name, auto-detects space changes, and lets you rename spaces with launch-at-login support'
+pubDate: 'Mar 25 2026'
+updatedDate: 'Apr 23 2026'
+heroImage: '@assets/blog/spacewatch.webp'
+heroImageAlt: 'SpaceWatch running in the macOS menu bar with a list of spaces and a settings window'
+category: 'project'
+tags:
+  - swiftui
+  - macos
+  - menubar
+  - swift
+  - productivity
+  - userdefaults
+---
+
+import ProjectLinks from '@components/ProjectLink.astro'
+
+I use macOS Spaces heavily. Each desktop has a purpose: one for browsing, one for work, one for email and calendar, one for music. The problem is macOS just calls them Desktop 1, Desktop 2, Desktop 3, which tells you nothing. SpaceWatch fixes that by showing your current Space name in the menu bar and letting you rename each one to something that actually means something.
+
+<ProjectLinks
+  github="https://github.com/ary-na/spacewatch"
+  githubLabel="github"
+/>
+
+## key features
+
+- Shows current Space name in the menu bar
+- Auto-detects Space changes
+- Registers new Spaces the first time you visit them
+- Rename and delete Space labels from a settings window
+- Launch at login toggle
+- Persists labels locally with no external dependencies
+
+## tech stack
+
+```bash
+# core
+swift | swiftui | macos
+```
+
+```bash
+# apis
+cgs private apis | nsworkspace | servicemanagement | userdefaults
+```
+
+## how it works
+
+SpaceWatch listens for Space switches using `NSWorkspace.activeSpaceDidChangeNotification`. When a change fires, it identifies the active Space using private CGS APIs (`CGSMainConnectionID` and `CGSGetActiveSpace`), maps the Space ID to a saved label, and updates the menu bar title. If a Space has no label yet it gets assigned a default like `Space 1` and saved for next time.
+
+Labels are stored as a simple array of dictionaries (`spaceID` and `name`) in `UserDefaults`. No file formats, no migrations, no extra dependencies.
+
+Launch at login is handled through `SMAppService` — `register()` to enable, `unregister()` to disable, with the toggle state read from `SMAppService.mainApp.status` on launch.
+
+## architecture
+
+The app is split into three clean parts. `SpaceManager` is the brain, an `ObservableObject` that handles detection, persistence, and label management, with state exposed via `@Published` so the UI stays reactive and dumb. `MenuView` renders the Space list, highlights the active one, and opens settings. `SettingsView` handles renaming, deletion, and the launch-at-login toggle.
+
+## highlights
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/spacewatch/settings.webp"
+      alt="Settings interface"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      settings interface
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/spacewatch/spaces.webp"
+      alt="Spaces interface"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      spaces interface
+    </figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img
+    class="rounded-md"
+    src="/blog/spacewatch/menubar.webp"
+    alt="Menubar interface"
+  />
+  <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+    menubar interface
+  </figcaption>
+</figure>
+
+Building SpaceWatch was a good introduction to the macOS-specific parts of SwiftUI that you don't touch when building iOS apps. `MenuBarExtra`, `SMAppService` for launch at login, and wiring up `NSWorkspace` notifications all required digging into AppKit-adjacent APIs that have no iOS equivalent.
+
+The most interesting constraint was using private CGS APIs to detect the active Space. There is no public API for this, which means the app trades some stability for the ability to work at all. It was a good reminder that sometimes the right call is to use what exists and document the tradeoff, rather than waiting for Apple to expose something officially.
