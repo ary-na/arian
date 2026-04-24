@@ -111,10 +111,6 @@ const latest = posts
         ))
       }
     </ul>
-
-    <p class="font-mono text-xs text-(--text-tertiary)">
-      writing about things as i build them &mdash; ai, swift, and the occasional deep dive.
-    </p>
   </section>
 
   {/* More section */}
@@ -167,7 +163,7 @@ const latest = posts
   </section>
 
   {/* Find me section */}
-  <section class="bg-black text-secondary pt-12">
+  <section class="bg-black text-secondary py-12">
     <div class="page-container">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
         elsewhere on the web
@@ -177,23 +173,20 @@ const latest = posts
         find me
       </h2>
 
-      <div class="flex flex-col gap-1 text-xs font-mono">
-        <a
-          href="https://x.com/ariiparsa"
-          class="flex items-center gap-2 hover:text-primary"
-        >
-          <span class="text-primary">></span>
-          <span>https://x.com/ariiparsa</span>
-        </a>
-
-        <a
-          href="https://github.com/ary-na"
-          class="flex items-center gap-2 hover:text-primary"
-        >
-          <span class="text-primary">></span>
-          <span>https://github.com/ary-na</span>
-        </a>
-      </div>
+<div class="flex flex-col gap-1 text-xs font-mono">
+  <div class="flex items-center gap-2">
+    <span class="text-primary">></span>
+    <a href="https://x.com/ariiparsa" class="hover:text-primary">https://x.com/ariiparsa</a>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-primary">></span>
+    <a href="https://github.com/ary-na" class="hover:text-primary">https://github.com/ary-na</a>
+  </div>
+  <div class="flex items-center gap-2">
+    <span class="text-primary">></span>
+    <a href="https://linkedin.com/in/arian-najafi-yamchelo" class="hover:text-primary">https://linkedin.com/in/arian-najafi-yamchelo</a>
+  </div>
+</div>
     </div>
   </section>
 </SiteLayout>
