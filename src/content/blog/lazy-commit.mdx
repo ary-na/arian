@@ -14,6 +14,7 @@ tags:
 - openai
 - anthropic
 - groq
+- gemini
 - developer-tools
 ---
 import ProjectLinks from '@components/ProjectLink.astro';
@@ -35,7 +36,7 @@ I built lazy-commit because writing commit messages is one of those small tasks 
 - Dry-run mode to preview without committing
 - `--version` flag to check the installed version
 - Interactive config wizard for provider, API key, custom rules, and prefix
-- Multi-provider support: OpenAI, Anthropic, Groq
+- Multi-provider support: OpenAI, Anthropic, Groq, Gemini
 - Exits early with a clear message if there are no staged changes
 
 ## tech stack
@@ -47,7 +48,7 @@ typescript | node.js | readline | chalk
 
 ```bash
 # providers
-openai (gpt-4o-mini) | anthropic (claude-haiku) | groq (llama3-8b)
+openai (gpt-4o-mini) | anthropic (claude-haiku) | groq (llama3-8b) | gemini (gemini-1.5-flash)
 ```
 
 ## how it works
