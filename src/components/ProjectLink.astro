@@ -3,11 +3,13 @@ const {
   demo,
   github,
   githubBackend,
+  npm,
   trello,
   demoCrossed,
   demoLabel = 'live demo',
   githubLabel = 'github',
   githubBackendLabel = 'github backend',
+  npmLabel = 'npm',
   trelloLabel = 'trello',
 } = Astro.props;
 ---
@@ -51,6 +53,20 @@ const {
       >
         <span class="text-accent">[</span>
         <span>{githubBackendLabel}</span>
+        <span class="text-accent">]</span>
+      </a>
+    )
+  }
+  {
+    npm && (
+      <a
+        href={npm}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
+      >
+        <span class="text-accent">[</span>
+        <span>{npmLabel}</span>
         <span class="text-accent">]</span>
       </a>
     )
