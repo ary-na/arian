@@ -1,6 +1,6 @@
 ---
 title: 'lemme: natural language to shell commands cli'
-description: 'A natural language CLI that translates plain English into shell commands, powered by Claude, OpenAI, or Groq'
+description: 'A natural language CLI that translates plain English into shell commands, powered by Claude, OpenAI, Groq, or Gemini'
 pubDate: 'May 20 2026'
 heroImage: '@assets/blog/lemme.webp'
 heroImageAlt: 'Terminal output showing lemme translating a natural language query into a shell command and running it'
@@ -13,6 +13,7 @@ tags:
   - developer-tools
   - openai
   - anthropic
+  - gemini
 ---
 
 import ProjectLinks from '@components/ProjectLink.astro';
@@ -29,7 +30,7 @@ I built lemme because I kept context switching out of the terminal to look up co
 ## key features
 
 - Translates any natural language query into a shell command
-- Supports Claude (Anthropic), OpenAI, and Groq as providers
+- Supports Claude (Anthropic), OpenAI, Groq, and Gemini (Google) as providers
 - Shows the generated command and asks for confirmation before running anything
 - Auto-detects your shell and OS and passes them to the AI for accurate output
 - Saves command history to `~/.config/lemme/history.json` when enabled
@@ -48,7 +49,7 @@ typescript | node.js | chalk | ora
 
 ```bash
 # ai
-@anthropic-ai/sdk | openai | groq-sdk
+@anthropic-ai/sdk | openai | groq-sdk | @google/genai
 ```
 
 ## how it works
@@ -89,7 +90,7 @@ lemme -v
 
 The confirm before run step was a deliberate decision. LLM output is non-deterministic and the same query can produce slightly different commands across runs. Treating generated shell commands as trusted and running them immediately is how things go wrong, especially for anything destructive. Showing the command first and waiting for a keypress adds almost no friction but means you always know what is about to run.
 
-Supporting three providers came from wanting the tool to work regardless of what API key you have. Claude, OpenAI, and Groq all speak a similar chat completions interface so the abstraction in `ai.ts` is thin, just a switch on the provider field that picks the right SDK and maps the response to a plain string.
+Supporting four providers came from wanting the tool to work regardless of what API key you have. Claude, OpenAI, Groq, and Gemini all speak a similar chat completions interface so the abstraction in `ai.ts` is thin, just a switch on the provider field that picks the right SDK and maps the response to a plain string.
 
 Auto-detecting shell and OS at setup time and baking them into the system prompt makes a real difference to output quality. A command generated for zsh on macOS looks different from one for bash on Linux. Passing that context upfront means the model does not have to guess and the commands it returns are ready to run in your actual environment.
 
