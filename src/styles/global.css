@@ -6,8 +6,6 @@ html {
 
 /* Body styling */
 body {
-  margin: 0;
-  padding: 0;
   text-align: left;
   background-color: var(--bg-primary);
   color: var(--text-primary);

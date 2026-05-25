@@ -1,18 +1,45 @@
 ---
-import SiteLayout from "@layouts/SiteLayout.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-import { getCollection } from "astro:content";
+import SiteLayout from '@layouts/SiteLayout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import { getCollection } from 'astro:content';
 
-const posts = await getCollection("blog");
+const posts = await getCollection('blog');
 
 const latest = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
+
+const SHIPPED = [
+  {
+    href: '/blog/lazy-commit',
+    name: 'lazy-commit',
+    description: 'AI-powered conventional commit message generator',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/lstage',
+    name: 'lstage',
+    description: 'Stage and unstage git files by number, no paths needed',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/syncback',
+    name: 'syncback',
+    description: 'Merge branches, push, and switch back in one command',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/dtm',
+    name: 'dtm',
+    description: 'Auto-snapshots your dotfiles and pushes them to GitHub',
+    tag: 'cli · typescript',
+  },
+];
 ---
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   {/* Hero section */}
-  <section class="page-container space-y-6 pt-15">
+  <section class="page-container space-y-5 py-10">
     <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
       developer . melbourne
       <span class="align-middle">🇦🇺</span><img
@@ -29,8 +56,8 @@ const latest = posts
     </h1>
 
     <p class="text-lg max-w-lg">
-      I write about what I'm learning, what I'm building, and the systems I
-      work with.
+      I write about what I'm learning, what I'm building, and the systems I work
+      with.
     </p>
 
     <p class="text-sm italic text-(--text-secondary)">
@@ -55,23 +82,59 @@ const latest = posts
     </div>
   </section>
 
-  {/* Latest posts section */}
-  <section class="page-container py-15 space-y-6">
-    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-      things I'm building and figuring out
-    </span>
+  {/* Shipped section */}
+  <section class="page-container py-10 flex flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+        tools i've built and use daily
+      </span>
+      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        shipped
+      </h2>
+    </div>
 
-    <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
-      latest posts
-      <span class="text-highlight">[{posts.length}]</span>
-    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {
+        SHIPPED.map((item) => (
+          <a
+            href={item.href}
+            class="group flex flex-col gap-2 rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <p class="font-mono text-sm text-(--text-primary) transition-colors group-hover:text-highlight">
+                {item.name}
+              </p>
+              <span class="font-mono text-[10px] text-(--text-secondary)/60 shrink-0">
+                {item.tag}
+              </span>
+            </div>
+            <p class="font-mono text-xs text-(--text-secondary) leading-relaxed">
+              {item.description}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* Latest posts section */}
+  <section class="page-container py-10 flex flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+        things I'm building and figuring out
+      </span>
+      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        latest posts
+        <span class="text-highlight">[{posts.length}]</span>
+      </h2>
+    </div>
 
     <ul class="flex flex-col gap-3">
       {
         latest.map((post) => (
           <li>
             <a
-              href={`/blog/${post.id.replace(/\.mdx?$/, "")}`}
+              href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
               class="group grid grid-cols-[1fr_auto] items-start gap-4 rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
             >
               {/* Title + Description */}
@@ -94,10 +157,10 @@ const latest = posts
               {/* Date */}
               <div class="shrink-0 text-right">
                 <span class="font-mono text-[11px] text-(--text-tertiary)">
-                  {post.data.pubDate.toLocaleDateString("en-AU", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
+                  {post.data.pubDate.toLocaleDateString('en-AU', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
                   })}
                 </span>
               </div>
@@ -109,82 +172,120 @@ const latest = posts
   </section>
 
   {/* More section */}
-  <section class="py-15">
-    <div class="page-container space-y-6">
-      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        keep exploring
-      </span>
-
-      <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        more
-      </h2>
+  <section class="py-10">
+    <div class="page-container flex flex-col gap-5">
+      <div class="flex flex-col gap-1">
+        <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+          keep exploring
+        </span>
+        <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+          more
+        </h2>
+      </div>
 
       <div class="grid grid-cols-2 gap-3">
         <a
           href="/blog"
           class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
         >
-          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">all posts</p>
-          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">read everything</p>
+          <p
+            class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+          >
+            all posts
+          </p>
+          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">
+            read everything
+          </p>
         </a>
         <a
           href="/blog/category/project"
           class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
         >
-          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">projects</p>
-          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">see what i built</p>
+          <p
+            class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+          >
+            projects
+          </p>
+          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">
+            see what i built
+          </p>
         </a>
       </div>
     </div>
   </section>
 
   {/* Find me section */}
-  <section class="page-container py-15 space-y-6">
-    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-      elsewhere on the web
-    </span>
-
-    <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
-      find me
-    </h2>
+  <section class="page-container py-10 flex flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+        elsewhere on the web
+      </span>
+      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        find me
+      </h2>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <a
         href="https://x.com/ariiii4n"
         class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
       >
-        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">x / twitter</p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">@ariiii4n</p>
+        <p
+          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+        >
+          x / twitter
+        </p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
+          @ariiii4n
+        </p>
       </a>
       <a
         href="https://github.com/ary-na"
         class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
       >
-        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">github</p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">ary-na</p>
+        <p
+          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+        >
+          github
+        </p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
+          ary-na
+        </p>
       </a>
       <a
         href="https://linkedin.com/in/arian-najafi-yamchelo"
         class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
       >
-        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">linkedin</p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">arian-najafi-yamchelo</p>
+        <p
+          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+        >
+          linkedin
+        </p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
+          arian-najafi-yamchelo
+        </p>
       </a>
       <a
         href="https://gravatar.com/collectiveautomaticae806d67f2"
         class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
       >
-        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">gravatar</p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">collectiveautomaticae806d67f2</p>
+        <p
+          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
+        >
+          gravatar
+        </p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
+          collectiveautomaticae806d67f2
+        </p>
       </a>
     </div>
   </section>
 </SiteLayout>
 
 <script>
-  import { initTypewriter } from "@/scripts/typewriter";
+  import { initTypewriter } from '@/scripts/typewriter';
 
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener('astro:page-load', () => {
     initTypewriter();
   });
 

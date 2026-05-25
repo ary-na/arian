@@ -1,280 +1,135 @@
 ---
 import { getCollection } from 'astro:content';
-import { categoryHref, SITE_TITLE, PRIMARY_NAV } from '@/consts';
-import HeaderLink from './HeaderLink.astro';
+import { categoryHref, PRIMARY_NAV } from '@/consts';
 
 const posts = await getCollection('blog');
 const categories = [
-  ...new Set(posts.flatMap((post) => post.data.category ?? [])),
+  ...new Set(posts.flatMap((p) => p.data.category ?? [])),
 ].sort();
 
 const pathname = Astro.url.pathname;
 ---
 
-<header class="text-text-primary">
-  <!-- Mobile (<md): fullscreen overlay -->
-  <div class="fixed top-0 right-0 z-50 p-5 md:hidden">
-    <button
-      id="mobile-toggle"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      class="group cursor-pointer bg-surface-primary/80 text-text-primary relative flex h-10 w-10 items-center justify-center rounded-xl shadow-(--box-shadow) backdrop-blur-lg transition border border-(--text-secondary)/10"
-    >
-      <span class="sr-only">Toggle navigation menu</span>
-      <span class="mobile-line mobile-line--top absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
-      <span class="mobile-line mobile-line--middle absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-200 ease-out"></span>
-      <span class="mobile-line mobile-line--bottom absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
-    </button>
+<header class="fixed top-0 left-0 right-0 z-50">
+  <div class="bg-surface-primary/80 backdrop-blur-xl border-b border-(--text-secondary)/10 shadow-(--box-shadow)">
+    <div class="page-container flex h-14 items-center justify-between">
+      <a href="/" class="flex items-baseline gap-0.5 no-underline">
+        <span class="font-display text-xl font-bold tracking-tight text-text-primary">arii</span>
+        <span class="font-display text-xl font-bold tracking-tight text-highlight">.dev</span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-1">
+        {PRIMARY_NAV.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'font-mono text-xs px-3 py-1.5 rounded-lg no-underline transition-all duration-200',
+              pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+                ? 'text-highlight bg-(--highlight)/10'
+                : 'text-text-secondary hover:text-text-primary hover:bg-(--bg-secondary)',
+            ]}
+          >
+            {item.label.toLowerCase()}
+          </a>
+        ))}
+      </nav>
+
+      <button
+        id="mobile-toggle"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        class="lg:hidden cursor-pointer relative flex h-9 w-9 items-center justify-center rounded-lg border border-(--text-secondary)/10 bg-(--bg-secondary) text-text-primary transition"
+      >
+        <span class="mobile-line mobile-line--top absolute block h-0.5 w-4 rounded-full bg-current transition-all duration-300 ease-out"></span>
+        <span class="mobile-line mobile-line--middle absolute block h-0.5 w-4 rounded-full bg-current transition-all duration-200 ease-out"></span>
+        <span class="mobile-line mobile-line--bottom absolute block h-0.5 w-4 rounded-full bg-current transition-all duration-300 ease-out"></span>
+      </button>
+    </div>
   </div>
 
-  <!-- Mobile fullscreen menu -->
   <div
     id="mobile-menu"
-    class="bg-surface-primary text-text-primary fixed inset-0 z-40 flex flex-col items-start justify-center gap-8 ps-10 md:hidden"
+    class="lg:hidden bg-surface-primary/95 backdrop-blur-xl border-b border-(--text-secondary)/10"
   >
-    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
-    <a href="/" class="flex items-baseline gap-0.5 no-underline">
-      <span class="font-display text-3xl font-bold tracking-tight text-text-primary">arii</span>
-      <span class="font-display text-3xl font-bold tracking-tight text-highlight">.dev</span>
-    </a>
-    <div class="flex w-56 flex-col gap-1">
-      {
-        PRIMARY_NAV.map((item) => (
-          <HeaderLink href={item.href} description={item.description}>
-            {item.label}
-          </HeaderLink>
-        ))
-      }
-    </div>
-    <div class="flex w-56 flex-col gap-3">
-      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
-      <div class="flex flex-wrap gap-2">
-        {
-          categories.map((category) => (
+    <div class="page-container py-3 flex flex-col gap-1">
+      {PRIMARY_NAV.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'font-mono text-sm px-3 py-2.5 rounded-lg no-underline transition-all duration-200',
+            pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+              ? 'text-highlight bg-(--highlight)/10'
+              : 'text-text-secondary hover:text-text-primary hover:bg-(--bg-secondary)',
+          ]}
+        >
+          {item.label.toLowerCase()}
+        </a>
+      ))}
+
+      <div class="mt-2 border-t border-(--text-secondary)/10 pt-3 flex flex-col gap-2">
+        <span class="px-3 font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
+        <div class="flex flex-wrap gap-2 px-3 pb-1">
+          {categories.map((cat) => (
             <a
-              href={categoryHref(category)}
+              href={categoryHref(cat)}
               class:list={[
-                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
-                pathname.startsWith(categoryHref(category))
-                  ? "bg-(--highlight)/15 text-highlight"
-                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
+                'rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200',
+                pathname.startsWith(categoryHref(cat))
+                  ? 'bg-(--highlight)/15 text-highlight'
+                  : 'bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10',
               ]}
             >
-              {category}
+              {cat}
             </a>
-          ))
-        }
+          ))}
+        </div>
       </div>
     </div>
   </div>
-
-  <!-- Tablet (md to xl): right side panel -->
-  <div class="fixed top-0 right-0 z-50 hidden p-5 md:block xl:hidden">
-    <button
-      id="tablet-toggle"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      class="group cursor-pointer bg-surface-primary/80 text-text-primary relative flex h-10 w-10 items-center justify-center rounded-xl shadow-(--box-shadow) backdrop-blur-lg transition border border-(--text-secondary)/10"
-    >
-      <span class="sr-only">Toggle navigation menu</span>
-      <span class="tablet-line tablet-line--top absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
-      <span class="tablet-line tablet-line--middle absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-200 ease-out"></span>
-      <span class="tablet-line tablet-line--bottom absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
-    </button>
-  </div>
-
-  <!-- Tablet slide-in panel -->
-  <div
-    id="tablet-menu"
-    class="bg-surface-primary/90 text-text-primary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-8 border-l border-(--text-secondary)/10 px-8 shadow-(--box-shadow) backdrop-blur-xl md:flex xl:hidden"
-  >
-    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
-    <a href="/" class="flex items-baseline gap-0.5 no-underline">
-      <span class="font-display text-2xl font-bold tracking-tight text-text-primary">arii</span>
-      <span class="font-display text-2xl font-bold tracking-tight text-highlight">.dev</span>
-    </a>
-    <div class="flex w-full flex-col gap-1">
-      {
-        PRIMARY_NAV.map((item) => (
-          <HeaderLink href={item.href} description={item.description}>
-            {item.label}
-          </HeaderLink>
-        ))
-      }
-    </div>
-    <div class="flex w-full flex-col gap-3">
-      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
-      <div class="flex flex-wrap gap-2">
-        {
-          categories.map((category) => (
-            <a
-              href={categoryHref(category)}
-              class:list={[
-                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
-                pathname.startsWith(categoryHref(category))
-                  ? "bg-(--highlight)/15 text-highlight"
-                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
-              ]}
-            >
-              {category}
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </div>
-
-  <!-- Desktop (xl+): right sidebar -->
-  <nav
-    class="hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-8 xl:px-8 bg-surface-primary/60 backdrop-blur-xl border-l border-(--text-secondary)/10"
-  >
-    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
-    <a href="/" class="flex items-baseline gap-0.5 no-underline">
-      <span class="font-display text-2xl font-bold tracking-tight text-text-primary">arii</span>
-      <span class="font-display text-2xl font-bold tracking-tight text-highlight">.dev</span>
-    </a>
-    <div class="flex w-full flex-col gap-1">
-      {
-        PRIMARY_NAV.map((item) => (
-          <HeaderLink href={item.href} description={item.description}>
-            {item.label}
-          </HeaderLink>
-        ))
-      }
-    </div>
-    <div class="flex w-full flex-col gap-3">
-      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
-      <div class="flex flex-wrap gap-2">
-        {
-          categories.map((category) => (
-            <a
-              href={categoryHref(category)}
-              class:list={[
-                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
-                pathname.startsWith(categoryHref(category))
-                  ? "bg-(--highlight)/15 text-highlight"
-                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
-              ]}
-            >
-              {category}
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </nav>
 </header>
 
 <style>
-  #mobile-toggle,
-  #tablet-toggle {
-    color: var(--text-primary);
-  }
-
-  .mobile-line,
-  .tablet-line {
+  .mobile-line {
     left: 50%;
     top: 50%;
     transform-origin: center;
     translate: -50% -50%;
   }
 
-  .mobile-line--top,
-  .tablet-line--top {
-    transform: translateY(-5px);
-  }
+  .mobile-line--top    { transform: translateY(-5px); }
+  .mobile-line--middle { transform: translateY(0); }
+  .mobile-line--bottom { transform: translateY(5px); }
 
-  .mobile-line--middle,
-  .tablet-line--middle {
-    transform: translateY(0);
-  }
-
-  .mobile-line--bottom,
-  .tablet-line--bottom {
-    transform: translateY(5px);
-  }
-
-  /* Mobile fullscreen */
   #mobile-menu {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(100%);
-    transition:
-      transform 300ms ease,
-      opacity 300ms ease;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 300ms ease;
   }
 
   #mobile-menu.is-open {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(0);
+    max-height: 400px;
   }
 
-  #mobile-toggle.is-open .mobile-line--top {
-    transform: rotate(45deg);
-  }
-
-  #mobile-toggle.is-open .mobile-line--middle {
-    transform: scaleX(0.35);
-    opacity: 0;
-  }
-
-  #mobile-toggle.is-open .mobile-line--bottom {
-    transform: rotate(-45deg);
-  }
-
-  /* Tablet slide-in */
-  #tablet-menu {
-    transform: translateX(100%);
-    transition: transform 300ms ease;
-  }
-
-  #tablet-menu.is-open {
-    transform: translateX(0);
-  }
-
-  #tablet-toggle.is-open .tablet-line--top {
-    transform: rotate(45deg);
-  }
-
-  #tablet-toggle.is-open .tablet-line--middle {
-    transform: scaleX(0.35);
-    opacity: 0;
-  }
-
-  #tablet-toggle.is-open .tablet-line--bottom {
-    transform: rotate(-45deg);
-  }
+  #mobile-toggle.is-open .mobile-line--top    { transform: rotate(45deg); }
+  #mobile-toggle.is-open .mobile-line--middle { transform: scaleX(0); opacity: 0; }
+  #mobile-toggle.is-open .mobile-line--bottom { transform: rotate(-45deg); }
 </style>
 
 <script>
-  const bindMenuToggle = (toggleId: string, menuId: string) => {
-    const toggle = document.getElementById(toggleId) as HTMLButtonElement | null;
-    const menu = document.getElementById(menuId) as HTMLElement | null;
+  const initHeader = () => {
+    const toggle = document.getElementById('mobile-toggle') as HTMLButtonElement | null;
+    const menu   = document.getElementById('mobile-menu')   as HTMLElement | null;
 
     if (!toggle || !menu || toggle.dataset.bound === 'true') return;
-
     toggle.dataset.bound = 'true';
-    toggle.addEventListener('click', () => {
-      const isOpen = menu.classList.contains('is-open');
 
-      if (isOpen) {
-        menu.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      } else {
-        menu.classList.add('is-open');
-        toggle.classList.add('is-open');
-        toggle.setAttribute('aria-expanded', 'true');
-      }
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('is-open');
+      toggle.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
     });
   };
 
-  const initHeaderMenus = () => {
-    bindMenuToggle('mobile-toggle', 'mobile-menu');
-    bindMenuToggle('tablet-toggle', 'tablet-menu');
-  };
-
-  document.addEventListener('astro:page-load', initHeaderMenus);
-  initHeaderMenus();
+  document.addEventListener('astro:page-load', initHeader);
+  initHeader();
 </script>
