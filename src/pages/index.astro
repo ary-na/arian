@@ -13,22 +13,22 @@ const latest = posts
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   {/* Hero section */}
   <section class="page-container space-y-6 pt-15">
-   <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-  developer . melbourne
-  <span class="align-middle">🇦🇺</span><img
-    src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1ee-1f1f7.svg"
-    alt="Iranian imperial flag"
-    class="inline-block align-middle"
-    style="width: 1.2em; height: 1.2em;"
-  /> . ai systems
-</span>
+    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+      developer . melbourne
+      <span class="align-middle">🇦🇺</span><img
+        src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1ee-1f1f7.svg"
+        alt="Iranian imperial flag"
+        class="inline-block align-middle"
+        style="width: 1.2em; height: 1.2em;"
+      /> . ai systems
+    </span>
 
     <h1 class="text-5xl font-bold">
       <span data-typewriter="hi, i'm arian"></span>
       <span class="animate-blink">_</span>
     </h1>
 
-    <p class="text-lg">
+    <p class="text-lg max-w-lg">
       I write about what I'm learning, what I'm building, and the systems I
       work with.
     </p>
@@ -37,16 +37,22 @@ const latest = posts
       Mostly AI/ML, Swift, and whatever rabbit hole I fell into this week.
     </p>
 
-<div class="flex flex-col gap-4 text-xs font-mono">
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="/about" class="hover:text-secondary">about me</a>
-  </div>
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="/blog" class="hover:text-secondary">read the blog</a>
-  </div>
-</div>
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/about"
+        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+      >
+        <span class="text-highlight">→</span>
+        about me
+      </a>
+      <a
+        href="/blog"
+        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+      >
+        <span class="text-highlight">→</span>
+        read the blog
+      </a>
+    </div>
   </section>
 
   {/* Latest posts section */}
@@ -60,28 +66,16 @@ const latest = posts
       <span class="text-highlight">[{posts.length}]</span>
     </h2>
 
-    <ul
-      class="divide-y divide-dashed divide-secondary border border-dashed border-secondary rounded"
-    >
+    <ul class="flex flex-col gap-3">
       {
         latest.map((post) => (
           <li>
             <a
               href={`/blog/${post.id.replace(/\.mdx?$/, "")}`}
-              class="group grid grid-cols-[14px_1fr_auto] items-stretch gap-2 px-4 py-4 no-underline transition-all duration-200 hover:bg-(--bg-secondary) hover:pl-5"
+              class="group grid grid-cols-[1fr_auto] items-start gap-4 rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
             >
-              {/* Cursor */}
-              <div class="font-mono text-xs pt-1">
-                <span class="hidden animate-blink-slow text-highlight group-hover:inline">
-                  ▌
-                </span>
-                <span class="inline text-(--border-primary) group-hover:hidden">
-                  >
-                </span>
-              </div>
-
               {/* Title + Description */}
-              <div class="flex min-w-0 flex-col gap-2">
+              <div class="flex min-w-0 flex-col gap-1.5">
                 {post.data.category && (
                   <span class="font-mono text-[10px] text-highlight opacity-90">
                     {post.data.category}
@@ -98,7 +92,7 @@ const latest = posts
               </div>
 
               {/* Date */}
-              <div class="flex flex-col items-end text-right justify-start">
+              <div class="shrink-0 text-right">
                 <span class="font-mono text-[11px] text-(--text-tertiary)">
                   {post.data.pubDate.toLocaleDateString("en-AU", {
                     year: "numeric",
@@ -115,75 +109,75 @@ const latest = posts
   </section>
 
   {/* More section */}
-    <section class="py-15">
+  <section class="py-15">
     <div class="page-container space-y-6">
-    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-      keep exploring
-    </span>
-
-    <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
-      more
-    </h2>
-
-<div class="grid grid-cols-2 gap-2">
-  <a
-    href="/blog"
-    class="group grid grid-cols-[14px_1fr] items-stretch gap-2 rounded border border-dashed border-secondary px-4 py-4 no-underline transition-all duration-200 hover:bg-(--bg-secondary) hover:pl-5"
-  >
-    <div class="font-mono text-xs pt-1">
-      <span class="hidden animate-blink-slow text-highlight group-hover:inline">▌</span>
-      <span class="inline text-(--border-primary) group-hover:hidden">></span>
-    </div>
-    <div class="flex min-w-0 flex-col gap-2">
-      <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight">all posts</p>
-      <p class="font-mono text-[10px] text-(--text-tertiary)">read everything</p>
-    </div>
-  </a>
-  <a
-    href="/blog/category/project"
-    class="group grid grid-cols-[14px_1fr] items-stretch gap-2 rounded border border-dashed border-secondary px-4 py-4 no-underline transition-all duration-200 hover:bg-(--bg-secondary) hover:pl-5"
-  >
-    <div class="font-mono text-xs pt-1">
-      <span class="hidden animate-blink-slow text-highlight group-hover:inline">▌</span>
-      <span class="inline text-(--border-primary) group-hover:hidden">></span>
-    </div>
-    <div class="flex min-w-0 flex-col gap-2">
-      <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight">projects</p>
-      <p class="font-mono text-[10px] text-(--text-tertiary)">see what i built</p>
-    </div>
-  </a>
-</div>
-</div>
-  </section>
-
-  {/* Find me section */}
-  <section class="page-container py-15">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        elsewhere on the web
+        keep exploring
       </span>
 
       <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        find me
+        more
       </h2>
 
-<div class="flex flex-col gap-4 text-xs font-mono">
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="https://x.com/ariiii4n" class="hover:text-secondary">https://x.com/ariiii4n</a>
-  </div>
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="https://github.com/ary-na" class="hover:text-secondary">https://github.com/ary-na</a>
-  </div>
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="https://linkedin.com/in/arian-najafi-yamchelo" class="hover:text-secondary">https://linkedin.com/in/arian-najafi-yamchelo</a>
-  </div>
-  <div class="flex items-center gap-2">
-    <span class="text-secondary">></span>
-    <a href="https://gravatar.com/collectiveautomaticae806d67f2" class="hover:text-secondary">https://gravatar.com/collectiveautomaticae806d67f2</a>
-  </div>
-</div>
+      <div class="grid grid-cols-2 gap-3">
+        <a
+          href="/blog"
+          class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+        >
+          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">all posts</p>
+          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">read everything</p>
+        </a>
+        <a
+          href="/blog/category/project"
+          class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+        >
+          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">projects</p>
+          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">see what i built</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* Find me section */}
+  <section class="page-container py-15 space-y-6">
+    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+      elsewhere on the web
+    </span>
+
+    <h2 class="mb-4 flex text-3xl items-center gap-2 after:h-px after:flex-1">
+      find me
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <a
+        href="https://x.com/ariiii4n"
+        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      >
+        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">x / twitter</p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">@ariiii4n</p>
+      </a>
+      <a
+        href="https://github.com/ary-na"
+        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      >
+        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">github</p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">ary-na</p>
+      </a>
+      <a
+        href="https://linkedin.com/in/arian-najafi-yamchelo"
+        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      >
+        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">linkedin</p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">arian-najafi-yamchelo</p>
+      </a>
+      <a
+        href="https://gravatar.com/collectiveautomaticae806d67f2"
+        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      >
+        <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">gravatar</p>
+        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">collectiveautomaticae806d67f2</p>
+      </a>
+    </div>
   </section>
 </SiteLayout>
 

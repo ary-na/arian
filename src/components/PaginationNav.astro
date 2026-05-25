@@ -22,13 +22,13 @@ const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
     currentPage > 1 ? (
       <a
         href={hrefForPage(currentPage - 1)}
-        class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-secondary text-(--text-secondary) no-underline transition-all duration-200 hover:border-highlight hover:text-highlight"
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
         aria-label="Previous page"
       >
         <span class="text-xs">&lt;</span>
       </a>
     ) : (
-      <span class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-secondary text-(--text-secondary) opacity-30">
+      <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) opacity-30">
         <span class="text-xs">&lt;</span>
       </span>
     )
@@ -39,13 +39,13 @@ const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
       pages.map((page) => {
         const isCurrent = page === currentPage;
         return isCurrent ? (
-          <span class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-highlight bg-highlight/10 text-xs text-highlight">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-highlight/10 shadow-(--box-shadow) text-xs text-highlight">
             {page}
           </span>
         ) : (
           <a
             href={hrefForPage(page)}
-            class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-secondary text-xs text-(--text-secondary) no-underline transition-all duration-200 hover:border-highlight hover:text-highlight"
+            class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-xs text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
           >
             {page}
           </a>
@@ -58,13 +58,13 @@ const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
     currentPage < totalPages ? (
       <a
         href={hrefForPage(currentPage + 1)}
-        class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-secondary text-(--text-secondary) no-underline transition-all duration-200 hover:border-highlight hover:text-highlight"
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
         aria-label="Next page"
       >
         <span class="text-xs">&gt;</span>
       </a>
     ) : (
-      <span class="flex h-9 w-9 items-center justify-center rounded border border-dashed border-secondary text-(--text-secondary) opacity-30">
+      <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) opacity-30">
         <span class="text-xs">&gt;</span>
       </span>
     )

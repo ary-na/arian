@@ -36,42 +36,45 @@ const {
 >
   <ImageLightbox />
   <article class="space-y-10 page-container py-12">
-    <header class="space-y-6">
+    <header class="space-y-5">
       {
         category && (
-          <div class="font-mono text-xs text-(--text-secondary)">
-            cat:
-            <a
-              href={categoryHref(category)}
-              class="underline transition-colors duration-200 hover:text-(--accent)"
-            >
-              {category}
-            </a>
-          </div>
+          <a
+            href={categoryHref(category)}
+            class="inline-block rounded-full bg-(--bg-secondary) px-3 py-1 font-mono text-[10px] tracking-widest text-(--text-secondary) no-underline shadow-(--box-shadow) transition-all duration-200 hover:text-highlight hover:bg-(--highlight)/10"
+          >
+            {category}
+          </a>
         )
       }
+
       <h1 class="text-4xl">{title}</h1>
+
       {
         description && (
-          <span class="text-secondary block font-mono text-xs leading-normal italic">
+          <p class="border-l-2 border-(--highlight) pl-4 font-mono text-xs leading-relaxed italic text-(--text-secondary)">
             {description}
-          </span>
+          </p>
         )
       }
-      <div
-        class="border-secondary flex flex-col gap-1 border-t pt-6 font-mono text-xs text-(--text-secondary)"
-      >
+
+      <div class="flex flex-wrap items-center gap-3 rounded-lg bg-(--bg-secondary) px-4 py-3 font-mono text-xs text-(--text-secondary) shadow-(--box-shadow)">
         <FormattedDate date={pubDate} />
+        <span class="text-(--text-secondary)/30">·</span>
         <ReadingTime body={body ?? ''} />
         {
           updatedDate && (
-            <span class="italic mt-2">
-              updated <FormattedDate date={updatedDate} />
-            </span>
+            <>
+              <span class="text-(--text-secondary)/30">·</span>
+              <span class="italic">
+                updated <FormattedDate date={updatedDate} />
+              </span>
+            </>
           )
         }
       </div>
     </header>
+
     {
       heroImage && (
         <div class="w-full">
@@ -81,24 +84,25 @@ const {
             quality={100}
             src={heroImage}
             alt={heroImageAlt ?? title}
-            class="rounded-md"
+            class="rounded-lg"
           />
         </div>
       )
     }
+
     <div class="prose dark:prose-invert max-w-none">
       <slot />
     </div>
 
-    <footer class="space-y-6 font-mono text-xs text-(--text-secondary)">
+    <footer class="space-y-6">
       {
         tags && tags.length > 0 && (
-          <div class="flex flex-wrap gap-4">
+          <div class="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <a
                 rel="tag"
                 href={tagHref(tag)}
-                class="text-secondary no-underline transition-colors duration-200 hover:text-(--accent)"
+                class="rounded-full bg-(--bg-secondary) px-3 py-1 font-mono text-[10px] tracking-widest text-(--text-secondary) no-underline shadow-(--box-shadow) transition-all duration-200 hover:text-highlight hover:bg-(--highlight)/10"
               >
                 #{tag}
               </a>
@@ -106,12 +110,12 @@ const {
           </div>
         )
       }
-      <div class="border-secondary border-t pt-6">
+      <div class="border-t border-(--text-secondary)/10 pt-6">
         <a
           href="/blog"
-          class="transition-colors duration-200 hover:text-(--accent)"
+          class="inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs text-(--text-secondary) no-underline shadow-(--box-shadow) transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
         >
-          &lt; back to posts
+          ← back to posts
         </a>
       </div>
     </footer>

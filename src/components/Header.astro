@@ -7,41 +7,37 @@ const posts = await getCollection('blog');
 const categories = [
   ...new Set(posts.flatMap((post) => post.data.category ?? [])),
 ].sort();
+
+const pathname = Astro.url.pathname;
 ---
 
 <header class="text-text-primary">
   <!-- Mobile (<md): fullscreen overlay -->
-  <div class="fixed top-0 right-0 z-50 p-6 md:hidden">
+  <div class="fixed top-0 right-0 z-50 p-5 md:hidden">
     <button
       id="mobile-toggle"
       aria-label="Toggle menu"
       aria-expanded="false"
-      class="group cursor-pointer border-text-secondary/20 bg-surface-primary/85 text-text-primary hover:bg-surface-primary relative flex h-11 w-11 items-center justify-center rounded-full border shadow-(--box-shadow) backdrop-blur-md transition"
+      class="group cursor-pointer bg-surface-primary/80 text-text-primary relative flex h-10 w-10 items-center justify-center rounded-xl shadow-(--box-shadow) backdrop-blur-lg transition border border-(--text-secondary)/10"
     >
       <span class="sr-only">Toggle navigation menu</span>
-      <span
-        class="mobile-line mobile-line--top absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-300 ease-out"
-      ></span>
-      <span
-        class="mobile-line mobile-line--middle absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-200 ease-out"
-      ></span>
-      <span
-        class="mobile-line mobile-line--bottom absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-300 ease-out"
-      ></span>
+      <span class="mobile-line mobile-line--top absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
+      <span class="mobile-line mobile-line--middle absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-200 ease-out"></span>
+      <span class="mobile-line mobile-line--bottom absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
     </button>
   </div>
 
   <!-- Mobile fullscreen menu -->
   <div
     id="mobile-menu"
-    class="bg-surface-primary text-text-primary fixed inset-0 z-40 flex flex-col items-start justify-center gap-6 ps-10 md:hidden"
+    class="bg-surface-primary text-text-primary fixed inset-0 z-40 flex flex-col items-start justify-center gap-8 ps-10 md:hidden"
   >
-    <span
-      class="font-display border-primary w-200 border-b pb-2 text-3xl font-bold tracking-tight"
-    >
-      <a href="/">{SITE_TITLE}</a>
-    </span>
-    <div class="flex w-100 flex-col gap-2">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
+    <a href="/" class="flex items-baseline gap-0.5 no-underline">
+      <span class="font-display text-3xl font-bold tracking-tight text-text-primary">arii</span>
+      <span class="font-display text-3xl font-bold tracking-tight text-highlight">.dev</span>
+    </a>
+    <div class="flex w-56 flex-col gap-1">
       {
         PRIMARY_NAV.map((item) => (
           <HeaderLink href={item.href} description={item.description}>
@@ -50,14 +46,22 @@ const categories = [
         ))
       }
     </div>
-    <div class="flex w-200 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b">
-        categories
-      </span>
-      <div class="text-text-secondary text-sm italic">
+    <div class="flex w-56 flex-col gap-3">
+      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
+      <div class="flex flex-wrap gap-2">
         {
           categories.map((category) => (
-            <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
+            <a
+              href={categoryHref(category)}
+              class:list={[
+                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
+                pathname.startsWith(categoryHref(category))
+                  ? "bg-(--highlight)/15 text-highlight"
+                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
+              ]}
+            >
+              {category}
+            </a>
           ))
         }
       </div>
@@ -65,37 +69,31 @@ const categories = [
   </div>
 
   <!-- Tablet (md to xl): right side panel -->
-  <div class="fixed top-0 right-0 z-50 hidden p-6 md:block xl:hidden">
+  <div class="fixed top-0 right-0 z-50 hidden p-5 md:block xl:hidden">
     <button
       id="tablet-toggle"
       aria-label="Toggle menu"
       aria-expanded="false"
-      class="group cursor-pointer border-text-secondary/20 bg-surface-primary/85 text-text-primary hover:bg-surface-primary relative flex h-11 w-11 items-center justify-center rounded-full border shadow-(--box-shadow) backdrop-blur-md transition"
+      class="group cursor-pointer bg-surface-primary/80 text-text-primary relative flex h-10 w-10 items-center justify-center rounded-xl shadow-(--box-shadow) backdrop-blur-lg transition border border-(--text-secondary)/10"
     >
       <span class="sr-only">Toggle navigation menu</span>
-      <span
-        class="tablet-line tablet-line--top absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-300 ease-out"
-      ></span>
-      <span
-        class="tablet-line tablet-line--middle absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-200 ease-out"
-      ></span>
-      <span
-        class="tablet-line tablet-line--bottom absolute block h-0.5 w-5 rounded-full bg-current transition-all duration-300 ease-out"
-      ></span>
+      <span class="tablet-line tablet-line--top absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
+      <span class="tablet-line tablet-line--middle absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-200 ease-out"></span>
+      <span class="tablet-line tablet-line--bottom absolute block h-0.5 w-4.5 rounded-full bg-current transition-all duration-300 ease-out"></span>
     </button>
   </div>
 
   <!-- Tablet slide-in panel -->
   <div
     id="tablet-menu"
-    class="bg-surface-primary border-text-secondary/15 text-text-primary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-6 border-l px-8 shadow-(--box-shadow) md:flex xl:hidden"
+    class="bg-surface-primary/90 text-text-primary fixed top-0 right-0 z-40 hidden h-full w-68 flex-col items-start justify-center gap-8 border-l border-(--text-secondary)/10 px-8 shadow-(--box-shadow) backdrop-blur-xl md:flex xl:hidden"
   >
-    <span
-      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
-    >
-      <a href="/">{SITE_TITLE}</a>
-    </span>
-    <div class="flex w-100 flex-col gap-2">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
+    <a href="/" class="flex items-baseline gap-0.5 no-underline">
+      <span class="font-display text-2xl font-bold tracking-tight text-text-primary">arii</span>
+      <span class="font-display text-2xl font-bold tracking-tight text-highlight">.dev</span>
+    </a>
+    <div class="flex w-full flex-col gap-1">
       {
         PRIMARY_NAV.map((item) => (
           <HeaderLink href={item.href} description={item.description}>
@@ -104,30 +102,38 @@ const categories = [
         ))
       }
     </div>
-    <div class="flex w-100 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b">
-        categories
-      </span>
-      <div class="text-text-secondary text-sm italic">
+    <div class="flex w-full flex-col gap-3">
+      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
+      <div class="flex flex-wrap gap-2">
         {
           categories.map((category) => (
-            <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
+            <a
+              href={categoryHref(category)}
+              class:list={[
+                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
+                pathname.startsWith(categoryHref(category))
+                  ? "bg-(--highlight)/15 text-highlight"
+                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
+              ]}
+            >
+              {category}
+            </a>
           ))
         }
       </div>
     </div>
   </div>
 
-  <!-- Desktop (xl+): right sidebar unchanged -->
+  <!-- Desktop (xl+): right sidebar -->
   <nav
-    class="xl:bg-surface-primary/35 hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-6 xl:px-8 xl:backdrop-blur-sm"
+    class="hidden xl:fixed xl:top-0 xl:right-0 xl:flex xl:h-full xl:w-68 xl:flex-col xl:items-start xl:justify-center xl:gap-8 xl:px-8 bg-surface-primary/60 backdrop-blur-xl border-l border-(--text-secondary)/10"
   >
-    <span
-      class="font-display border-primary w-100 border-b pb-2 text-3xl font-bold tracking-tight"
-    >
-      <a href="/">{SITE_TITLE}</a>
-    </span>
-    <div class="flex w-100 flex-col gap-2">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
+    <a href="/" class="flex items-baseline gap-0.5 no-underline">
+      <span class="font-display text-2xl font-bold tracking-tight text-text-primary">arii</span>
+      <span class="font-display text-2xl font-bold tracking-tight text-highlight">.dev</span>
+    </a>
+    <div class="flex w-full flex-col gap-1">
       {
         PRIMARY_NAV.map((item) => (
           <HeaderLink href={item.href} description={item.description}>
@@ -136,14 +142,22 @@ const categories = [
         ))
       }
     </div>
-    <div class="flex w-100 flex-col gap-1">
-      <span class="font-display border-primary mb-2 border-b">
-        categories
-      </span>
-      <div class="text-text-secondary text-sm italic">
+    <div class="flex w-full flex-col gap-3">
+      <span class="font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase">categories</span>
+      <div class="flex flex-wrap gap-2">
         {
           categories.map((category) => (
-            <HeaderLink href={categoryHref(category)}>{category}</HeaderLink>
+            <a
+              href={categoryHref(category)}
+              class:list={[
+                "rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200",
+                pathname.startsWith(categoryHref(category))
+                  ? "bg-(--highlight)/15 text-highlight"
+                  : "bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10",
+              ]}
+            >
+              {category}
+            </a>
           ))
         }
       </div>
@@ -167,7 +181,7 @@ const categories = [
 
   .mobile-line--top,
   .tablet-line--top {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
   }
 
   .mobile-line--middle,
@@ -177,7 +191,7 @@ const categories = [
 
   .mobile-line--bottom,
   .tablet-line--bottom {
-    transform: translateY(6px);
+    transform: translateY(5px);
   }
 
   /* Mobile fullscreen */
@@ -235,9 +249,7 @@ const categories = [
 
 <script>
   const bindMenuToggle = (toggleId: string, menuId: string) => {
-    const toggle = document.getElementById(
-      toggleId,
-    ) as HTMLButtonElement | null;
+    const toggle = document.getElementById(toggleId) as HTMLButtonElement | null;
     const menu = document.getElementById(menuId) as HTMLElement | null;
 
     if (!toggle || !menu || toggle.dataset.bound === 'true') return;
