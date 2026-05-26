@@ -104,6 +104,63 @@ dtm restore .zshrc -n 3
 
 ## highlights
 
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/dtm/init.webp"
+      alt="Initilise command output"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      init command output
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/dtm/watch.webp"
+      alt="Watch command output"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      watch command output
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/dtm/snapshot.webp"
+      alt="Snapshot command output"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      snapshot command output
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/dtm/status.webp"
+      alt="Status command output"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      status command output
+    </figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img
+    class="rounded-md"
+    src="/blog/dtm/reset.webp"
+    alt="Reset command output"
+  />
+  <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+    reset command output
+  </figcaption>
+</figure>
+
 Using a plain git repo as the storage layer was the core design decision. It means the entire snapshot history, diffing, and restore logic is already built, git handles all of it. The tool is mostly just a clean interface on top of git primitives that most developers already understand.
 
 The launchd approach for scheduling was deliberate. A lot of background tools run a persistent daemon which sits in memory and shows up in Activity Monitor. launchd is the macOS-native way to schedule tasks, it's the same mechanism used by system services. The job wakes up, does its work in a few seconds, and disappears. No footprint between runs.
