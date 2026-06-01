@@ -1,0 +1,172 @@
+---
+title: 'hushlink: zero-knowledge one-time secret sharing'
+description: 'a zero-knowledge secret sharing web app — AES-256-GCM encrypted in the browser, stored in DynamoDB, destroyed on first read'
+pubDate: 'Jun 1 2026'
+heroImage: '@assets/blog/hushlink.webp'
+heroImageAlt: 'HushLink secret creation and reveal screens'
+category: 'project'
+tags:
+  - nextjs
+  - react
+  - typescript
+  - dynamodb
+  - cryptography
+  - vercel
+---
+
+import ProjectLinks from '@components/ProjectLink.astro';
+
+A personal project for sharing secrets safely — passwords, API keys, `.env` files — without leaving them in chat logs or email threads. The core constraint: the server never sees the plaintext, and the secret is gone the moment it is read.
+
+<ProjectLinks
+  demo="https://hushlink.app"
+  demoLabel="live demo"
+  demoCrossed
+  github="https://github.com/ary-na/hushlink"
+  githubLabel="github"
+/>
+
+## key features
+
+- AES-256-GCM encryption entirely in the browser before anything hits the server
+- One-time retrieval — DynamoDB `DeleteCommand` with `ReturnValues: ALL_OLD` is the fetch
+- Split-delivery UX: link and decryption code sent through separate channels
+- Optional password layer wrapping the encryption key (key-wrapping via a second PBKDF2 + AES-GCM pass)
+- Decoy credentials stored alongside real secrets for plausible deniability
+- API key support with elevated rate limits for programmatic use
+- DynamoDB atomic counters for per-IP and per-key rate limiting that survive cold starts
+
+## tech stack
+
+```bash
+# core
+next.js 15 | react 19 | typescript | vercel
+```
+
+```bash
+# storage & auth
+aws dynamodb | iam role auth | api key management
+```
+
+```bash
+# crypto
+web crypto api | pbkdf2 | aes-256-gcm | crockford base32
+```
+
+## how it works
+
+**Encryption** (`lib/crypto.ts`): The browser generates a random 32-byte salt and 12-byte IV, derives an AES-256-GCM key from a Crockford base32 code using PBKDF2 at 310,000 iterations, and encrypts the plaintext. If a password is set, the content key is exported, encrypted with a second password-derived key, and the wrapped key travels alongside the ciphertext. The server receives only base64-encoded ciphertext — never the code, never the password, never the plaintext.
+
+**Code generation** (`lib/constants.ts`): A 16-character Crockford base32 code (80 bits of entropy, formatted `XXXX-XXXX-XXXX-XXXX`) is generated client-side via `crypto.getRandomValues`. Crockford's alphabet drops I, L, O, U to prevent visual misreads.
+
+**Storage** (`app/api/secret/route.ts`): A `PutCommand` with `ConditionExpression: "attribute_not_exists(pk)"` prevents ID collisions. Secrets are stored with a DynamoDB TTL for automatic expiry. A separate decoy item (`hld:{id}`) stores fake credentials so that a consumed link returns plausible-looking data rather than an empty 404.
+
+**Retrieval**: A single `DeleteCommand` with `ReturnValues: ALL_OLD` atomically fetches and destroys the record in one operation — no race condition where two concurrent readers both succeed.
+
+**Rate limiting**: Per-IP and per-key limits use DynamoDB `UpdateCommand` with an atomic `ADD` expression. The window key is `rl:{ip}:{action}:{minute}`. API key holders get 6× higher limits. The implementation fails open on DynamoDB errors — availability over perfect enforcement.
+
+**Two-step share UX** (`components/ShareView.tsx`): After encryption, the sender must copy the link before the code is shown. The "Continue" button is disabled until the link is copied. Once the code is copied, a 60-second timer auto-clears the clipboard, and a `visibilitychange` listener wipes it immediately if the tab is hidden.
+
+**API keys** (`lib/apikeys.ts`): Keys are 160-bit hex values prefixed `hl_`, stored as SHA-256 hashes in DynamoDB. Validation is a hash lookup — the raw key never persists anywhere.
+
+## highlights
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/home.webp"
+      alt="HushLink create form with secret textarea, expiry selector, password lock toggle, and Create link button"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      create tab — secret input form
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/copy-the-link.webp"
+      alt="Step 1 of 2 — Copy the link, showing the generated share URL and a disabled Copy the link first button"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      step 1 of 2 — copy the link (not yet copied)
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/copied-the-link.webp"
+      alt="Step 1 of 2 — Copy the link after copying, with a green Copied confirmation and an enabled Continue button"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      step 1 of 2 — copy the link (copied, continue unlocked)
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/copy-the-code.webp"
+      alt="Step 2 of 2 — Send the code separately, showing the decryption code, a green Code copied confirmation, and an active Done button"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      step 2 of 2 — send the code separately
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/secret-is-live.webp"
+      alt="Secret is live confirmation screen with encryption summary: AES-256-GCM, PBKDF2 310k iterations, two-channel delivery, single read, 24-hour expiry"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      secret is live — encryption summary
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/how-it-works.webp"
+      alt="How it works tab listing five steps: message locked in browser, link and code split across channels, opening the link destroys it, only the right code unlocks it, secret disappears after 30 seconds"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      how it works tab
+    </figcaption>
+  </figure>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/stay-safe.webp"
+      alt="Stay safe tab showing security considerations for browser extensions, clipboard managers, and safe usage practices"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      stay safe tab — security considerations
+    </figcaption>
+  </figure>
+  <figure>
+    <img
+      class="rounded-md"
+      src="/blog/hushlink/api.webp"
+      alt="API tab showing programmatic access with key generation, curl usage example, and rate limits: 10 creates/min anonymous, 60 creates/min with API key"
+    />
+    <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
+      api tab — key generation and rate limits
+    </figcaption>
+  </figure>
+</div>
+
+The split-delivery pattern is the whole point of the UX. A link alone reveals nothing — it contains only the encrypted blob ID. A code alone is useless without the ciphertext. Both are required, and the UI enforces sending them separately by gating each step.
+
+The decoy system was an interesting addition. When a secret has already been read, the API returns `{ found: false, decoy: "DATABASE_URL=..." }` — a randomly selected fake credential string. A recipient who forwards the link to someone else sees plausible-looking data rather than a blank error, which makes the one-time nature less obvious to casual snooping.
+
+The key-wrapping for password protection required some care. The content key is derived from the random code (not the password), which keeps the code as the primary decryption factor. The password wraps the exported content key separately. Decrypt flow: derive password key → unwrap content key → decrypt ciphertext. This means the password alone cannot decrypt anything without the code, and vice versa.
+
+Using DynamoDB's `DeleteCommand` with `ReturnValues: ALL_OLD` for the fetch-and-delete turned out to be exactly the right primitive. It is atomic by design, requires no transactions or conditional writes, and returns the data in the same call. Redis `GETDEL` is the more common choice for this pattern, but DynamoDB handles it just as cleanly with TTL-based expiry built in.
