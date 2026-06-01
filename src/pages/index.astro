@@ -1,6 +1,6 @@
 ---
 import SiteLayout from '@layouts/SiteLayout.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
+import { SITE_DESCRIPTION, SITE_TITLE, SHIPPED, SOCIAL_LINKS, TECH_STACK } from '@/consts';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
@@ -8,38 +8,11 @@ const posts = await getCollection('blog');
 const latest = posts
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
-
-const SHIPPED = [
-  {
-    href: '/blog/lazy-commit',
-    name: 'lazy-commit',
-    description: 'AI-powered conventional commit message generator',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/lstage',
-    name: 'lstage',
-    description: 'Stage and unstage git files by number, no paths needed',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/syncback',
-    name: 'syncback',
-    description: 'Merge branches, push, and switch back in one command',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/dtm',
-    name: 'dtm',
-    description: 'Auto-snapshots your dotfiles and pushes them to GitHub',
-    tag: 'cli · typescript',
-  },
-];
 ---
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   {/* Hero section */}
-  <section class="page-container space-y-5 py-10">
+  <section class="page-container space-y-7 py-24">
     <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
       developer . melbourne
       <span class="align-middle">🇦🇺</span><img
@@ -67,14 +40,14 @@ const SHIPPED = [
     <div class="flex flex-wrap gap-3">
       <a
         href="/about"
-        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-5 py-2.5 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
       >
         <span class="text-highlight">→</span>
         about me
       </a>
       <a
         href="/blog"
-        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-5 py-2.5 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
       >
         <span class="text-highlight">→</span>
         read the blog
@@ -83,8 +56,8 @@ const SHIPPED = [
   </section>
 
   {/* Shipped section */}
-  <section class="page-container py-10 flex flex-col gap-5">
-    <div class="flex flex-col gap-1">
+  <section class="page-container py-20 flex flex-col gap-8">
+    <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
         tools i've built and use daily
       </span>
@@ -93,12 +66,14 @@ const SHIPPED = [
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {
-        SHIPPED.map((item) => (
+        SHIPPED.map((item, i) => (
           <a
+            data-animate
+            style={`--animate-delay: ${i * 80}ms`}
             href={item.href}
-            class="group flex flex-col gap-2 rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+            class="group flex flex-col gap-3 rounded-xl bg-(--bg-secondary) px-5 py-5 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
           >
             <div class="flex items-center justify-between gap-2">
               <p class="font-mono text-sm text-(--text-primary) transition-colors group-hover:text-highlight">
@@ -117,9 +92,55 @@ const SHIPPED = [
     </div>
   </section>
 
+  {/* Tech stack section */}
+  <section class="w-full py-20 flex flex-col gap-8">
+    <div class="page-container flex flex-col gap-2">
+      <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
+        things i build with
+      </span>
+      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        stack
+      </h2>
+    </div>
+
+    <div
+      class="w-full border-y border-(--text-secondary)/10 py-15"
+      style="background: color-mix(in srgb, var(--bg-secondary) 45%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);"
+    >
+      <div
+        class="overflow-hidden"
+        style="mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);"
+      >
+        <div
+          class="marquee-track flex"
+          style="animation: marquee 30s linear infinite;"
+          onmouseenter="this.style.animationPlayState='paused'"
+          onmouseleave="this.style.animationPlayState='running'"
+        >
+          {
+            [...TECH_STACK, ...TECH_STACK].map((tech) => (
+              <div class="group flex shrink-0 flex-col items-center gap-3 px-10 sm:px-14">
+                <img
+                  src={`https://cdn.simpleicons.org/${tech.icon}`}
+                  alt={tech.name}
+                  width="28"
+                  height="28"
+                  class="tech-icon h-7 w-7"
+                />
+                <span class="font-mono text-[9px] whitespace-nowrap text-(--text-tertiary) transition-colors duration-200 group-hover:text-(--text-secondary)">
+                  {tech.name}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
   {/* Latest posts section */}
-  <section class="page-container py-10 flex flex-col gap-5">
-    <div class="flex flex-col gap-1">
+  <section class="page-container py-20 flex flex-col gap-8">
+    <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
         things I'm building and figuring out
       </span>
@@ -129,16 +150,15 @@ const SHIPPED = [
       </h2>
     </div>
 
-    <ul class="flex flex-col gap-3">
+    <ul class="flex flex-col gap-4">
       {
-        latest.map((post) => (
-          <li>
+        latest.map((post, i) => (
+          <li data-animate style={`--animate-delay: ${i * 60}ms`}>
             <a
-              href={`/blog/${post.id.replace(/\.mdx?$/, '')}`}
-              class="group grid grid-cols-[1fr_auto] items-start gap-4 rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+              href={`/blog/${post.id}`}
+              class="group grid grid-cols-[1fr_auto] items-start gap-4 rounded-xl bg-(--bg-secondary) px-5 py-5 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
             >
-              {/* Title + Description */}
-              <div class="flex min-w-0 flex-col gap-1.5">
+              <div class="flex min-w-0 flex-col gap-2">
                 {post.data.category && (
                   <span class="font-mono text-[10px] text-highlight opacity-90">
                     {post.data.category}
@@ -154,7 +174,6 @@ const SHIPPED = [
                 )}
               </div>
 
-              {/* Date */}
               <div class="shrink-0 text-right">
                 <span class="font-mono text-[11px] text-(--text-tertiary)">
                   {post.data.pubDate.toLocaleDateString('en-AU', {
@@ -172,9 +191,9 @@ const SHIPPED = [
   </section>
 
   {/* More section */}
-  <section class="py-10">
-    <div class="page-container flex flex-col gap-5">
-      <div class="flex flex-col gap-1">
+  <section class="py-20">
+    <div class="page-container flex flex-col gap-8">
+      <div class="flex flex-col gap-2">
         <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
           keep exploring
         </span>
@@ -183,30 +202,29 @@ const SHIPPED = [
         </h2>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-2 gap-4">
         <a
+          data-animate
           href="/blog"
-          class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+          class="group rounded-xl bg-(--bg-secondary) px-5 py-5 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
         >
-          <p
-            class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-          >
+          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">
             all posts
           </p>
-          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">
+          <p class="mt-1.5 font-mono text-[10px] text-(--text-tertiary)">
             read everything
           </p>
         </a>
         <a
+          data-animate
+          style="--animate-delay: 80ms"
           href="/blog/category/project"
-          class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+          class="group rounded-xl bg-(--bg-secondary) px-5 py-5 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
         >
-          <p
-            class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-          >
+          <p class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors">
             projects
           </p>
-          <p class="mt-1 font-mono text-[10px] text-(--text-tertiary)">
+          <p class="mt-1.5 font-mono text-[10px] text-(--text-tertiary)">
             see what i built
           </p>
         </a>
@@ -215,8 +233,8 @@ const SHIPPED = [
   </section>
 
   {/* Find me section */}
-  <section class="page-container py-10 flex flex-col gap-5">
-    <div class="flex flex-col gap-1">
+  <section class="page-container py-20 flex flex-col gap-8">
+    <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
         elsewhere on the web
       </span>
@@ -225,59 +243,26 @@ const SHIPPED = [
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <a
-        href="https://x.com/ariiii4n"
-        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-      >
-        <p
-          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-        >
-          x / twitter
-        </p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
-          @ariiii4n
-        </p>
-      </a>
-      <a
-        href="https://github.com/ary-na"
-        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-      >
-        <p
-          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-        >
-          github
-        </p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
-          ary-na
-        </p>
-      </a>
-      <a
-        href="https://linkedin.com/in/arian-najafi-yamchelo"
-        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-      >
-        <p
-          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-        >
-          linkedin
-        </p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
-          arian-najafi-yamchelo
-        </p>
-      </a>
-      <a
-        href="https://gravatar.com/collectiveautomaticae806d67f2"
-        class="group rounded-lg bg-(--bg-secondary) px-4 py-4 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-      >
-        <p
-          class="font-mono text-xs text-(--text-primary) group-hover:text-highlight transition-colors"
-        >
-          gravatar
-        </p>
-        <p class="mt-1 font-mono text-[10px] text-(--text-tertiary) truncate">
-          collectiveautomaticae806d67f2
-        </p>
-      </a>
+    <div class="flex flex-col divide-y divide-(--text-secondary)/10 overflow-hidden rounded-xl border border-(--text-secondary)/10">
+      {
+        SOCIAL_LINKS.map((link, i) => (
+          <a
+            data-animate
+            style={`--animate-delay: ${i * 55}ms`}
+            href={link.href}
+            target={link.href.startsWith('mailto') ? undefined : '_blank'}
+            rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+            class="group flex items-center justify-between gap-4 bg-(--bg-secondary) px-5 py-5 no-underline transition-all duration-300 hover:bg-(--highlight)/8 hover:pl-7"
+          >
+            <span class="font-mono text-sm text-text-primary transition-colors duration-200 group-hover:text-highlight">
+              {link.label}
+            </span>
+            <span class="hidden font-mono text-xs text-(--text-tertiary) sm:block">
+              {link.handle}
+            </span>
+          </a>
+        ))
+      }
     </div>
   </section>
 </SiteLayout>

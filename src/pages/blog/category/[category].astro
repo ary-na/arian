@@ -9,17 +9,19 @@ export async function getStaticPaths() {
     ...new Set(posts.flatMap((post) => post.data.category ?? [])),
   ];
 
-  return categories.map((category) => ({
-    params: { category },
-    props: { category },
-  }));
+  return categories.map((category) => {
+    const categoryPosts = posts
+      .filter((post) => post.data.category?.includes(category))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    return {
+      params: { category },
+      props: { category, posts: categoryPosts },
+    };
+  });
 }
 
-const { category } = Astro.props;
+const { category, posts } = Astro.props;
 const description = `Posts filed under ${category}`;
-const posts = (await getCollection('blog'))
-  .filter((post) => post.data.category?.includes(category))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const paginatedPosts = posts.slice(0, BLOG_PAGE_SIZE);
 const totalPages = Math.ceil(posts.length / BLOG_PAGE_SIZE);
 const countLabel = 'posts in this category';

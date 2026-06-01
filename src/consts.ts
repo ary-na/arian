@@ -21,6 +21,84 @@ export const PRIMARY_NAV: NavItem[] = [
 
 export const BLOG_PAGE_SIZE = 8;
 
+export type ShippedItem = {
+  href: string;
+  name: string;
+  description: string;
+  tag: string;
+};
+
+export const SHIPPED: ShippedItem[] = [
+  {
+    href: '/blog/lazy-commit',
+    name: 'lazy-commit',
+    description: 'AI-powered conventional commit message generator',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/lstage',
+    name: 'lstage',
+    description: 'Stage and unstage git files by number, no paths needed',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/syncback',
+    name: 'syncback',
+    description: 'Merge branches, push, and switch back in one command',
+    tag: 'cli · typescript',
+  },
+  {
+    href: '/blog/dtm',
+    name: 'dtm',
+    description: 'Auto-snapshots your dotfiles and pushes them to GitHub',
+    tag: 'cli · typescript',
+  },
+];
+
+export type SocialLink = {
+  href: string;
+  label: string;
+  handle: string;
+  icon?: string;
+};
+
+export const SOCIAL_LINKS: SocialLink[] = [
+  { href: 'https://github.com/ary-na', label: 'github', handle: 'ary-na', icon: 'github' },
+  { href: 'https://x.com/ariiii4n', label: 'x / twitter', handle: '@ariiii4n', icon: 'x' },
+  {
+    href: 'https://linkedin.com/in/arian-najafi-yamchelo',
+    label: 'linkedin',
+    handle: 'arian-najafi-yamchelo',
+    icon: 'linkedin',
+  },
+  {
+    href: 'https://gravatar.com/collectiveautomaticae806d67f2',
+    label: 'gravatar',
+    handle: 'collectiveautomaticae806d67f2',
+    icon: 'gravatar',
+  },
+  { href: 'mailto:hi@arii.dev', label: 'email', handle: 'hi@arii.dev' },
+];
+
+export type TechItem = {
+  name: string;
+  icon: string;
+};
+
+export const TECH_STACK: TechItem[] = [
+  { name: 'TypeScript', icon: 'typescript' },
+  { name: 'Python', icon: 'python' },
+  { name: 'Swift', icon: 'swift' },
+  { name: 'Kotlin', icon: 'kotlin' },
+  { name: 'React', icon: 'react' },
+  { name: 'Node.js', icon: 'nodedotjs' },
+  { name: 'Tailwind', icon: 'tailwindcss' },
+  { name: 'Astro', icon: 'astro' },
+  { name: 'Flask', icon: 'flask' },
+  { name: 'PyTorch', icon: 'pytorch' },
+  { name: 'C++', icon: 'cplusplus' },
+];
+
 export const categoryHref = (category: string) =>
   `/blog/category/${encodeURIComponent(category)}`;
 export const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag)}`;

@@ -7,17 +7,19 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
   const tags = [...new Set(posts.flatMap((post) => post.data.tags ?? []))];
 
-  return tags.map((tag) => ({
-    params: { tag },
-    props: { tag },
-  }));
+  return tags.map((tag) => {
+    const tagPosts = posts
+      .filter((post) => post.data.tags?.includes(tag))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    return {
+      params: { tag },
+      props: { tag, posts: tagPosts },
+    };
+  });
 }
 
-const { tag } = Astro.props;
+const { tag, posts } = Astro.props;
 const description = `Posts filed under ${tag}`;
-const posts = (await getCollection('blog'))
-  .filter((post) => post.data.tags?.includes(tag))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const paginatedPosts = posts.slice(0, BLOG_PAGE_SIZE);
 const totalPages = Math.ceil(posts.length / BLOG_PAGE_SIZE);
 const countLabel = 'posts with this tag';

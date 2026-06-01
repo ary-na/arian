@@ -32,3 +32,9 @@ const { title, description, image, canonicalPath, contentClass, schema } =
     <Footer />
   </body>
 </html>
+
+<script>
+  import { initScrollAnimations } from '@/scripts/scroll-animate';
+  document.addEventListener('astro:page-load', initScrollAnimations);
+  initScrollAnimations();
+</script>

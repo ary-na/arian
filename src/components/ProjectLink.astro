@@ -1,16 +1,34 @@
 ---
+interface Props {
+  demo?: string;
+  github?: string;
+  githubBackend?: string;
+  npm?: string;
+  trello?: string;
+  email?: string;
+  demoCrossed?: boolean;
+  demoLabel?: string;
+  githubLabel?: string;
+  githubBackendLabel?: string;
+  npmLabel?: string;
+  trelloLabel?: string;
+  emailLabel?: string;
+}
+
 const {
   demo,
   github,
   githubBackend,
   npm,
   trello,
+  email,
   demoCrossed,
   demoLabel = 'live demo',
   githubLabel = 'github',
   githubBackendLabel = 'github backend',
   npmLabel = 'npm',
   trelloLabel = 'trello',
+  emailLabel = 'email',
 } = Astro.props;
 ---
 
@@ -81,6 +99,18 @@ const {
       >
         <span class="text-accent">[</span>
         <span>{trelloLabel}</span>
+        <span class="text-accent">]</span>
+      </a>
+    )
+  }
+  {
+    email && (
+      <a
+        href={`mailto:${email}`}
+        class="group text-text-secondary hover:text-text-primary no-underline transition-colors duration-200"
+      >
+        <span class="text-accent">[</span>
+        <span>{emailLabel}</span>
         <span class="text-accent">]</span>
       </a>
     )

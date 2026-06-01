@@ -1,5 +1,6 @@
 ---
 import Layout from '@layouts/BlogPost.astro';
+import ProjectLink from '@components/ProjectLink.astro';
 ---
 
 <Layout
@@ -68,4 +69,11 @@ import Layout from '@layouts/BlogPost.astro';
       <span class="text-accent">minor &nbsp;</span> &nbsp;Digital Design
     </p>
   </div>
+
+  <h2>get in touch</h2>
+  <p>
+    The best way to reach me is by email. Whether it's about a project, a
+    question, or just to say hi — I'm happy to hear from you.
+  </p>
+  <ProjectLink email="hi@arii.dev" emailLabel="hi@arii.dev" />
 </Layout>
