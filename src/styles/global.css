@@ -18,6 +18,14 @@ body {
     color 200ms ease;
 }
 
+@property --g1-x { syntax: '<percentage>'; inherits: false; initial-value:  15%; }
+@property --g1-y { syntax: '<percentage>'; inherits: false; initial-value:  25%; }
+@property --g2-x { syntax: '<percentage>'; inherits: false; initial-value:  85%; }
+@property --g2-y { syntax: '<percentage>'; inherits: false; initial-value:  75%; }
+@property --g3-y { syntax: '<percentage>'; inherits: false; initial-value:  50%; }
+@property --g4-x { syntax: '<percentage>'; inherits: false; initial-value:  62%; }
+@property --g4-y { syntax: '<percentage>'; inherits: false; initial-value:  80%; }
+
 body::before {
   content: '';
   position: fixed;
@@ -25,19 +33,36 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image:
-    radial-gradient(ellipse 90% 60% at -10% -15%, rgba(124, 58, 237, 0.11), transparent 65%),
-    radial-gradient(ellipse 60% 55% at 110% 110%, rgba(10, 92, 86, 0.09), transparent 65%),
-    radial-gradient(ellipse 50% 40% at 108% 18%, rgba(196, 0, 110, 0.05), transparent 60%),
-    radial-gradient(ellipse 40% 35% at 42% 108%, rgba(124, 58, 237, 0.04), transparent 60%);
+    radial-gradient(ellipse 90% 60% at var(--g1-x) var(--g1-y), rgba(124, 58, 237, 0.11), transparent 65%),
+    radial-gradient(ellipse 60% 55% at var(--g2-x) var(--g2-y), rgba(10, 92, 86, 0.09), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 108% var(--g3-y), rgba(196, 0, 110, 0.05), transparent 60%),
+    radial-gradient(ellipse 40% 35% at var(--g4-x) var(--g4-y), rgba(124, 58, 237, 0.04), transparent 60%);
+  animation: bg-drift linear;
+  animation-timeline: scroll(root);
+}
+
+@keyframes bg-drift {
+  from {
+    --g1-x:  15%; --g1-y:  25%;
+    --g2-x:  85%; --g2-y:  75%;
+    --g3-y:  50%;
+    --g4-x:  62%; --g4-y:  80%;
+  }
+  to {
+    --g1-x: -10%; --g1-y: -15%;
+    --g2-x: 110%; --g2-y: 110%;
+    --g3-y:  18%;
+    --g4-x:  42%; --g4-y: 108%;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   body::before {
     background-image:
-      radial-gradient(ellipse 90% 60% at -10% -15%, rgba(162, 89, 255, 0.22), transparent 65%),
-      radial-gradient(ellipse 60% 55% at 110% 110%, rgba(45, 212, 191, 0.15), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 108% 18%, rgba(255, 77, 184, 0.09), transparent 60%),
-      radial-gradient(ellipse 40% 35% at 42% 108%, rgba(162, 89, 255, 0.08), transparent 60%);
+      radial-gradient(ellipse 90% 60% at var(--g1-x) var(--g1-y), rgba(162, 89, 255, 0.22), transparent 65%),
+      radial-gradient(ellipse 60% 55% at var(--g2-x) var(--g2-y), rgba(45, 212, 191, 0.15), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 108% var(--g3-y), rgba(255, 77, 184, 0.09), transparent 60%),
+      radial-gradient(ellipse 40% 35% at var(--g4-x) var(--g4-y), rgba(162, 89, 255, 0.08), transparent 60%);
   }
 }
 

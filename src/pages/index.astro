@@ -12,45 +12,46 @@ const latest = posts
 
 <SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   {/* Hero section */}
-  <section class="page-container space-y-7 py-24">
-    <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-      developer . melbourne
-      <span class="align-middle">🇦🇺</span><img
-        src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1ee-1f1f7.svg"
-        alt="Iranian imperial flag"
-        class="inline-block align-middle"
-        style="width: 1.2em; height: 1.2em;"
-      /> . ai systems
-    </span>
+  <section class="page-container py-28 md:py-36">
+    <div class="mb-8 flex flex-wrap items-center gap-2">
+      <span class="rounded-full border border-(--text-secondary)/15 bg-(--bg-secondary) px-3 py-1 font-mono text-[10px] tracking-widest text-(--text-secondary)">
+        developer
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-(--text-secondary)/15 bg-(--bg-secondary) px-3 py-1 font-mono text-[10px] tracking-widest text-(--text-secondary)">
+        <span>🇦🇺</span><img
+          src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f1ee-1f1f7.svg"
+          alt="Iranian imperial flag"
+          class="inline-block"
+          style="width: 1em; height: 1em;"
+        />
+        melbourne
+      </span>
+      <span class="rounded-full border border-(--text-secondary)/15 bg-(--bg-secondary) px-3 py-1 font-mono text-[10px] tracking-widest text-(--text-secondary)">
+        ai systems
+      </span>
+    </div>
 
-    <h1 class="text-5xl font-bold">
-      <span data-typewriter="hi, i'm arian"></span>
-      <span class="animate-blink">_</span>
+    <h1 class="mb-6 text-6xl font-bold leading-tight tracking-tight sm:text-7xl">
+      <span data-typewriter="hi, i'm arian"></span><span class="animate-blink text-highlight">_</span>
     </h1>
 
-    <p class="text-lg max-w-lg">
-      I write about what I'm learning, what I'm building, and the systems I work
-      with.
-    </p>
-
-    <p class="text-sm italic text-(--text-secondary)">
-      Mostly AI/ML, Swift, and whatever rabbit hole I fell into this week.
+    <p class="mb-10 max-w-sm text-base leading-relaxed text-(--text-secondary)">
+      I write about what I'm learning, building, and obsessing over — mostly AI/ML,
+      Swift, and whatever rabbit hole I fell into this week.
     </p>
 
     <div class="flex flex-wrap gap-3">
       <a
         href="/about"
-        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-5 py-2.5 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="inline-flex items-center gap-2 rounded-lg border border-(--highlight)/25 bg-(--highlight)/10 px-5 py-2.5 font-mono text-xs text-highlight no-underline transition-all duration-200 hover:bg-(--highlight)/15 hover:-translate-y-0.5"
       >
-        <span class="text-highlight">→</span>
-        about me
+        about me <span class="opacity-60">→</span>
       </a>
       <a
         href="/blog"
-        class="group inline-flex items-center gap-2 rounded-lg bg-(--bg-secondary) px-5 py-2.5 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="inline-flex items-center gap-2 rounded-lg border border-(--text-secondary)/10 bg-(--bg-secondary) px-5 py-2.5 font-mono text-xs shadow-(--box-shadow) no-underline transition-all duration-200 hover:text-highlight hover:-translate-y-0.5"
       >
-        <span class="text-highlight">→</span>
-        read the blog
+        read the blog <span class="opacity-60">→</span>
       </a>
     </div>
   </section>
@@ -59,10 +60,10 @@ const latest = posts
   <section class="page-container py-20 flex flex-col gap-8">
     <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        tools i've built and use daily
+        <span class="text-highlight/50">//</span> tools i've built and use daily
       </span>
-      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        shipped
+      <h2 class="flex text-3xl items-center gap-3 scroll-gradient-line after:h-px after:flex-1">
+shipped
       </h2>
     </div>
 
@@ -96,15 +97,15 @@ const latest = posts
   <section class="w-full py-20 flex flex-col gap-8">
     <div class="page-container flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        things i build with
+        <span class="text-highlight/50">//</span> things i build with
       </span>
-      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        stack
+      <h2 class="flex text-3xl items-center gap-3 scroll-gradient-line after:h-px after:flex-1">
+stack
       </h2>
     </div>
 
     <div
-      class="w-full border-y border-(--text-secondary)/10 py-15"
+      class="w-full border-y border-(--text-secondary)/10 py-25"
       style="background: color-mix(in srgb, var(--bg-secondary) 45%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);"
     >
       <div
@@ -113,7 +114,7 @@ const latest = posts
       >
         <div
           class="marquee-track flex"
-          style="animation: marquee 30s linear infinite;"
+          style="animation: marquee var(--marquee-duration, 30s) linear infinite;"
           onmouseenter="this.style.animationPlayState='paused'"
           onmouseleave="this.style.animationPlayState='running'"
         >
@@ -142,10 +143,10 @@ const latest = posts
   <section class="page-container py-20 flex flex-col gap-8">
     <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        things I'm building and figuring out
+        <span class="text-highlight/50">//</span> things I'm building and figuring out
       </span>
-      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        latest posts
+      <h2 class="flex text-3xl items-center gap-3 scroll-gradient-line after:h-px after:flex-1">
+latest posts
         <span class="text-highlight">[{posts.length}]</span>
       </h2>
     </div>
@@ -195,10 +196,10 @@ const latest = posts
     <div class="page-container flex flex-col gap-8">
       <div class="flex flex-col gap-2">
         <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-          keep exploring
+          <span class="text-highlight/50">//</span> keep exploring
         </span>
-        <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
-          more
+        <h2 class="flex text-3xl items-center gap-3 scroll-gradient-line after:h-px after:flex-1">
+    more
         </h2>
       </div>
 
@@ -236,10 +237,10 @@ const latest = posts
   <section class="page-container py-20 flex flex-col gap-8">
     <div class="flex flex-col gap-2">
       <span class="font-mono text-xs tracking-widest text-(--text-secondary)">
-        elsewhere on the web
+        <span class="text-highlight/50">//</span> elsewhere on the web
       </span>
-      <h2 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
-        find me
+      <h2 class="flex text-3xl items-center gap-3 scroll-gradient-line after:h-px after:flex-1">
+find me
       </h2>
     </div>
 
@@ -266,6 +267,28 @@ const latest = posts
     </div>
   </section>
 </SiteLayout>
+
+<style>
+  @media (max-width: 639px) {
+    :root { --marquee-duration: 15s; }
+  }
+
+  .scroll-gradient-line::after {
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in srgb, var(--highlight) 50%, transparent) 50%,
+      transparent 100%
+    );
+    background-size: 250% 100%;
+    animation: line-shimmer 5s ease-in-out infinite alternate;
+  }
+
+  @keyframes line-shimmer {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+  }
+</style>
 
 <script>
   import { initTypewriter } from '@/scripts/typewriter';
