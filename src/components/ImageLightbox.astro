@@ -61,7 +61,15 @@
 </style>
 
 <script is:inline>
+  let __lightboxAbort = null;
+
   function initLightbox() {
+    // Clean up previous keyboard listener before re-binding
+    if (__lightboxAbort) {
+      __lightboxAbort.abort();
+      __lightboxAbort = null;
+    }
+
     let tries = 0;
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -83,7 +91,6 @@
 
     const imgs = document.querySelectorAll('article figure img');
 
-    // retry safely (max 10 attempts)
     if (imgs.length === 0) {
       if (tries < 10) {
         tries++;
@@ -94,57 +101,79 @@
 
     const images = [];
     let currentIndex = 0;
+    let openerEl = null;
+
+    const focusableSelectors =
+      'button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const trapFocus = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(
+        lightbox.querySelectorAll(focusableSelectors),
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
 
     const show = (index) => {
       if (!images.length) return;
-
       currentIndex = (index + images.length) % images.length;
       const img = images[currentIndex];
-
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
       lightboxCaption.textContent = img.caption;
-
       prevBtn.style.display = images.length <= 1 ? 'none' : '';
       nextBtn.style.display = images.length <= 1 ? 'none' : '';
     };
 
     const open = (index) => {
+      openerEl = document.activeElement;
       show(index);
-
       lightbox.classList.remove('hidden');
       lightbox.classList.add('flex');
-
       lightbox.style.opacity = '1';
       lightbox.style.pointerEvents = 'auto';
-
       document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+      lightbox.addEventListener('keydown', trapFocus);
     };
 
     const close = () => {
       lightbox.classList.add('hidden');
       lightbox.classList.remove('flex');
-
       lightbox.style.opacity = '0';
       lightbox.style.pointerEvents = 'none';
-
       document.body.style.overflow = '';
+      lightbox.removeEventListener('keydown', trapFocus);
+      if (openerEl) {
+        openerEl.focus();
+        openerEl = null;
+      }
     };
 
     imgs.forEach((img, i) => {
       if (img.dataset.lightboxBound === 'true') return;
       img.dataset.lightboxBound = 'true';
-
       const figure = img.closest('figure');
       const caption =
         figure?.querySelector('figcaption')?.textContent ?? img.alt ?? '';
-
       images.push({
         src: img.getAttribute('src') ?? '',
         alt: img.alt ?? '',
         caption,
       });
-
       img.classList.add('cursor-zoom-in');
       img.onclick = () => open(i);
     });
@@ -153,30 +182,26 @@
     prevBtn.onclick = () => show(currentIndex - 1);
     nextBtn.onclick = () => show(currentIndex + 1);
 
-    // prevent duplicate lightbox click binding
     if (!lightbox.dataset.bound) {
       lightbox.dataset.bound = 'true';
-
       lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) close();
       });
     }
 
-    // prevent duplicate keyboard binding
-    if (!window.__lightboxKeyBound) {
-      window.__lightboxKeyBound = true;
-
-      document.addEventListener('keydown', (e) => {
+    __lightboxAbort = new AbortController();
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (lightbox.classList.contains('hidden')) return;
         if (e.key === 'Escape') close();
         if (e.key === 'ArrowLeft') show(currentIndex - 1);
         if (e.key === 'ArrowRight') show(currentIndex + 1);
-      });
-    }
+      },
+      { signal: __lightboxAbort.signal },
+    );
   }
 
-  // Astro navigation-safe init
   document.addEventListener('astro:page-load', initLightbox);
-
-  // initial load
   initLightbox();
 </script>

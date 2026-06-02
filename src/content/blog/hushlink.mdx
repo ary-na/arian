@@ -15,6 +15,7 @@ tags:
 ---
 
 import ProjectLinks from '@components/ProjectLink.astro';
+import Gallery from '@components/Gallery.astro';
 
 A personal project for sharing secrets safely — passwords, API keys, `.env` files — without leaving them in chat logs or email threads. The core constraint: the server never sees the plaintext, and the secret is gone the moment it is read.
 
@@ -71,7 +72,7 @@ web crypto api | pbkdf2 | aes-256-gcm | crockford base32
 
 ## highlights
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -92,9 +93,9 @@ web crypto api | pbkdf2 | aes-256-gcm | crockford base32
       step 1 of 2 — copy the link (not yet copied)
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -115,9 +116,9 @@ web crypto api | pbkdf2 | aes-256-gcm | crockford base32
       step 2 of 2 — send the code separately
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -138,9 +139,9 @@ web crypto api | pbkdf2 | aes-256-gcm | crockford base32
       how it works tab
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -161,7 +162,7 @@ web crypto api | pbkdf2 | aes-256-gcm | crockford base32
       api tab — key generation and rate limits
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
 The split-delivery pattern is the whole point of the UX. A link alone reveals nothing — it contains only the encrypted blob ID. A code alone is useless without the ciphertext. Both are required, and the UI enforces sending them separately by gating each step.
 

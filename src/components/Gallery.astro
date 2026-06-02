@@ -1,0 +1,12 @@
+---
+interface Props {
+  cols?: 2 | 3;
+}
+const { cols = 2 } = Astro.props;
+---
+
+<div
+  class:list={['gallery-grid not-prose my-4', cols === 3 && 'gallery-cols-3']}
+>
+  <slot />
+</div>

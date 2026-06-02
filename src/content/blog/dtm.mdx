@@ -13,7 +13,8 @@ tags:
   - developer-tools
 ---
 
-import ProjectLinks from '@components/ProjectLink.astro';
+import ProjectLinks from '@components/ProjectLink.astro'
+import Gallery from '@components/Gallery.astro';
 
 I built dtm because I kept tweaking my `.zshrc`, breaking something weeks later, and having no idea what I changed. I wanted something that quietly backs up my config files to GitHub on a schedule, makes it easy to see what changed over time, and lets me roll back any file to any point,  without me having to think about it.
 
@@ -104,7 +105,7 @@ dtm restore .zshrc -n 3
 
 ## highlights
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -125,9 +126,9 @@ dtm restore .zshrc -n 3
       watch command output
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -148,7 +149,7 @@ dtm restore .zshrc -n 3
       status command output
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
 <figure>
   <img

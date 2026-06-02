@@ -20,6 +20,7 @@ tags:
 ---
 
 import ProjectLinks from '@components/ProjectLink.astro';
+import Gallery from '@components/Gallery.astro';
 
 A full-stack social platform split across three repositories: a Flask frontend, a FastAPI backend, and an AWS Lambda function. Users can sign up or log in with Google and Facebook OAuth, create posts with image uploads, manage their profile, and browse the latest feed, with a Lambda-triggered welcome email on signup.
 
@@ -100,7 +101,7 @@ the FastAPI backend exposes endpoints across three groups.
 
 login, signup, home feed, and profile screens from the Flask app.
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -121,9 +122,9 @@ login, signup, home feed, and profile screens from the Flask app.
       sign up page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img class="rounded-md" src="/blog/shiny-spoon/home.webp" alt="Home page" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
@@ -140,7 +141,7 @@ login, signup, home feed, and profile screens from the Flask app.
       user profile page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
 Building Shiny Spoon was my first time splitting a project into real separate services. Having a Flask app focused purely on UI and sessions, a FastAPI backend handling data and cloud operations, and a Lambda function for side effects made the separation of concerns concrete in a way that a monolith never does.
 

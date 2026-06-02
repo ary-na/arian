@@ -4,56 +4,132 @@ import { PRIMARY_NAV, SITE_AUTHOR, SOCIAL_LINKS } from '@/consts';
 const today = new Date();
 ---
 
-<footer class="mt-auto pt-10">
-  <div class="bg-surface-primary">
-    <div class="h-px bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"></div>
-  <div class="page-container py-16">
-    <div class="flex flex-col gap-8 sm:flex-row sm:justify-between">
-      <div class="flex flex-col gap-2">
-        <a href="/" class="flex items-baseline gap-0.5 no-underline">
-          <span class="font-display text-xl font-bold tracking-tight text-text-primary">arii</span>
-          <span class="font-display text-xl font-bold tracking-tight text-highlight">.dev</span>
-        </a>
-        <p class="font-mono text-xs text-(--text-secondary) max-w-48 leading-relaxed">
-          code, AI, and things worth writing down.
-        </p>
-      </div>
-
-      <div class="flex gap-12">
-        <div class="flex flex-col gap-2.5">
-          <span class="font-mono text-[10px] tracking-widest text-(--text-secondary)/60 uppercase">nav</span>
-          {PRIMARY_NAV.map((item) => (
-            <a
-              href={item.href}
-              class="font-mono text-xs text-(--text-secondary) no-underline transition-colors duration-200 hover:text-highlight"
-            >
-              {item.label}
+<footer class="relative z-10 mt-auto pt-10">
+  <div class="bg-surface-primary overflow-hidden">
+    <div
+      class="h-px bg-gradient-to-r from-highlight via-primary to-transparent opacity-60"
+    >
+    </div>
+    <div class="relative">
+      <div class="page-container py-16 relative z-10">
+        <div class="flex flex-col gap-8 sm:flex-row sm:justify-between">
+          <div class="flex flex-col gap-2">
+            <a href="/" class="flex items-baseline gap-0.5 no-underline">
+              <span
+                class="font-display text-xl font-bold tracking-tight text-text-primary"
+                >arii</span
+              >
+              <span
+                class="font-display text-xl font-bold tracking-tight text-highlight"
+                >.dev</span
+              >
             </a>
-          ))}
+            <p
+              class="font-mono text-xs text-(--text-secondary) max-w-48 leading-relaxed"
+            >
+              code, AI, and things worth writing down.
+            </p>
+          </div>
+
+          <div class="flex gap-12">
+            <div class="flex flex-col gap-2.5">
+              <span
+                class="font-mono text-[10px] tracking-widest text-(--text-secondary)/60 uppercase"
+                >nav</span
+              >
+              {
+                PRIMARY_NAV.map((item) => (
+                  <a
+                    href={item.href}
+                    class="font-mono text-xs text-(--text-secondary) no-underline transition-colors duration-200 hover:text-highlight"
+                  >
+                    {item.label}
+                  </a>
+                ))
+              }
+            </div>
+
+            <div class="flex flex-col gap-2.5">
+              <span
+                class="font-mono text-[10px] tracking-widest text-(--text-secondary)/60 uppercase"
+                >find me</span
+              >
+              {
+                SOCIAL_LINKS.map((link) => (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-mono text-xs text-(--text-secondary) no-underline transition-colors duration-200 hover:text-highlight"
+                  >
+                    {link.label}
+                  </a>
+                ))
+              }
+            </div>
+          </div>
         </div>
 
-        <div class="flex flex-col gap-2.5">
-          <span class="font-mono text-[10px] tracking-widest text-(--text-secondary)/60 uppercase">find me</span>
-          {SOCIAL_LINKS.map((link) => (
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="font-mono text-xs text-(--text-secondary) no-underline transition-colors duration-200 hover:text-highlight"
-            >
-              {link.label}
-            </a>
-          ))}
+        <div
+          class="mt-8 flex flex-col gap-1 border-t border-(--text-secondary)/10 pt-6 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p class="font-mono text-[10px] text-(--text-secondary)/60">
+            &copy; {today.getFullYear()}
+            {SITE_AUTHOR}. All rights reserved.
+          </p>
+          <p class="font-mono text-[10px] text-(--text-secondary)/40">
+            built with astro
+          </p>
         </div>
       </div>
-    </div>
 
-    <div class="mt-8 flex flex-col gap-1 border-t border-(--text-secondary)/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-mono text-[10px] text-(--text-secondary)/60">
-        &copy; {today.getFullYear()} {SITE_AUTHOR}. All rights reserved.
-      </p>
-      <p class="font-mono text-[10px] text-(--text-secondary)/40">built with astro</p>
+      <svg
+        class="absolute inset-0 w-full h-full pointer-events-none select-none"
+        viewBox="0 0 400 80"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient
+            id="arii-grad"
+            x1="0"
+            y1="0"
+            x2="400"
+            y2="80"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stop-color="var(--arii-c1)"></stop>
+            <stop offset="50%" stop-color="var(--arii-c2)"></stop>
+            <stop offset="100%" stop-color="var(--arii-c3)"></stop>
+          </linearGradient>
+        </defs>
+        <text
+          x="0"
+          y="80"
+          font-family="Bytesized, monospace"
+          font-weight="bold"
+          font-size="240"
+          textLength="400"
+          lengthAdjust="spacingAndGlyphs"
+          fill="url(#arii-grad)">arii</text
+        >
+      </svg>
     </div>
-  </div>
   </div>
 </footer>
+
+<style>
+  :root {
+    --arii-c1: rgba(162, 89, 255, 0.18);
+    --arii-c2: rgba(45, 212, 191, 0.12);
+    --arii-c3: rgba(255, 77, 184, 0.1);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --arii-c1: rgba(124, 58, 237, 0.09);
+      --arii-c2: rgba(10, 92, 86, 0.06);
+      --arii-c3: rgba(196, 0, 110, 0.05);
+    }
+  }
+</style>

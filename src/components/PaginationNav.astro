@@ -11,62 +11,55 @@ if (totalPages <= 1) {
   return null;
 }
 
-const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+const progress = Math.round((currentPage / totalPages) * 100);
 ---
 
-<nav
-  class="mt-10 flex flex-wrap items-center justify-center gap-2 font-mono text-sm"
-  aria-label="Pagination"
->
-  {
-    currentPage > 1 ? (
-      <a
-        href={hrefForPage(currentPage - 1)}
-        class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
-        aria-label="Previous page"
-      >
-        <span class="text-xs">&lt;</span>
-      </a>
-    ) : (
-      <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) opacity-30">
-        <span class="text-xs">&lt;</span>
-      </span>
-    )
-  }
-
-  <div class="flex flex-wrap items-center gap-2">
+<nav aria-label="Pagination" class="mt-4 flex flex-col items-center gap-4">
+  <div class="flex items-center gap-6">
     {
-      pages.map((page) => {
-        const isCurrent = page === currentPage;
-        return isCurrent ? (
-          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-highlight/10 shadow-(--box-shadow) text-xs text-highlight">
-            {page}
-          </span>
-        ) : (
-          <a
-            href={hrefForPage(page)}
-            class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-xs text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
-          >
-            {page}
-          </a>
-        );
-      })
+      currentPage > 1 ? (
+        <a
+          href={hrefForPage(currentPage - 1)}
+          aria-label="Previous page"
+          class="font-mono text-xs text-text-secondary no-underline transition-colors duration-200 hover:text-highlight"
+        >
+          ← prev
+        </a>
+      ) : (
+        <span class="font-mono text-xs text-text-secondary/25 select-none">
+          ← prev
+        </span>
+      )
+    }
+
+    <span class="font-mono text-xs text-text-secondary/60 tabular-nums">
+      <span class="text-highlight">{currentPage}</span>
+      <span class="mx-1 opacity-40">/</span>
+      {totalPages}
+    </span>
+
+    {
+      currentPage < totalPages ? (
+        <a
+          href={hrefForPage(currentPage + 1)}
+          aria-label="Next page"
+          class="font-mono text-xs text-text-secondary no-underline transition-colors duration-200 hover:text-highlight"
+        >
+          next →
+        </a>
+      ) : (
+        <span class="font-mono text-xs text-text-secondary/25 select-none">
+          next →
+        </span>
+      )
     }
   </div>
 
-  {
-    currentPage < totalPages ? (
-      <a
-        href={hrefForPage(currentPage + 1)}
-        class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) no-underline transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
-        aria-label="Next page"
-      >
-        <span class="text-xs">&gt;</span>
-      </a>
-    ) : (
-      <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-(--bg-secondary) shadow-(--box-shadow) text-(--text-secondary) opacity-30">
-        <span class="text-xs">&gt;</span>
-      </span>
-    )
-  }
+  <div class="w-32 h-px bg-(--text-secondary)/10 rounded-full overflow-hidden">
+    <div
+      class="h-full bg-highlight/60 rounded-full transition-all duration-500"
+      style={`width: ${progress}%`}
+    >
+    </div>
+  </div>
 </nav>

@@ -19,6 +19,7 @@ tags:
 ---
 
 import ProjectLinks from "@components/ProjectLink.astro";
+import Gallery from "@components/Gallery.astro";
 
 A portfolio site built with Next.js for showcasing original artworks. Visitors can browse the gallery, shop with a full checkout flow, and reach out via a contact form — with Google OAuth or credentials-based sign-in and a role-protected admin dashboard behind the scenes. still under active development.
 
@@ -74,7 +75,7 @@ The backend exposes API routes across four route groups.
 
 Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -95,9 +96,9 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       sign up page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -118,9 +119,9 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       artwork detail
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img class="rounded-md" src="/blog/hart/cart.webp" alt="shopping cart" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
@@ -137,9 +138,9 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       checkout page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img class="rounded-md" src="/blog/hart/profile.webp" alt="user profile" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
@@ -152,9 +153,9 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       contact page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -175,9 +176,9 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       create drawing modal
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -198,7 +199,7 @@ Portfolio showcase, Google sign-in, shopping checkout, and admin dashboard.
       archived messages page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
 Supporting two auth methods in the same app was trickier than expected. Google OAuth and credentials both feed into NextAuth but create users differently, and getting the role assignment and session shape consistent across both flows meant revisiting the schema a few times before it felt right.
 

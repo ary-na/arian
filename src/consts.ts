@@ -16,7 +16,17 @@ export type NavItem = {
 export const PRIMARY_NAV: NavItem[] = [
   { href: '/', label: 'Home', description: 'start here' },
   { href: '/blog', label: 'Blog', description: 'things i write about' },
+  { href: '/featured', label: 'Featured', description: 'hand-picked posts' },
   { href: '/about', label: 'About', description: 'who i am' },
+];
+
+export const FEATURED_POSTS: string[] = [
+  'hushlink',
+  'dtm',
+  'tsla-forecast',
+  'lstage',
+  'spacewatch',
+  'hart',
 ];
 
 export const BLOG_PAGE_SIZE = 8;
@@ -63,8 +73,18 @@ export type SocialLink = {
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { href: 'https://github.com/ary-na', label: 'github', handle: 'ary-na', icon: 'github' },
-  { href: 'https://x.com/ariiii4n', label: 'x / twitter', handle: '@ariiii4n', icon: 'x' },
+  {
+    href: 'https://github.com/ary-na',
+    label: 'github',
+    handle: 'ary-na',
+    icon: 'github',
+  },
+  {
+    href: 'https://x.com/ariiii4n',
+    label: 'x / twitter',
+    handle: '@ariiii4n',
+    icon: 'x',
+  },
   {
     href: 'https://linkedin.com/in/arian-najafi-yamchelo',
     label: 'linkedin',

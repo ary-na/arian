@@ -15,6 +15,7 @@ tags:
 ---
 
 import ProjectLinks from '@components/ProjectLink.astro';
+import Gallery from '@components/Gallery.astro';
 
 A group project for a school assignment where we built an Android habit and goal tracker in Kotlin. The app lets users define goals, track them over time, and get quick views of their progress. This post focuses on the features and screens I personally implemented.
 
@@ -58,7 +59,7 @@ The base app was built collaboratively by the group. The features below were imp
 
 ## highlights
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+<Gallery cols={3}>
   <figure>
     <img class="rounded-md" src='/blog/hability/apps.webp' alt="App select screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">app select screen</figcaption>
@@ -71,9 +72,9 @@ The base app was built collaboratively by the group. The features below were imp
     <img class="rounded-md" src='/blog/hability/scheduler.webp' alt="Scheduler" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">scheduler</figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+<Gallery cols={3}>
   <figure>
     <img class="rounded-md" src='/blog/hability/goals.webp' alt="Goals" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">goals</figcaption>
@@ -86,7 +87,7 @@ The base app was built collaboratively by the group. The features below were imp
     <img class="rounded-md" src='/blog/hability/settings.webp' alt="Settings" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">settings</figcaption>
   </figure>
-</div>
+</Gallery>
 
 The scheduler feature was not hard algorithmically. The work was integration, layout XML, fragment lifecycle, DB queries, adapter binding, and state resets all needed to work together in one coherent flow. Most Android feature work at this level is really about connecting the right pieces cleanly.
 

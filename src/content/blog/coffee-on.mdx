@@ -17,6 +17,7 @@ tags:
 ---
 
 import ProjectLinks from '@components/ProjectLink.astro';
+import Gallery from '@components/Gallery.astro';
 
 A full-stack coffee shop ordering system with two user roles. Customers can browse and order drinks with a favorites system for quick reordering. Baristas manage incoming orders through a dedicated dashboard.
 
@@ -79,7 +80,7 @@ a few screens from the app, showcasing the user interface and functionality for 
   </figcaption>
 </figure>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -100,9 +101,9 @@ a few screens from the app, showcasing the user interface and functionality for 
       register page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img class="rounded-md" src="/blog/coffee-on/home.webp" alt="home screen" />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
@@ -115,9 +116,9 @@ a few screens from the app, showcasing the user interface and functionality for 
       cart page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -138,9 +139,9 @@ a few screens from the app, showcasing the user interface and functionality for 
       drinks page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -161,9 +162,9 @@ a few screens from the app, showcasing the user interface and functionality for 
       favorite drinks page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+<Gallery>
   <figure>
     <img
       class="rounded-md"
@@ -184,7 +185,7 @@ a few screens from the app, showcasing the user interface and functionality for 
       edit profile page
     </figcaption>
   </figure>
-</div>
+</Gallery>
 
 building coffee on was my first time designing a multi-role system from scratch.
 the trickiest part was managing state across user types. a customer's cart and

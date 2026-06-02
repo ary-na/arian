@@ -36,81 +36,88 @@ const {
 } = Astro.props;
 
 const isFiltered = !!archiveTitle;
+const gridPosts = posts;
 ---
 
 <SiteLayout {title} {description} {canonicalPath}>
-  <section class="page-container py-20 flex flex-col gap-8">
-
+  <section class="page-container py-16 flex flex-col gap-8">
     <div class="flex flex-col gap-3">
-      {isFiltered && (
-        <a
-          href="/blog"
-          class="inline-flex items-center gap-1.5 font-mono text-xs text-text-secondary no-underline transition-colors duration-200 hover:text-highlight w-fit"
+      {
+        isFiltered && (
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-1.5 font-mono text-xs text-text-secondary no-underline transition-colors duration-200 hover:text-highlight w-fit"
+          >
+            ← all posts
+          </a>
+        )
+      }
+      <div class="flex flex-col gap-1.5">
+        <span class="font-mono text-[10px] tracking-[0.2em] text-highlight/50"
+          >blog /</span
         >
-          ← all posts
-        </a>
-      )}
-      <div class="flex flex-col gap-1">
-        <span class="font-mono text-xs tracking-widest text-text-secondary">
-          {countLabel}
-          {countNumber !== undefined && (
-            <span class="text-highlight">[{countNumber}]</span>
-          )}
-        </span>
-        <h1 class="flex text-3xl items-center gap-2 after:h-px after:flex-1">
+        <h1 class="text-4xl font-bold tracking-tight leading-none">
           {isFiltered ? archiveTitle : archiveLabel}
         </h1>
+        <p class="font-mono text-[11px] text-(--text-secondary)/50 mt-0.5">
+          {countLabel}{countNumber !== undefined && ` [${countNumber}]`}
+        </p>
       </div>
     </div>
 
-    <ul class="flex flex-col gap-4">
-      {posts.map((post, i) => (
-        <li data-animate style={`--animate-delay: ${i * 55}ms`}>
-          <a
-            href={`/blog/${post.id}/`}
-            class="group grid grid-cols-[1fr_auto] items-start gap-4 rounded-xl bg-(--bg-secondary) px-5 py-5 no-underline shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-          >
-            <div class="flex min-w-0 flex-col gap-1.5">
-              {post.data.category && (
-                <span class="font-mono text-[10px] text-highlight opacity-90">
-                  {post.data.category}
-                </span>
-              )}
-              <p class="truncate font-mono text-sm transition-colors group-hover:text-highlight">
-                {post.data.title}
-              </p>
-              {post.data.description && (
-                <p class="font-mono text-xs text-text-secondary line-clamp-2 leading-relaxed">
-                  {post.data.description}
-                </p>
-              )}
-              <span class="font-mono text-[11px] text-text-secondary/60">
-                <FormattedDate date={post.data.pubDate} />
-              </span>
-            </div>
+    {
+      gridPosts.length > 0 && (
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {gridPosts.map((post, i) => (
+            <li data-animate style={`--animate-delay: ${i * 50}ms`}>
+              <a
+                href={`/blog/${post.id}/`}
+                class="group flex flex-col rounded-xl bg-(--bg-secondary) shadow-(--box-shadow) no-underline overflow-hidden transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 h-full"
+              >
+                {post.data.heroImage && (
+                  <div class="overflow-hidden h-40 shrink-0">
+                    <Image
+                      width={480}
+                      height={200}
+                      src={post.data.heroImage}
+                      alt={post.data.heroImageAlt ?? post.data.title}
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  </div>
+                )}
+                <div class="flex flex-col gap-3 p-6 flex-1">
+                  {post.data.category && (
+                    <span class="font-mono text-[10px] tracking-widest text-highlight opacity-90">
+                      {post.data.category}
+                    </span>
+                  )}
+                  <p class="font-mono text-sm leading-snug transition-colors group-hover:text-highlight line-clamp-2">
+                    {post.data.title}
+                  </p>
+                  {post.data.description && (
+                    <p class="font-mono text-xs text-text-secondary line-clamp-2 leading-relaxed">
+                      {post.data.description}
+                    </p>
+                  )}
+                  <span class="font-mono text-[11px] text-text-secondary/60 mt-auto pt-2">
+                    <FormattedDate date={post.data.pubDate} />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
 
-            {post.data.heroImage && (
-              <div class="shrink-0 hidden sm:block">
-                <Image
-                  width={320}
-                  height={160}
-                  src={post.data.heroImage}
-                  alt={post.data.heroImageAlt ?? ''}
-                  class="rounded object-cover w-[240px] h-[120px]"
-                />
-              </div>
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
-
-    {hrefForPage && (
-      <PaginationNav
-        currentPage={currentPage}
-        totalPages={totalPages}
-        hrefForPage={hrefForPage}
-      />
-    )}
+    {
+      hrefForPage && (
+        <PaginationNav
+          currentPage={currentPage}
+          totalPages={totalPages}
+          hrefForPage={hrefForPage}
+        />
+      )
+    }
   </section>
 </SiteLayout>
