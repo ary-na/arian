@@ -294,7 +294,7 @@ const latest = posts
             class="group flex flex-col sm:flex-row rounded-xl bg-(--bg-secondary) no-underline overflow-hidden shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
           >
             {latest[0].data.heroImage && (
-              <div class="h-44 sm:h-auto sm:w-[38%] shrink-0 overflow-hidden">
+              <div class="aspect-video sm:aspect-auto sm:h-auto sm:w-[38%] shrink-0 overflow-hidden">
                 <Image
                   width={600}
                   height={340}
@@ -342,7 +342,7 @@ const latest = posts
                 class="group flex flex-col rounded-xl bg-(--bg-secondary) no-underline overflow-hidden shadow-(--box-shadow) transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
               >
                 {post.data.heroImage && (
-                  <div class="h-44 overflow-hidden shrink-0">
+                  <div class="aspect-video sm:aspect-auto sm:h-44 overflow-hidden shrink-0">
                     <Image
                       width={480}
                       height={180}
