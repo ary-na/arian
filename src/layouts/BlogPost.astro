@@ -25,6 +25,9 @@ const {
   {title}
   {description}
   image={heroImage}
+  type="article"
+  publishedTime={pubDate.toISOString()}
+  modifiedTime={updatedDate?.toISOString()}
   schema={{
     '@type': 'BlogPosting',
     headline: title,

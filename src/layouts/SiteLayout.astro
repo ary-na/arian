@@ -10,16 +10,37 @@ interface Props {
   canonicalPath?: string;
   contentClass?: string;
   schema?: Record<string, unknown>;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
-const { title, description, image, canonicalPath, contentClass, schema } =
-  Astro.props;
+const {
+  title,
+  description,
+  image,
+  canonicalPath,
+  contentClass,
+  schema,
+  type,
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead {title} {description} {image} {canonicalPath} {schema} />
+    <BaseHead
+      {title}
+      {description}
+      {image}
+      {canonicalPath}
+      {schema}
+      {type}
+      {publishedTime}
+      {modifiedTime}
+    />
   </head>
   <body class="flex min-h-screen flex-col pt-14">
     <a
