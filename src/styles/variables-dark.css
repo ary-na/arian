@@ -1,16 +1,12 @@
 /* src/styles/variables-dark.css */
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary: #a259ff;
-    --secondary: #d6a8ff;
-    --accent: #ff4db8;
-    --highlight: #2dd4bf;
-    --bg-primary: #12111a;
-    --bg-secondary: #1e1c2a;
-    --text-primary: #f0eef8;
-    --text-secondary: #b8aed8;
-    --text-tertiary: #8878a8;
-    --text-muted: #c4bee0;
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --highlight: #7c93ff;
+    --bg-primary: #0a0b10;
+    --bg-secondary: #14161e;
+    --text-primary: #f1f2f6;
+    --text-secondary: #a3a6b5;
+    --text-tertiary: #6a6d7c;
+    --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 }

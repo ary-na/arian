@@ -7,22 +7,14 @@
   --color-surface-primary: var(--bg-primary);
   --color-surface-secondary: var(--bg-secondary);
 
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
   --color-highlight: var(--highlight);
+  --color-accent: var(--highlight);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
-  --color-text-muted: var(--text-muted);
 
-  @keyframes blink {
-    50% {
-      opacity: 0;
-    }
-  }
-
-  --animate-blink: blink 1s step-end infinite;
-  --animate-blink-slow: blink 1.1s step-end infinite;
+  /* Fluid type — reserved for headline-tier text only; body and labels stay fixed */
+  --text-hero-name: clamp(1.5rem, 1.32rem + 0.9vw, 1.875rem);
+  --text-section: clamp(1.35rem, 1.2rem + 0.75vw, 1.625rem);
 }

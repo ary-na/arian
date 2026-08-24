@@ -11,21 +11,35 @@ body {
   color: var(--text-primary);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  font-size: 20px;
-  line-height: 2.2;
+  font-size: 16px;
+  line-height: 1.65;
   transition:
     background-color 200ms ease,
     color 200ms ease;
 }
 
-@property --g1-x { syntax: '<percentage>'; inherits: false; initial-value:  15%; }
-@property --g1-y { syntax: '<percentage>'; inherits: false; initial-value:  25%; }
-@property --g2-x { syntax: '<percentage>'; inherits: false; initial-value:  85%; }
-@property --g2-y { syntax: '<percentage>'; inherits: false; initial-value:  75%; }
-@property --g3-y { syntax: '<percentage>'; inherits: false; initial-value:  50%; }
-@property --g4-x { syntax: '<percentage>'; inherits: false; initial-value:  62%; }
-@property --g4-y { syntax: '<percentage>'; inherits: false; initial-value:  80%; }
+@property --g1-x {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 12%;
+}
+@property --g1-y {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 20%;
+}
+@property --g2-x {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 88%;
+}
+@property --g2-y {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 70%;
+}
 
+/* Ambient background — single accent hue, two soft blobs, drifts on scroll */
 body::before {
   content: '';
   position: fixed;
@@ -33,36 +47,32 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image:
-    radial-gradient(ellipse 90% 60% at var(--g1-x) var(--g1-y), rgba(124, 58, 237, 0.11), transparent 65%),
-    radial-gradient(ellipse 60% 55% at var(--g2-x) var(--g2-y), rgba(10, 92, 86, 0.09), transparent 65%),
-    radial-gradient(ellipse 50% 40% at 108% var(--g3-y), rgba(196, 0, 110, 0.05), transparent 60%),
-    radial-gradient(ellipse 40% 35% at var(--g4-x) var(--g4-y), rgba(124, 58, 237, 0.04), transparent 60%);
+    radial-gradient(
+      ellipse 70% 55% at var(--g1-x) var(--g1-y),
+      color-mix(in srgb, var(--highlight) 8%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at var(--g2-x) var(--g2-y),
+      color-mix(in srgb, var(--highlight) 5%, transparent),
+      transparent 60%
+    );
   animation: bg-drift linear;
   animation-timeline: scroll(root);
 }
 
 @keyframes bg-drift {
   from {
-    --g1-x:  15%; --g1-y:  25%;
-    --g2-x:  85%; --g2-y:  75%;
-    --g3-y:  50%;
-    --g4-x:  62%; --g4-y:  80%;
+    --g1-x: 12%;
+    --g1-y: 20%;
+    --g2-x: 88%;
+    --g2-y: 70%;
   }
   to {
-    --g1-x: -10%; --g1-y: -15%;
-    --g2-x: 110%; --g2-y: 110%;
-    --g3-y:  18%;
-    --g4-x:  42%; --g4-y: 108%;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  body::before {
-    background-image:
-      radial-gradient(ellipse 90% 60% at var(--g1-x) var(--g1-y), rgba(162, 89, 255, 0.22), transparent 65%),
-      radial-gradient(ellipse 60% 55% at var(--g2-x) var(--g2-y), rgba(45, 212, 191, 0.15), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 108% var(--g3-y), rgba(255, 77, 184, 0.09), transparent 60%),
-      radial-gradient(ellipse 40% 35% at var(--g4-x) var(--g4-y), rgba(162, 89, 255, 0.08), transparent 60%);
+    --g1-x: -8%;
+    --g1-y: -10%;
+    --g2-x: 108%;
+    --g2-y: 105%;
   }
 }
 
@@ -72,7 +82,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Bytesized', monospace;
+  font-family: var(--font-body);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 @layer components {
@@ -81,48 +93,34 @@ h6 {
   }
 }
 
-/* Tech stack icons */
-.tech-icon {
-  filter: grayscale(1) opacity(0.45);
-  transition: filter 200ms ease;
-}
-
-.group:hover .tech-icon {
-  filter: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .tech-icon {
-    filter: grayscale(1) brightness(3) opacity(0.5);
-  }
-}
-
-/* Marquee */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation-play-state: paused !important; }
-}
-
 /* Image gallery — masonry columns */
 .gallery-grid {
   columns: 1;
   column-gap: 0.75rem;
 }
 @media (min-width: 640px) {
-  .gallery-grid { columns: 2; }
-  .gallery-grid.gallery-cols-3 { columns: 3; }
+  .gallery-grid {
+    columns: 2;
+  }
+  .gallery-grid.gallery-cols-3 {
+    columns: 3;
+  }
 }
 .gallery-grid figure {
   break-inside: avoid;
   margin-bottom: 0.75rem;
 }
-.gallery-grid figure:last-child { margin-bottom: 0; }
-.gallery-grid img { width: 100%; height: auto; display: block; }
-.gallery-grid figcaption { margin-top: 0.375rem; }
+.gallery-grid figure:last-child {
+  margin-bottom: 0;
+}
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.gallery-grid figcaption {
+  margin-top: 0.375rem;
+}
 
 /* Table of contents sidebar */
 .toc-link {
@@ -133,13 +131,22 @@ h6 {
   text-decoration: none;
   color: var(--text-secondary);
   opacity: 0.45;
-  transition: opacity 150ms ease, color 150ms ease;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease;
 }
-.toc-link:hover { opacity: 0.9; color: var(--highlight); }
-.toc-link[data-active="true"] { opacity: 1; color: var(--highlight); }
+.toc-link:hover {
+  opacity: 0.9;
+  color: var(--highlight);
+}
+.toc-link[data-active='true'] {
+  opacity: 1;
+  color: var(--highlight);
+}
 .toc-link.toc-h3 {
   padding-left: 0.625rem;
-  border-left: 1px solid color-mix(in srgb, var(--text-secondary) 20%, transparent);
+  border-left: 1px solid
+    color-mix(in srgb, var(--text-secondary) 20%, transparent);
 }
 
 /* Focus visible */
@@ -151,11 +158,28 @@ h6 {
 
 /* Print styles */
 @media print {
-  header, footer, nav, [data-animate] { display: none !important; }
-  body { font-size: 12pt; line-height: 1.6; background: white; color: black; }
-  a { color: black; text-decoration: underline; }
-  .prose { max-width: none; }
-  body::before { display: none; }
+  header,
+  footer,
+  nav,
+  [data-animate] {
+    display: none !important;
+  }
+  body {
+    font-size: 12pt;
+    line-height: 1.6;
+    background: white;
+    color: black;
+  }
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+  .prose {
+    max-width: none;
+  }
+  body::before {
+    display: none;
+  }
 }
 
 /* Scroll-in animations */

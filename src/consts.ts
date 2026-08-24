@@ -1,24 +1,24 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'arii.dev';
-export const SITE_TAGLINE = "Arian's Dev Blog";
-export const SITE_AUTHOR = 'Arian Najafi Yamchelo';
+export const SITE_TITLE = 'arii.dev'
+export const SITE_TAGLINE = "Arian's Dev Blog"
+export const SITE_AUTHOR = 'Arian Najafi Yamchelo'
 export const SITE_DESCRIPTION =
-  "A developer's log — code, AI, and things worth writing down.";
+  "A developer's log — code, AI, and things worth writing down."
 
 export type NavItem = {
-  href: string;
-  label: string;
-  description?: string;
-};
+  href: string
+  label: string
+  description?: string
+}
 
 export const PRIMARY_NAV: NavItem[] = [
   { href: '/', label: 'Home', description: 'start here' },
   { href: '/blog', label: 'Blog', description: 'things i write about' },
   { href: '/featured', label: 'Featured', description: 'hand-picked posts' },
   { href: '/about', label: 'About', description: 'who i am' },
-];
+]
 
 export const FEATURED_POSTS: string[] = [
   'hushlink',
@@ -27,16 +27,16 @@ export const FEATURED_POSTS: string[] = [
   'lstage',
   'spacewatch',
   'hart',
-];
+]
 
-export const BLOG_PAGE_SIZE = 8;
+export const BLOG_PAGE_SIZE = 8
 
 export type ShippedItem = {
-  href: string;
-  name: string;
-  description: string;
-  tag: string;
-};
+  href: string
+  name: string
+  description: string
+  tag: string
+}
 
 export const SHIPPED: ShippedItem[] = [
   {
@@ -63,14 +63,14 @@ export const SHIPPED: ShippedItem[] = [
     description: 'Auto-snapshots your dotfiles and pushes them to GitHub',
     tag: 'cli · typescript',
   },
-];
+]
 
 export type SocialLink = {
-  href: string;
-  label: string;
-  handle: string;
-  icon?: string;
-};
+  href: string
+  label: string
+  handle: string
+  icon?: string
+}
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
@@ -98,33 +98,14 @@ export const SOCIAL_LINKS: SocialLink[] = [
     icon: 'gravatar',
   },
   { href: 'mailto:hi@arii.dev', label: 'email', handle: 'hi@arii.dev' },
-];
-
-export type TechItem = {
-  name: string;
-  icon: string;
-};
-
-export const TECH_STACK: TechItem[] = [
-  { name: 'TypeScript', icon: 'typescript' },
-  { name: 'Python', icon: 'python' },
-  { name: 'Swift', icon: 'swift' },
-  { name: 'Kotlin', icon: 'kotlin' },
-  { name: 'React', icon: 'react' },
-  { name: 'Node.js', icon: 'nodedotjs' },
-  { name: 'Tailwind', icon: 'tailwindcss' },
-  { name: 'Astro', icon: 'astro' },
-  { name: 'Flask', icon: 'flask' },
-  { name: 'PyTorch', icon: 'pytorch' },
-  { name: 'C++', icon: 'cplusplus' },
-];
+]
 
 export const categoryHref = (category: string) =>
-  `/blog/category/${encodeURIComponent(category)}`;
-export const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag)}`;
+  `/blog/category/${encodeURIComponent(category)}`
+export const tagHref = (tag: string) => `/blog/tag/${encodeURIComponent(tag)}`
 export const blogPageHref = (page: number) =>
-  page <= 1 ? '/blog' : `/blog/page/${page}`;
+  page <= 1 ? '/blog' : `/blog/page/${page}`
 export const categoryPageHref = (category: string, page: number) =>
-  page <= 1 ? categoryHref(category) : `${categoryHref(category)}/page/${page}`;
+  page <= 1 ? categoryHref(category) : `${categoryHref(category)}/page/${page}`
 export const tagPageHref = (tag: string, page: number) =>
-  page <= 1 ? tagHref(tag) : `${tagHref(tag)}/page/${page}`;
+  page <= 1 ? tagHref(tag) : `${tagHref(tag)}/page/${page}`

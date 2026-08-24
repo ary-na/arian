@@ -1,13 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
-import { categoryHref, PRIMARY_NAV } from '@/consts';
+import { getCollection } from 'astro:content'
+import { categoryHref, PRIMARY_NAV } from '@/consts'
 
-const posts = await getCollection('blog');
+const posts = await getCollection('blog')
 const categories = [
   ...new Set(posts.flatMap((p) => p.data.category ?? [])),
-].sort();
+].sort()
 
-const pathname = Astro.url.pathname;
+const pathname = Astro.url.pathname
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50">
@@ -28,17 +28,17 @@ const pathname = Astro.url.pathname;
         >
       </a>
 
-      <nav class="hidden lg:flex items-center gap-1">
+      <nav class="hidden lg:flex items-center gap-5">
         {
           PRIMARY_NAV.map((item) => (
             <a
               href={item.href}
               class:list={[
-                'font-mono text-xs px-3 py-1.5 rounded-lg no-underline transition-all duration-200',
+                'font-mono text-xs no-underline transition-colors duration-200',
                 pathname === item.href ||
                 (item.href !== '/' && pathname.startsWith(item.href))
-                  ? 'text-highlight bg-(--highlight)/10'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-(--bg-secondary)',
+                  ? 'text-highlight'
+                  : 'text-text-secondary hover:text-text-primary',
               ]}
             >
               {item.label.toLowerCase()}
@@ -49,15 +49,15 @@ const pathname = Astro.url.pathname;
         {
           categories.length > 0 && (
             <>
-              <span class="mx-2 h-3.5 w-px bg-(--text-secondary)/20" />
+              <span class="h-3.5 w-px bg-(--text-secondary)/20" />
               {categories.map((cat) => (
                 <a
                   href={categoryHref(cat)}
                   class:list={[
-                    'rounded-full px-2.5 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200',
+                    'font-mono text-xs no-underline transition-colors duration-200',
                     pathname.startsWith(categoryHref(cat))
-                      ? 'bg-(--highlight)/15 text-highlight'
-                      : 'text-text-secondary/60 hover:text-highlight hover:bg-(--highlight)/10',
+                      ? 'text-highlight'
+                      : 'text-text-secondary/60 hover:text-highlight',
                   ]}
                 >
                   {cat}
@@ -116,16 +116,16 @@ const pathname = Astro.url.pathname;
           class="px-3 font-mono text-[10px] tracking-widest text-text-secondary/60 uppercase"
           >categories</span
         >
-        <div class="flex flex-wrap gap-2 px-3 pb-1">
+        <div class="flex flex-wrap gap-x-4 gap-y-2 px-3 pb-1">
           {
             categories.map((cat) => (
               <a
                 href={categoryHref(cat)}
                 class:list={[
-                  'rounded-full px-3 py-1 font-mono text-[10px] tracking-widest no-underline transition-all duration-200',
+                  'font-mono text-xs no-underline transition-colors duration-200',
                   pathname.startsWith(categoryHref(cat))
-                    ? 'bg-(--highlight)/15 text-highlight'
-                    : 'bg-(--bg-secondary) text-text-secondary hover:text-highlight hover:bg-(--highlight)/10',
+                    ? 'text-highlight'
+                    : 'text-text-secondary hover:text-highlight',
                 ]}
               >
                 {cat}
@@ -182,20 +182,20 @@ const pathname = Astro.url.pathname;
   const initHeader = () => {
     const toggle = document.getElementById(
       'mobile-toggle',
-    ) as HTMLButtonElement | null;
-    const menu = document.getElementById('mobile-menu') as HTMLElement | null;
+    ) as HTMLButtonElement | null
+    const menu = document.getElementById('mobile-menu') as HTMLElement | null
 
-    if (!toggle || !menu || toggle.dataset.bound === 'true') return;
-    toggle.dataset.bound = 'true';
+    if (!toggle || !menu || toggle.dataset.bound === 'true') return
+    toggle.dataset.bound = 'true'
 
     toggle.addEventListener('click', () => {
-      const open = menu.classList.toggle('is-open');
-      toggle.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-      menu.style.setProperty('--menu-height', menu.scrollHeight + 'px');
-    });
-  };
+      const open = menu.classList.toggle('is-open')
+      toggle.classList.toggle('is-open', open)
+      toggle.setAttribute('aria-expanded', String(open))
+      menu.style.setProperty('--menu-height', menu.scrollHeight + 'px')
+    })
+  }
 
-  document.addEventListener('astro:page-load', initHeader);
-  initHeader();
+  document.addEventListener('astro:page-load', initHeader)
+  initHeader()
 </script>

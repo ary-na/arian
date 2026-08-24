@@ -1,6 +1,6 @@
 ---
-import SiteLayout from '@layouts/SiteLayout.astro';
-import { SITE_TITLE } from '@/consts';
+import SiteLayout from '@layouts/SiteLayout.astro'
+import { SITE_TITLE } from '@/consts'
 ---
 
 <SiteLayout
@@ -11,27 +11,23 @@ import { SITE_TITLE } from '@/consts';
     class="page-container flex flex-1 flex-col items-center justify-center gap-8 py-28 text-center"
   >
     <div class="flex flex-col gap-3">
-      <span class="font-mono text-xs tracking-widest text-text-secondary">
-        <span class="text-highlight/50">#</span> error
-      </span>
-      <h1 class="font-display text-8xl font-bold tracking-tight text-highlight">
-        404
-      </h1>
-      <p class="font-mono text-sm text-text-secondary">
+      <span class="font-mono text-xs text-highlight">error</span>
+      <h1 class="text-hero-name font-semibold text-text-primary">404</h1>
+      <p class="text-sm text-text-secondary">
         this page doesn't exist or was moved.
       </p>
     </div>
 
-    <div class="flex flex-wrap items-center justify-center gap-3">
+    <div class="flex flex-wrap items-center justify-center gap-6">
       <a
         href="/"
-        class="rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs text-text-secondary no-underline shadow-(--box-shadow) transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="font-mono text-xs text-highlight no-underline hover:underline"
       >
         ← home
       </a>
       <a
         href="/blog"
-        class="rounded-lg bg-(--bg-secondary) px-4 py-2 font-mono text-xs text-text-secondary no-underline shadow-(--box-shadow) transition-all duration-200 hover:text-highlight hover:shadow-md hover:-translate-y-0.5"
+        class="font-mono text-xs text-highlight no-underline hover:underline"
       >
         blog
       </a>
