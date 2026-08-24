@@ -31,40 +31,6 @@ export const FEATURED_POSTS: string[] = [
 
 export const BLOG_PAGE_SIZE = 8
 
-export type ShippedItem = {
-  href: string
-  name: string
-  description: string
-  tag: string
-}
-
-export const SHIPPED: ShippedItem[] = [
-  {
-    href: '/blog/lazy-commit',
-    name: 'lazy-commit',
-    description: 'AI-powered conventional commit message generator',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/lstage',
-    name: 'lstage',
-    description: 'Stage and unstage git files by number, no paths needed',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/syncback',
-    name: 'syncback',
-    description: 'Merge branches, push, and switch back in one command',
-    tag: 'cli · typescript',
-  },
-  {
-    href: '/blog/dtm',
-    name: 'dtm',
-    description: 'Auto-snapshots your dotfiles and pushes them to GitHub',
-    tag: 'cli · typescript',
-  },
-]
-
 export type SocialLink = {
   href: string
   label: string

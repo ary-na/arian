@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '@layouts/SiteLayout.astro'
 import FormattedDate from '@components/FormattedDate.astro'
-import { SITE_DESCRIPTION, SITE_TITLE, SHIPPED } from '@/consts'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts'
 import { getCollection } from 'astro:content'
 
 const posts = (await getCollection('blog')).sort(
@@ -34,41 +34,9 @@ const latest = posts.slice(0, 5)
         >blog</a
       >.
     </p>
-  </section>
-
-  {/* Shipped */}
-  <section class="page-container py-14 flex flex-col gap-6">
-    <h2 class="text-section font-semibold">shipped</h2>
-    <ul
-      class="flex flex-col divide-y divide-(--text-secondary)/10 border-t border-b border-(--text-secondary)/10"
-    >
-      {
-        SHIPPED.map((item, i) => (
-          <li data-animate style={`--animate-delay: ${i * 60}ms`}>
-            <a
-              href={item.href}
-              class="group flex flex-col sm:flex-row sm:items-baseline sm:gap-6 py-4 no-underline"
-            >
-              <span class="font-mono text-sm text-text-primary group-hover:text-highlight transition-colors sm:w-40 shrink-0">
-                {item.name}
-              </span>
-              <span class="text-sm text-text-secondary flex-1">
-                {item.description}
-              </span>
-              <span class="font-mono text-xs text-text-tertiary shrink-0">
-                {item.tag}
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <a
-      href="/featured"
-      class="font-mono text-xs text-highlight no-underline w-fit hover:underline"
-    >
-      see featured picks →
-    </a>
+    <p class="mt-4 font-mono text-xs text-text-tertiary">
+      currently — finishing a Master's in AI at Monash, open to grad roles
+    </p>
   </section>
 
   {/* Writing */}
@@ -104,11 +72,19 @@ const latest = posts.slice(0, 5)
         ))
       }
     </ul>
-    <a
-      href="/blog"
-      class="font-mono text-xs text-highlight no-underline w-fit hover:underline"
-    >
-      all posts →
-    </a>
+    <div class="flex gap-6">
+      <a
+        href="/blog"
+        class="font-mono text-xs text-highlight no-underline w-fit hover:underline"
+      >
+        all posts →
+      </a>
+      <a
+        href="/featured"
+        class="font-mono text-xs text-highlight no-underline w-fit hover:underline"
+      >
+        featured picks →
+      </a>
+    </div>
   </section>
 </SiteLayout>
