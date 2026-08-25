@@ -27,7 +27,7 @@ It ships as a SwiftUI app and a `husk` CLI. Both are a thin shell over the same 
 
 - Confidence-scored matching: `exact` (bundle ID or executable found in the file), `likely` (team ID or exact folder-name match), `possible` (fuzzy resemblance, opt-in only, never pre-selected)
 - Scans containers, caches, preferences (including ByHost), Group Containers, Application Scripts, Saved Application State, launch agents/daemons, and installer receipts via `pkgutil`
-- Reference-counts shared components, Microsoft AutoUpdate, shared containers, so removing one app never breaks another
+- Reference-counts shared components (Microsoft AutoUpdate, shared containers) so removing one app never breaks another
 - A dedicated **Ghosts** view for registrations that outlive the apps that made them: stale Launch Services entries, orphaned Full Disk Access grants, dead Spotlight importers
 - Nothing is deleted directly: items move to quarantine via `FileManager.trashItem` (or a user-owned quarantine folder for root-owned files), restorable until purged
 - Reduced-scan mode when Full Disk Access isn't granted: husk still runs and says plainly what it couldn't see, instead of quietly reporting a clean system
@@ -54,7 +54,7 @@ pkgutil | lsregister | pluginkit | fileproviderctl | tccutil | cfprefsd
 
 **Engine first, surfaces second.** `Package.swift` builds three targets off one library: `UninstallKit` does the scanning, matching, and removal logic; `HuskCLI` and `HuskApp` are both thin dependents of it. Any behavior fixed in the engine is fixed everywhere at once.
 
-**Matching is a confidence ladder, not a boolean.** A bundle identifier found inside a file, or the executable itself living in the bundle, is `exact`. A team identifier or a folder name matching the app name exactly is `likely` and is pre-checked by default. Anything weaker, fuzzy name resemblance, is `possible`, requires an explicit opt-in, and is never pre-selected. Names under five characters and a denylist of generic words (`mail`, `notes`, `code`, `sync`) are excluded from fuzzy matching entirely, since that's where most uninstallers cause real damage.
+**Matching is a confidence ladder, not a boolean.** A bundle identifier found inside a file, or an installer receipt listing it directly, is `exact`. A team identifier or a folder name matching the app name exactly is `likely` and is pre-checked by default. Anything weaker (fuzzy name resemblance) is `possible`: it requires an explicit opt-in and is never pre-selected. Names under five characters and a denylist of generic words (`mail`, `notes`, `code`, `sync`) are excluded from fuzzy matching entirely, since that's where most uninstallers cause real damage.
 
 **Removal order is load-bearing.** TCC privacy grants are reset and the app is unregistered from Launch Services _before_ the bundle is deleted, because once the bundle is gone, `tccutil` and `lsregister` can no longer resolve its identifier to reset it. `cfprefsd` is killed after any preference removal, otherwise the daemon writes its cached copy straight back to disk. These two orderings are covered by their own acceptance tests, since getting them backwards silently ships a tool that looks like it works.
 
@@ -62,7 +62,7 @@ pkgutil | lsregister | pluginkit | fileproviderctl | tccutil | cfprefsd
 
 **Quarantine is always user-owned.** Everything moved to quarantine, including root-owned items relocated to `~/.husk-quarantine/` via an authorized helper, ends up `chown`'d to the invoking user, so the quarantine directory can be deleted without `sudo`. A `manifest.json` per run records the original path, size, and ownership of every item, which is what makes `husk restore` possible.
 
-## CLI usage
+## cli usage
 
 ```bash
 $ husk scan AppCleaner
@@ -88,6 +88,9 @@ Stale registrations
   Launch Services
     com.google.GoogleUpdater
       missing: ~/Library/Application Support/Google/GoogleUpdater/148.0.7730.0/GoogleUpdater.app
+      Registered bundle no longer exists on disk
+    com.microsoft.OneDrive
+      missing: ~/.husk-quarantine/2026-08-24T07-17-34Z/Applications/OneDrive.app
       Registered bundle no longer exists on disk
 
   2 stale registration(s)
@@ -119,7 +122,7 @@ App list, scan results with confidence tiers, and the Ghosts view for stale regi
       alt="husk app list showing every installed app with bundle identifier and size"
     />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
-      main window — every installed app, sortable and searchable
+      main window: every installed app, sortable and searchable
     </figcaption>
   </figure>
   <figure>
@@ -129,7 +132,7 @@ App list, scan results with confidence tiers, and the Ghosts view for stale regi
       alt="husk scan results for AppCleaner showing exact-confidence leftovers and a reduced-scan Full Disk Access warning banner"
     />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
-      scan results — exact matches, plus the reduced-scan banner when FDA isn't
+      scan results: exact matches, plus the reduced-scan banner when FDA isn't
       granted
     </figcaption>
   </figure>
@@ -143,7 +146,7 @@ App list, scan results with confidence tiers, and the Ghosts view for stale regi
       alt="husk scan results for Discord showing both exact and likely confidence tiers with explanations for each match"
     />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
-      confidence tiers — exact and likely matches, each with its reasoning shown
+      confidence tiers: exact and likely matches, each with its reasoning shown
       inline
     </figcaption>
   </figure>
@@ -154,11 +157,11 @@ App list, scan results with confidence tiers, and the Ghosts view for stale regi
       alt="husk Ghosts view listing stale Launch Services registrations for apps no longer on disk, with a repair option"
     />
     <figcaption class="mt-2 font-mono text-xs text-(--text-secondary)">
-      ghosts view — registrations that outlived the apps that made them
+      ghosts view: registrations that outlived the apps that made them
     </figcaption>
   </figure>
 </Gallery>
 
-The ordering constraint around TCC and Launch Services was the part I underestimated going in. It reads like an implementation detail, reset privacy grants before you delete the bundle, but it's actually the whole reason a lot of uninstallers leave orphaned Full Disk Access entries behind: once the bundle is gone, the identifier that `tccutil` needs to resolve is gone with it, and there's no clean way back in. Writing the acceptance criteria before the removal sequence forced that ordering to be explicit instead of something I'd have gotten right by accident once and broken later during a refactor.
+The ordering constraint around TCC and Launch Services was the part I underestimated going in. It reads like an implementation detail — reset privacy grants before you delete the bundle — but it's actually the whole reason a lot of uninstallers leave orphaned Full Disk Access entries behind: once the bundle is gone, the identifier that `tccutil` needs to resolve is gone with it, and there's no clean way back in. Writing the acceptance criteria before the removal sequence forced that ordering to be explicit instead of something I'd have gotten right by accident once and broken later during a refactor.
 
-The confidence tiers turned out to matter more than I expected, too. It's tempting to build an uninstaller around "does the name look similar," but that's precisely the heuristic that deletes `~/Library/Caches/Notes` because someone had an app called `notes-sync`. Splitting matches into exact, likely, and possible — with possible requiring an explicit opt-in and a denylist for generic short names — pushed most of the design work into deciding what _not_ to trust automatically, which ended up being more interesting than the removal code itself.
+The confidence tiers turned out to matter more than I expected, too. It's tempting to build an uninstaller around "does the name look similar," but that's precisely the heuristic that deletes `~/Library/Caches/Notes` because someone had an app called `notes-sync`. Splitting matches into exact, likely, and possible (with possible requiring an explicit opt-in and a denylist for generic short names) pushed most of the design work into deciding what _not_ to trust automatically, which ended up being more interesting than the removal code itself.
